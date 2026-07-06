@@ -12,7 +12,11 @@
     "db:migrate": "prisma migrate dev --schema=packages/db/prisma/schema.prisma",
     "db:push": "prisma db push --schema=packages/db/prisma/schema.prisma",
     "db:studio": "prisma studio --schema=packages/db/prisma/schema.prisma",
-    "db:seed": "tsx packages/db/prisma/seed.ts"
+    "db:seed": "tsx packages/db/prisma/seed.ts",
+    "web:dev": "pnpm --filter web dev",
+    "web:build": "pnpm --filter web build",
+    "web:start": "pnpm --filter web start",
+    "web:lint": "pnpm --filter web lint"
   },
   "devDependencies": {
     "turbo": "^2.1.3",
