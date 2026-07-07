@@ -63,13 +63,32 @@ export const APP_NAMES_ATLAS = {
   TALLY: 'Tally',
 };
 
+export const SUBVIEW_NAMES = {
+  STRIDE: {
+    INBOX: 'inbox',
+    TODAY: 'today',
+    UPCOMING: 'upcoming',
+    OVERDUE: 'overdue',
+    COMPLETE: 'complete',
+  },
+};
+
 export const ASIDE_VIEW_NAMES = {
   SEARCH: 'search',
   NEW: {
     ITEM: 'new',
-    EVENT: 'new-event',
-    NOTE: 'new-note',
-    TASK: 'new-task',
+    PAVE: {
+      EVENT: 'new-event',
+      CALENDAR: 'new-calendar',
+    },
+    JOT: {
+      NOTE: 'new-note',
+      FOLDER: 'new-folder',
+    },
+    STRIDE: {
+      TASK: 'new-task',
+      TASK_LIST: 'new-task-list',
+    },
   },
 };
 

@@ -20,8 +20,8 @@ export default function New({ children, ...restProps }: { children: React.ReactN
       icon: IconCalendarEvent,
       label: 'Event',
       action: () => {
-        if (asideViewValue != ASIDE_VIEW_NAMES.NEW.EVENT) {
-          setAsideViewValue(ASIDE_VIEW_NAMES.NEW.EVENT);
+        if (asideViewValue != ASIDE_VIEW_NAMES.NEW.PAVE.EVENT) {
+          setAsideViewValue(ASIDE_VIEW_NAMES.NEW.PAVE.EVENT);
         }
       },
     },
@@ -29,8 +29,8 @@ export default function New({ children, ...restProps }: { children: React.ReactN
       icon: IconNote,
       label: 'Note',
       action: () => {
-        if (asideViewValue != ASIDE_VIEW_NAMES.NEW.NOTE) {
-          setAsideViewValue(ASIDE_VIEW_NAMES.NEW.NOTE);
+        if (asideViewValue != ASIDE_VIEW_NAMES.NEW.JOT.NOTE) {
+          setAsideViewValue(ASIDE_VIEW_NAMES.NEW.JOT.NOTE);
         }
       },
     },
@@ -38,8 +38,8 @@ export default function New({ children, ...restProps }: { children: React.ReactN
       icon: IconCheckbox,
       label: 'Task',
       action: () => {
-        if (asideViewValue != ASIDE_VIEW_NAMES.NEW.TASK) {
-          setAsideViewValue(ASIDE_VIEW_NAMES.NEW.TASK);
+        if (asideViewValue != ASIDE_VIEW_NAMES.NEW.STRIDE.TASK) {
+          setAsideViewValue(ASIDE_VIEW_NAMES.NEW.STRIDE.TASK);
         }
       },
     },

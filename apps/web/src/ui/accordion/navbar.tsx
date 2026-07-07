@@ -11,7 +11,7 @@ import {
   Group,
   Tooltip,
 } from '@mantine/core';
-import { APP_NAMES_ATLAS, ICON_SIZE, ICON_STROKE_WIDTH } from '@repo/constants';
+import { APP_NAMES_ATLAS, ASIDE_VIEW_NAMES, ICON_SIZE, ICON_STROKE_WIDTH } from '@repo/constants';
 import { useStoreView } from '@repo/store';
 import {
   IconChevronDown,
@@ -24,53 +24,54 @@ import {
 import { SHELL_VALUES } from '@web/constants';
 import { useView, useViewAside } from '@web/hook/view';
 import { useState } from 'react';
+import PartialNavbarStride from '../partial/navbar/stride';
 
 export default function Navbar() {
   const [values, setValues] = useState<string[]>([]);
 
-  const { showNewEvent, showNewNote, showNewTask } = useViewAside();
+  const { showAsideViewPave, showAsideViewJot, showAsideViewStride } = useViewAside();
   const { showViewPave, showViewJot, showViewStride, showViewPrime, showViewTally } = useView();
 
   const data = [
     {
       value: APP_NAMES_ATLAS.PAVE,
-      description: 'Pave content',
       actions: {
-        create: showNewEvent,
+        create: () => showAsideViewPave(ASIDE_VIEW_NAMES.NEW.PAVE.EVENT),
         switch: showViewPave,
       },
+      content: 'Pave content',
     },
     {
       value: APP_NAMES_ATLAS.JOT,
-      description: 'Jot content',
       actions: {
-        create: showNewNote,
+        create: () => showAsideViewJot(ASIDE_VIEW_NAMES.NEW.JOT.NOTE),
         switch: showViewJot,
       },
+      content: 'Jot content',
     },
     {
       value: APP_NAMES_ATLAS.STRIDE,
-      description: 'Stride content',
       actions: {
-        create: showNewTask,
+        create: () => showAsideViewStride(ASIDE_VIEW_NAMES.NEW.STRIDE.TASK),
         switch: showViewStride,
       },
+      content: <PartialNavbarStride />,
     },
     {
       value: APP_NAMES_ATLAS.PRIME,
-      description: 'Prime content',
       actions: {
         create: () => {},
         switch: showViewPrime,
       },
+      content: 'Prime content',
     },
     {
       value: APP_NAMES_ATLAS.TALLY,
-      description: 'Tally content',
       actions: {
         create: () => {},
         switch: showViewTally,
       },
+      content: 'Tally content',
     },
   ];
 
@@ -133,7 +134,7 @@ export default function Navbar() {
             </Group>
           </Group>
         </AccordionControl>
-        <AccordionPanel>{item.description}</AccordionPanel>
+        <AccordionPanel>{item.content}</AccordionPanel>
       </AccordionItem>
     );
   });
@@ -149,9 +150,10 @@ export default function Navbar() {
       styles={{
         control: { height: 30, padding: 0, paddingLeft: '5px' },
         label: { fontSize: 'var(--mantine-font-size-xs)', fontWeight: '500' },
-        panel: {
-          backgroundColor: 'light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-8))',
-        },
+        content: { padding: 0 },
+        // panel: {
+        //   backgroundColor: 'light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-8))',
+        // },
       }}
     >
       {items}

@@ -1,43 +1,53 @@
-import { APP_NAMES_ATLAS, ASIDE_VIEW_NAMES } from '@repo/constants';
+import { APP_NAMES_ATLAS, ASIDE_VIEW_NAMES, SUBVIEW_NAMES } from '@repo/constants';
 import { useStoreView } from '@repo/store';
 
 export const useView = () => {
   const viewValue = useStoreView((s) => s.view?.view);
-  const setViewValue = useStoreView((s) => s.setViewValue);
+  const view = useStoreView((s) => s.view);
+  const setView = useStoreView((s) => s.setView);
 
   const showViewPave = () => {
+    if (!view) return;
+
     if (viewValue != APP_NAMES_ATLAS.PAVE) {
-      setViewValue(APP_NAMES_ATLAS.PAVE);
+      setView({ ...view, subView: null, view: APP_NAMES_ATLAS.PAVE });
     }
   };
 
   const showViewJot = () => {
+    if (!view) return;
+
     if (viewValue != APP_NAMES_ATLAS.JOT) {
-      setViewValue(APP_NAMES_ATLAS.JOT);
+      setView({ ...view, subView: null, view: APP_NAMES_ATLAS.JOT });
     }
   };
 
   const showViewStride = () => {
+    if (!view) return;
+
     if (viewValue != APP_NAMES_ATLAS.STRIDE) {
-      setViewValue(APP_NAMES_ATLAS.STRIDE);
+      setView({ ...view, subView: null, view: APP_NAMES_ATLAS.STRIDE });
     }
   };
 
   const showViewPrime = () => {
+    if (!view) return;
+
     if (viewValue != APP_NAMES_ATLAS.PRIME) {
-      setViewValue(APP_NAMES_ATLAS.PRIME);
+      setView({ ...view, subView: null, view: APP_NAMES_ATLAS.PRIME });
     }
   };
 
   const showViewTally = () => {
+    if (!view) return;
+
     if (viewValue != APP_NAMES_ATLAS.TALLY) {
-      setViewValue(APP_NAMES_ATLAS.TALLY);
+      setView({ ...view, subView: null, view: APP_NAMES_ATLAS.TALLY });
     }
   };
 
   return {
     viewValue,
-    setViewValue,
     showViewPave,
     showViewJot,
     showViewStride,
@@ -47,22 +57,34 @@ export const useView = () => {
 };
 
 export const useSubView = () => {
+  const viewValue = useStoreView((s) => s.view?.view);
   const subViewValue = useStoreView((s) => s.view?.subView);
-  const setSubViewValue = useStoreView((s) => s.setSubViewValue);
+  const view = useStoreView((s) => s.view);
+  const setView = useStoreView((s) => s.setView);
 
   const showSubViewPave = () => {};
 
   const showSubViewJot = () => {};
 
-  const showSubViewStride = () => {};
+  const showSubViewStride = (v: string) => {
+    if (!view) return;
+
+    if (subViewValue != v) {
+      setView({
+        ...view,
+        view: viewValue == APP_NAMES_ATLAS.STRIDE ? view.view : APP_NAMES_ATLAS.STRIDE,
+        subView: v,
+      });
+    }
+  };
 
   const showSubViewPrime = () => {};
 
   const showSubViewTally = () => {};
 
   return {
+    viewValue,
     subViewValue,
-    setSubViewValue,
     showSubViewPave,
     showSubViewJot,
     showSubViewStride,
@@ -75,23 +97,29 @@ export const useViewAside = () => {
   const asideViewValue = useStoreView((s) => s.view?.asideView);
   const setAsideViewValue = useStoreView((s) => s.setAsideViewValue);
 
-  const showNewEvent = () => {
-    if (asideViewValue != ASIDE_VIEW_NAMES.NEW.EVENT) {
-      setAsideViewValue(ASIDE_VIEW_NAMES.NEW.EVENT);
+  const showAsideViewPave = (v: string) => {
+    if (asideViewValue != v) {
+      setAsideViewValue(v || ASIDE_VIEW_NAMES.NEW.PAVE.EVENT);
     }
   };
 
-  const showNewNote = () => {
-    if (asideViewValue != ASIDE_VIEW_NAMES.NEW.NOTE) {
-      setAsideViewValue(ASIDE_VIEW_NAMES.NEW.NOTE);
+  const showAsideViewJot = (v: string) => {
+    if (asideViewValue != v) {
+      setAsideViewValue(v || ASIDE_VIEW_NAMES.NEW.JOT.NOTE);
     }
   };
 
-  const showNewTask = () => {
-    if (asideViewValue != ASIDE_VIEW_NAMES.NEW.TASK) {
-      setAsideViewValue(ASIDE_VIEW_NAMES.NEW.TASK);
+  const showAsideViewStride = (v: string) => {
+    if (asideViewValue != v) {
+      setAsideViewValue(v || ASIDE_VIEW_NAMES.NEW.STRIDE.TASK);
     }
   };
 
-  return { asideViewValue, setAsideViewValue, showNewEvent, showNewNote, showNewTask };
+  return {
+    asideViewValue,
+    setAsideViewValue,
+    showAsideViewPave,
+    showAsideViewJot,
+    showAsideViewStride,
+  };
 };

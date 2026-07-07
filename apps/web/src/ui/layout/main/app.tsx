@@ -3,7 +3,8 @@
 import React from 'react';
 import { Box, Container } from '@mantine/core';
 import { useStoreView } from '@repo/store';
-import { APP_NAMES_ATLAS, ASIDE_VIEW_NAMES } from '@repo/constants';
+import { APP_NAMES_ATLAS, ASIDE_VIEW_NAMES, SUBVIEW_NAMES } from '@repo/constants';
+import { useSubView } from '@web/hook/view';
 
 export default function App() {
   const viewValue = useStoreView((s) => s.view?.view);
@@ -46,7 +47,31 @@ function ViewJot() {
 }
 
 function ViewStride() {
-  return <LayoutMain>stride</LayoutMain>;
+  const { subViewValue, showSubViewStride } = useSubView();
+
+  switch (subViewValue) {
+    case SUBVIEW_NAMES.STRIDE.INBOX:
+      return <LayoutMain>inbox</LayoutMain>;
+
+    case SUBVIEW_NAMES.STRIDE.TODAY:
+      return <LayoutMain>today</LayoutMain>;
+
+    case SUBVIEW_NAMES.STRIDE.UPCOMING:
+      return <LayoutMain>upcoming</LayoutMain>;
+
+    case SUBVIEW_NAMES.STRIDE.OVERDUE:
+      return <LayoutMain>overdue</LayoutMain>;
+
+    case SUBVIEW_NAMES.STRIDE.COMPLETE:
+      return <LayoutMain>complete</LayoutMain>;
+
+    default:
+      if (subViewValue?.includes('list: ')) {
+        return <LayoutMain>task list</LayoutMain>;
+      } else {
+        return <LayoutMain>Stride Home</LayoutMain>;
+      }
+  }
 }
 
 function ViewPrime() {

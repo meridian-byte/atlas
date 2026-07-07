@@ -5,9 +5,12 @@ import { APP_NAMES_ATLAS, ASIDE_VIEW_NAMES, ICON_SIZE, ICON_STROKE_WIDTH } from 
 import { useStoreView } from '@repo/store';
 import { Box, Divider, NavLink, Stack, Title } from '@mantine/core';
 import {
+  IconCalendar,
   IconCalendarEvent,
   IconCalendarRepeat,
   IconCheckbox,
+  IconFolder,
+  IconListCheck,
   IconNote,
   IconPlus,
   IconRepeat,
@@ -15,7 +18,8 @@ import {
 import { useViewAside } from '@web/hook/view';
 
 export default function App() {
-  const { asideViewValue, showNewEvent, showNewNote, showNewTask } = useViewAside();
+  const { asideViewValue, showAsideViewPave, showAsideViewJot, showAsideViewStride } =
+    useViewAside();
 
   let props = {
     asideTitle: 'Add Quick Item',
@@ -40,19 +44,31 @@ export default function App() {
   switch (asideViewValue) {
     case ASIDE_VIEW_NAMES.SEARCH:
       props.asideTitle = 'Global Search';
-      return <LayoutAside>Search</LayoutAside>;
+      return <LayoutAside>global search</LayoutAside>;
 
-    case ASIDE_VIEW_NAMES.NEW.EVENT:
+    case ASIDE_VIEW_NAMES.NEW.PAVE.EVENT:
       props.asideTitle = 'Add Event';
-      return <LayoutAside>event</LayoutAside>;
+      return <LayoutAside>add event</LayoutAside>;
 
-    case ASIDE_VIEW_NAMES.NEW.NOTE:
+    case ASIDE_VIEW_NAMES.NEW.PAVE.CALENDAR:
+      props.asideTitle = 'Add Calendar';
+      return <LayoutAside>add calendar</LayoutAside>;
+
+    case ASIDE_VIEW_NAMES.NEW.JOT.NOTE:
       props.asideTitle = 'Add Note';
-      return <LayoutAside>note</LayoutAside>;
+      return <LayoutAside>add note</LayoutAside>;
 
-    case ASIDE_VIEW_NAMES.NEW.TASK:
+    case ASIDE_VIEW_NAMES.NEW.JOT.FOLDER:
+      props.asideTitle = 'Add Note Folder';
+      return <LayoutAside>add note folder</LayoutAside>;
+
+    case ASIDE_VIEW_NAMES.NEW.STRIDE.TASK:
       props.asideTitle = 'Add Task';
-      return <LayoutAside>task</LayoutAside>;
+      return <LayoutAside>add task</LayoutAside>;
+
+    case ASIDE_VIEW_NAMES.NEW.STRIDE.TASK_LIST:
+      props.asideTitle = 'Add Task List';
+      return <LayoutAside>add task list</LayoutAside>;
 
     default:
       const createItems = [
@@ -62,7 +78,12 @@ export default function App() {
             {
               icon: IconCalendarEvent,
               label: 'Event',
-              action: showNewEvent,
+              action: () => showAsideViewPave(ASIDE_VIEW_NAMES.NEW.PAVE.EVENT),
+            },
+            {
+              icon: IconCalendar,
+              label: 'Calendar',
+              action: () => showAsideViewPave(ASIDE_VIEW_NAMES.NEW.PAVE.CALENDAR),
             },
           ],
         },
@@ -72,7 +93,12 @@ export default function App() {
             {
               icon: IconNote,
               label: 'Note',
-              action: showNewNote,
+              action: () => showAsideViewJot(ASIDE_VIEW_NAMES.NEW.JOT.NOTE),
+            },
+            {
+              icon: IconFolder,
+              label: 'Note Folder',
+              action: () => showAsideViewJot(ASIDE_VIEW_NAMES.NEW.JOT.FOLDER),
             },
           ],
         },
@@ -82,7 +108,12 @@ export default function App() {
             {
               icon: IconCheckbox,
               label: 'Task',
-              action: showNewTask,
+              action: () => showAsideViewStride(ASIDE_VIEW_NAMES.NEW.STRIDE.TASK),
+            },
+            {
+              icon: IconListCheck,
+              label: 'Task List',
+              action: () => showAsideViewStride(ASIDE_VIEW_NAMES.NEW.STRIDE.TASK_LIST),
             },
           ],
         },
