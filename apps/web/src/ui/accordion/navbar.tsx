@@ -12,6 +12,7 @@ import {
   Tooltip,
 } from '@mantine/core';
 import { APP_NAMES_ATLAS, ICON_SIZE, ICON_STROKE_WIDTH } from '@repo/constants';
+import { useStoreView } from '@repo/store';
 import {
   IconChevronDown,
   IconChevronRight,
@@ -21,10 +22,57 @@ import {
   IconPlus,
 } from '@tabler/icons-react';
 import { SHELL_VALUES } from '@web/constants';
+import { useView, useViewAside } from '@web/hook/view';
 import { useState } from 'react';
 
 export default function Navbar() {
   const [values, setValues] = useState<string[]>([]);
+
+  const { showNewEvent, showNewNote, showNewTask } = useViewAside();
+  const { showViewPave, showViewJot, showViewStride, showViewPrime, showViewTally } = useView();
+
+  const data = [
+    {
+      value: APP_NAMES_ATLAS.PAVE,
+      description: 'Pave content',
+      actions: {
+        create: showNewEvent,
+        switch: showViewPave,
+      },
+    },
+    {
+      value: APP_NAMES_ATLAS.JOT,
+      description: 'Jot content',
+      actions: {
+        create: showNewNote,
+        switch: showViewJot,
+      },
+    },
+    {
+      value: APP_NAMES_ATLAS.STRIDE,
+      description: 'Stride content',
+      actions: {
+        create: showNewTask,
+        switch: showViewStride,
+      },
+    },
+    {
+      value: APP_NAMES_ATLAS.PRIME,
+      description: 'Prime content',
+      actions: {
+        create: () => {},
+        switch: showViewPrime,
+      },
+    },
+    {
+      value: APP_NAMES_ATLAS.TALLY,
+      description: 'Tally content',
+      actions: {
+        create: () => {},
+        switch: showViewTally,
+      },
+    },
+  ];
 
   const items = data.map((item) => {
     const props = {
@@ -38,33 +86,39 @@ export default function Navbar() {
             {item.value}
 
             <Group component={'span'} justify="end" gap={0}>
-              <Tooltip label={'New'}>
+              <Tooltip label={`Add item in ${item.value}`}>
                 <ActionIcon
                   component="span"
                   size={30}
                   radius={0}
                   color="dark"
                   variant="subtle"
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    item.actions.create();
+                  }}
                 >
                   <IconPlus size={ICON_SIZE - 4} stroke={ICON_STROKE_WIDTH} />
                 </ActionIcon>
               </Tooltip>
 
-              <Tooltip label={'Switch to view'}>
+              <Tooltip label={`Switch to ${item.value}`}>
                 <ActionIcon
                   component="span"
                   size={30}
                   radius={0}
                   color="dark"
                   variant="subtle"
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    item.actions.switch();
+                  }}
                 >
                   <IconEye size={ICON_SIZE - 4} stroke={ICON_STROKE_WIDTH} />
                 </ActionIcon>
               </Tooltip>
 
-              <Tooltip label={'Open view in new tab'}>
+              {/* <Tooltip label={`Open ${item.value} in new tab`}>
                 <ActionIcon
                   component="span"
                   size={30}
@@ -75,7 +129,7 @@ export default function Navbar() {
                 >
                   <IconExternalLink size={ICON_SIZE - 4} stroke={ICON_STROKE_WIDTH} />
                 </ActionIcon>
-              </Tooltip>
+              </Tooltip> */}
             </Group>
           </Group>
         </AccordionControl>
@@ -104,26 +158,3 @@ export default function Navbar() {
     </Accordion>
   );
 }
-
-export const data = [
-  {
-    value: APP_NAMES_ATLAS.PAVE,
-    description: 'Pave content',
-  },
-  {
-    value: APP_NAMES_ATLAS.JOT,
-    description: 'Jot content',
-  },
-  {
-    value: APP_NAMES_ATLAS.STRIDE,
-    description: 'Stride content',
-  },
-  {
-    value: APP_NAMES_ATLAS.PRIME,
-    description: 'Prime content',
-  },
-  {
-    value: APP_NAMES_ATLAS.TALLY,
-    description: 'Tally content',
-  },
-];

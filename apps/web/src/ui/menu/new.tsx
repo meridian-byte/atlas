@@ -47,9 +47,7 @@ export default function New({ children, ...restProps }: { children: React.ReactN
 
   return (
     <Menu
-      shadow="md"
-      width={200}
-      {...restProps}
+      width={160}
       trigger="click-hover"
       position="top-start"
       styles={{
@@ -63,6 +61,7 @@ export default function New({ children, ...restProps }: { children: React.ReactN
           color: 'dark',
         },
       }}
+      {...restProps}
     >
       <MenuTarget>
         <div>{children}</div>
@@ -76,7 +75,7 @@ export default function New({ children, ...restProps }: { children: React.ReactN
             rightSection={<IconPlus size={ICON_SIZE - 4} stroke={ICON_STROKE_WIDTH} />}
             onClick={mi.action}
           >
-            Quick {mi.label}
+            Add {mi.label}
           </MenuItem>
         ))}
       </MenuDropdown>

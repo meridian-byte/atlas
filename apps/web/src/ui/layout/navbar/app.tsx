@@ -14,7 +14,14 @@ import {
 } from '@mantine/core';
 import { SHELL_VALUES } from '@web/constants';
 import { ASIDE_VIEW_NAMES, ICON_SIZE, ICON_STROKE_WIDTH, ICON_WRAPPER_SIZE } from '@repo/constants';
-import { IconChevronDown, IconLogout, IconPlus, IconSearch, IconUser } from '@tabler/icons-react';
+import {
+  IconChevronDown,
+  IconHome,
+  IconLogout,
+  IconPlus,
+  IconSearch,
+  IconUser,
+} from '@tabler/icons-react';
 import AccordionNavbar from '@web/ui/accordion/navbar';
 import { useStoreView } from '@repo/store';
 import MenuNew from '@web/ui/menu/new';
@@ -47,6 +54,8 @@ export default function App() {
 }
 
 function NavbarHeader() {
+  const viewValue = useStoreView((s) => s.view?.view);
+  const setViewValue = useStoreView((s) => s.setViewValue);
   const asideViewValue = useStoreView((s) => s.view?.asideView);
   const setAsideViewValue = useStoreView((s) => s.setAsideViewValue);
 
@@ -75,25 +84,41 @@ function NavbarHeader() {
 
       <Divider size={3} />
 
-      <Stack>
-        <Button
-          size="xs"
-          fullWidth
-          variant="subtle"
-          color="dark"
-          leftSection={<IconSearch size={ICON_SIZE} stroke={ICON_STROKE_WIDTH} />}
-          justify="start"
-          pl={5}
-          radius={0}
-          onClick={() => {
-            if (asideViewValue != ASIDE_VIEW_NAMES.SEARCH) {
-              setAsideViewValue(ASIDE_VIEW_NAMES.SEARCH);
-            }
-          }}
-        >
-          Global Search
-        </Button>
-      </Stack>
+      <Button
+        size="xs"
+        fullWidth
+        variant="subtle"
+        color="dark"
+        leftSection={<IconHome size={ICON_SIZE} stroke={ICON_STROKE_WIDTH} />}
+        justify="start"
+        pl={5}
+        radius={0}
+        onClick={() => {
+          if (!!viewValue) {
+            setViewValue(null);
+          }
+        }}
+      >
+        Home View
+      </Button>
+
+      <Button
+        size="xs"
+        fullWidth
+        variant="subtle"
+        color="dark"
+        leftSection={<IconSearch size={ICON_SIZE} stroke={ICON_STROKE_WIDTH} />}
+        justify="start"
+        pl={5}
+        radius={0}
+        onClick={() => {
+          if (asideViewValue != ASIDE_VIEW_NAMES.SEARCH) {
+            setAsideViewValue(ASIDE_VIEW_NAMES.SEARCH);
+          }
+        }}
+      >
+        Global Search
+      </Button>
 
       <Group wrap="nowrap" gap={0}>
         <Box style={{ flex: 1 }}>
@@ -112,7 +137,7 @@ function NavbarHeader() {
               }
             }}
           >
-            Quick Create
+            Add Quick Item
           </Button>
         </Box>
 

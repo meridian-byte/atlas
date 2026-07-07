@@ -7,6 +7,7 @@ import {
   AppShellFooter,
   AppShellMain,
   AppShellNavbar,
+  ScrollArea,
 } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import LayoutNavbarApp from './navbar/app';
@@ -40,7 +41,11 @@ export default function Shell({ children }: { children: React.ReactNode }) {
         <LayoutNavbarApp />
       </AppShellNavbar>
 
-      <AppShellMain>{children}</AppShellMain>
+      <AppShellMain>
+        <ScrollArea scrollbars={'y'} h={`calc(100vh - ${SHELL_VALUES.FOOTER.HEIGHT}px)`}>
+          {children}
+        </ScrollArea>
+      </AppShellMain>
 
       <AppShellAside>
         <LayoutAsideApp />

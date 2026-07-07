@@ -12,13 +12,13 @@ import {
   IconPlus,
   IconRepeat,
 } from '@tabler/icons-react';
+import { useViewAside } from '@web/hook/view';
 
 export default function App() {
-  const asideViewValue = useStoreView((s) => s.view?.asideView);
-  const setAsideViewValue = useStoreView((s) => s.setAsideViewValue);
+  const { asideViewValue, showNewEvent, showNewNote, showNewTask } = useViewAside();
 
   let props = {
-    asideTitle: 'Quick Create',
+    asideTitle: 'Add Quick Item',
   };
 
   function LayoutAside({ children }: { children: React.ReactNode }) {
@@ -43,16 +43,16 @@ export default function App() {
       return <LayoutAside>Search</LayoutAside>;
 
     case ASIDE_VIEW_NAMES.NEW.EVENT:
-      props.asideTitle = 'Quick Event';
-      return <LayoutAside>New event</LayoutAside>;
+      props.asideTitle = 'Add Event';
+      return <LayoutAside>event</LayoutAside>;
 
     case ASIDE_VIEW_NAMES.NEW.NOTE:
-      props.asideTitle = 'Quick Note';
-      return <LayoutAside>New note</LayoutAside>;
+      props.asideTitle = 'Add Note';
+      return <LayoutAside>note</LayoutAside>;
 
     case ASIDE_VIEW_NAMES.NEW.TASK:
-      props.asideTitle = 'Quick Task';
-      return <LayoutAside>New task</LayoutAside>;
+      props.asideTitle = 'Add Task';
+      return <LayoutAside>task</LayoutAside>;
 
     default:
       const createItems = [
@@ -62,11 +62,7 @@ export default function App() {
             {
               icon: IconCalendarEvent,
               label: 'Event',
-              action: () => {
-                if (asideViewValue != ASIDE_VIEW_NAMES.NEW.EVENT) {
-                  setAsideViewValue(ASIDE_VIEW_NAMES.NEW.EVENT);
-                }
-              },
+              action: showNewEvent,
             },
           ],
         },
@@ -76,11 +72,7 @@ export default function App() {
             {
               icon: IconNote,
               label: 'Note',
-              action: () => {
-                if (asideViewValue != ASIDE_VIEW_NAMES.NEW.NOTE) {
-                  setAsideViewValue(ASIDE_VIEW_NAMES.NEW.NOTE);
-                }
-              },
+              action: showNewNote,
             },
           ],
         },
@@ -90,11 +82,7 @@ export default function App() {
             {
               icon: IconCheckbox,
               label: 'Task',
-              action: () => {
-                if (asideViewValue != ASIDE_VIEW_NAMES.NEW.TASK) {
-                  setAsideViewValue(ASIDE_VIEW_NAMES.NEW.TASK);
-                }
-              },
+              action: showNewTask,
             },
           ],
         },
@@ -121,7 +109,7 @@ export default function App() {
                       {i > 0 && <Divider />}
 
                       <NavLink
-                        label={`Quick ${ci.label}`}
+                        label={`Add ${ci.label}`}
                         leftSection={
                           <ci.icon
                             size={ICON_SIZE - 4}
