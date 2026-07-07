@@ -23,6 +23,10 @@ export const LOCAL_STORAGE_NAME = {
   MANTINE_COLOR_SCHEME_VALUE: 'mantine-color-scheme-value',
 };
 
+export const SESSION_STORAGE_NAME = {
+  VIEW: 'view',
+};
+
 export const PARAM_NAME = {
   TEMPORARY: 'temporary_chat',
   CHAT_ID: 'chat_id',

@@ -63,6 +63,16 @@ export const APP_NAMES_ATLAS = {
   TALLY: 'Tally',
 };
 
+export const ASIDE_VIEW_NAMES = {
+  SEARCH: 'search',
+  NEW: {
+    ITEM: 'new',
+    EVENT: 'new-event',
+    NOTE: 'new-note',
+    TASK: 'new-task',
+  },
+};
+
 export const APP_DESC = {
   FRAKT:
     'A tool to help users track income, expenses, and savings in one place. It categorizes transactions, shows spending patterns, and provides insights to improve financial decisions and stay within budget.',

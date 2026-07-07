@@ -13,9 +13,11 @@ import {
   Stack,
 } from '@mantine/core';
 import { SHELL_VALUES } from '@web/constants';
-import { ICON_SIZE, ICON_STROKE_WIDTH, ICON_WRAPPER_SIZE } from '@repo/constants';
+import { ASIDE_VIEW_NAMES, ICON_SIZE, ICON_STROKE_WIDTH, ICON_WRAPPER_SIZE } from '@repo/constants';
 import { IconChevronDown, IconLogout, IconPlus, IconSearch, IconUser } from '@tabler/icons-react';
 import AccordionNavbar from '@web/ui/accordion/navbar';
+import { useStoreView } from '@repo/store';
+import MenuNew from '@web/ui/menu/new';
 
 export default function App() {
   return (
@@ -45,6 +47,9 @@ export default function App() {
 }
 
 function NavbarHeader() {
+  const asideViewValue = useStoreView((s) => s.view?.asideView);
+  const setAsideViewValue = useStoreView((s) => s.setAsideViewValue);
+
   return (
     <Stack p={0} gap={0}>
       <Group wrap="nowrap" gap={0}>
@@ -80,6 +85,11 @@ function NavbarHeader() {
           justify="start"
           pl={5}
           radius={0}
+          onClick={() => {
+            if (asideViewValue != ASIDE_VIEW_NAMES.SEARCH) {
+              setAsideViewValue(ASIDE_VIEW_NAMES.SEARCH);
+            }
+          }}
         >
           Global Search
         </Button>
@@ -96,14 +106,21 @@ function NavbarHeader() {
             justify="start"
             pl={5}
             radius={0}
+            onClick={() => {
+              if (asideViewValue != ASIDE_VIEW_NAMES.NEW.ITEM) {
+                setAsideViewValue(ASIDE_VIEW_NAMES.NEW.ITEM);
+              }
+            }}
           >
-            New Item
+            Quick Create
           </Button>
         </Box>
 
-        <ActionIcon size={30} variant="subtle" color={'dark'} radius={0}>
-          <IconChevronDown size={ICON_SIZE - 4} stroke={ICON_STROKE_WIDTH} />
-        </ActionIcon>
+        <MenuNew>
+          <ActionIcon size={30} variant="subtle" color={'dark'} radius={0}>
+            <IconChevronDown size={ICON_SIZE - 4} stroke={ICON_STROKE_WIDTH} />
+          </ActionIcon>
+        </MenuNew>
       </Group>
     </Stack>
   );

@@ -15,18 +15,16 @@ import { useStoreAppShell } from '@repo/store';
 import { SHELL_VALUES } from '@web/constants';
 
 export default function Navbar({ options }: { options?: { hideWhenOpen?: boolean } }) {
-  // ATOMIC: Only re-renders when this specific boolean changes
-  // Do this in both Navbar components
   const navbarChild = useStoreAppShell((s) => s.appshell?.child?.navbar);
-  const asideChild = useStoreAppShell((s) => s.appshell?.child?.aside);
+  // const asideChild = useStoreAppShell((s) => s.appshell?.child?.aside);
   const toggleNavbarChild = useStoreAppShell((s) => s.toggleNavbarChild);
 
   const states = {
     iconLeft: !navbarChild ? IconArrowBarRight : IconArrowBarLeft,
-    iconRight: !asideChild ? IconLayoutSidebarRightExpand : IconLayoutSidebarRightCollapse,
   };
 
   const label = `${navbarChild ? 'Collapse' : 'Expand'} Navbar`;
+
   return (
     <ActionIcon
       radius={0}

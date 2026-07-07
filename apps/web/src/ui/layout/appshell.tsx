@@ -11,6 +11,7 @@ import {
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import LayoutNavbarApp from './navbar/app';
 import LayoutFooterApp from './footer/app';
+import LayoutAsideApp from './aside/app';
 import { SHELL_VALUES } from '@web/constants';
 import { useStoreAppShell } from '@repo/store';
 
@@ -28,11 +29,11 @@ export default function Shell({ children }: { children: React.ReactNode }) {
         breakpoint: 'sm',
         collapsed: { mobile: true, desktop: !navbarActive },
       }}
-      // aside={{
-      //   width: SHELL_VALUES.ASIDE.WIDTH,
-      //   breakpoint: 'sm',
-      //   collapsed: { mobile: !opened },
-      // }}
+      aside={{
+        width: SHELL_VALUES.ASIDE.WIDTH,
+        breakpoint: 'sm',
+        collapsed: { mobile: true, desktop: !asideActive },
+      }}
       footer={{ height: SHELL_VALUES.FOOTER.HEIGHT }}
     >
       <AppShellNavbar>
@@ -41,7 +42,9 @@ export default function Shell({ children }: { children: React.ReactNode }) {
 
       <AppShellMain>{children}</AppShellMain>
 
-      {/* <AppShellAside>Aside</AppShellAside> */}
+      <AppShellAside>
+        <LayoutAsideApp />
+      </AppShellAside>
 
       <AppShellFooter h={SHELL_VALUES.FOOTER.HEIGHT}>
         <LayoutFooterApp />

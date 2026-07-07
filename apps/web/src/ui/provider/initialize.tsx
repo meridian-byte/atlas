@@ -8,7 +8,7 @@
  */
 
 import React from 'react';
-import { useAppshellInitialize } from '@repo/sync';
+import { useAppshellInitialize, useViewInitialize } from '@repo/sync';
 // import { User } from '@supabase/supabase-js';
 import { AppShellValue } from '@repo/store';
 // import { WorkspaceType } from '@repo/types/models/enums';
@@ -33,6 +33,8 @@ export default function Initialize({
   // useUserRoleStore();
 
   useAppshellInitialize();
+
+  useViewInitialize();
 
   // useActiveItemStore({ workspaceType: WorkspaceType.NOTELINE });
 

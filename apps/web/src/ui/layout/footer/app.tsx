@@ -6,6 +6,7 @@ import { SHELL_VALUES } from '@web/constants';
 import { ICON_SIZE, ICON_STROKE_WIDTH } from '@repo/constants';
 import { IconBell, IconSettings } from '@tabler/icons-react';
 import ButtonAppshellNavbar from '@web/ui/button/appshell/navbar';
+import ButtonAppshellAside from '@web/ui/button/appshell/aside';
 import ButtonFullscreen from '@web/ui/button/fullscreen';
 import IndicatorTheme from '@web/ui/indicator/theme';
 import IndicatorNetworkStatus from '@web/ui/indicator/network-status';
@@ -16,7 +17,7 @@ export default function App() {
   const syncStatus = useStoreSyncStatus((s) => s.syncStatus);
 
   return (
-    <Box>
+    <Group justify={'space-between'}>
       <Group
         grow
         preventGrowOverflow={false}
@@ -40,6 +41,10 @@ export default function App() {
           <IconBell size={SHELL_VALUES.FOOTER.HEIGHT - 8} stroke={ICON_STROKE_WIDTH} />
         </ActionIcon>
       </Group>
-    </Box>
+
+      <Group justify="end">
+        <ButtonAppshellAside options={{ hideWhenClosed: true }} />
+      </Group>
+    </Group>
   );
 }
