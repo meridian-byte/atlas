@@ -78,14 +78,17 @@ export const ASIDE_VIEW_NAMES = {
   NEW: {
     ITEM: 'new',
     PAVE: {
+      ITEM: 'new-pave-item',
       EVENT: 'new-event',
       CALENDAR: 'new-calendar',
     },
     JOT: {
+      ITEM: 'new-jot-item',
       NOTE: 'new-note',
       FOLDER: 'new-folder',
     },
     STRIDE: {
+      ITEM: 'new-stride-item',
       TASK: 'new-task',
       TASK_LIST: 'new-task-list',
     },

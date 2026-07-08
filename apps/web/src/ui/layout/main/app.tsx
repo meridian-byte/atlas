@@ -5,6 +5,7 @@ import { Box, Container } from '@mantine/core';
 import { useStoreView } from '@repo/store';
 import { APP_NAMES_ATLAS, ASIDE_VIEW_NAMES, SUBVIEW_NAMES } from '@repo/constants';
 import { useSubView } from '@web/hook/view';
+import PartialViewTaskList from '@web/ui/partial/view/stride/task-list';
 
 export default function App() {
   const viewValue = useStoreView((s) => s.view?.view);
@@ -67,7 +68,11 @@ function ViewStride() {
 
     default:
       if (subViewValue?.includes('list: ')) {
-        return <LayoutMain>task list</LayoutMain>;
+        return (
+          <LayoutMain>
+            <PartialViewTaskList />
+          </LayoutMain>
+        );
       } else {
         return <LayoutMain>Stride Home</LayoutMain>;
       }

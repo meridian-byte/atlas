@@ -119,10 +119,30 @@ export default function App() {
         },
       ];
 
+      let resolvedItems: (typeof createItems)[0][] = [];
+
+      switch (asideViewValue) {
+        case ASIDE_VIEW_NAMES.NEW.PAVE.ITEM:
+          resolvedItems = [createItems[0]];
+          break;
+
+        case ASIDE_VIEW_NAMES.NEW.JOT.ITEM:
+          resolvedItems = [createItems[1]];
+          break;
+
+        case ASIDE_VIEW_NAMES.NEW.STRIDE.ITEM:
+          resolvedItems = [createItems[2]];
+          break;
+
+        default:
+          resolvedItems = createItems;
+          break;
+      }
+
       return (
         <LayoutAside>
           <div>
-            {createItems.map((gi, i) => (
+            {resolvedItems.map((gi, i) => (
               <React.Fragment key={gi.title}>
                 {i > 0 && <Divider />}
 
