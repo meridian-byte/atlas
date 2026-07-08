@@ -19,12 +19,15 @@ import {
   IconCircle,
   IconExternalLink,
   IconEye,
+  IconHome,
   IconPlus,
 } from '@tabler/icons-react';
 import { SHELL_VALUES } from '@web/constants';
 import { useView, useViewAside } from '@web/hook/view';
 import { useState } from 'react';
+import PartialNavbarPave from '../partial/navbar/pave';
 import PartialNavbarStride from '../partial/navbar/stride';
+import PartialNavbarJot from '../partial/navbar/jot';
 
 export default function Navbar() {
   const [values, setValues] = useState<string[]>([]);
@@ -36,25 +39,22 @@ export default function Navbar() {
   const data = [
     {
       value: APP_NAMES_ATLAS.PAVE,
-      disabled: viewValue == APP_NAMES_ATLAS.PAVE,
       actions: {
         create: () => showAsideViewPave(ASIDE_VIEW_NAMES.NEW.PAVE.ITEM),
         switch: showViewPave,
       },
-      content: 'Pave content',
+      content: <PartialNavbarPave />,
     },
     {
       value: APP_NAMES_ATLAS.JOT,
-      disabled: viewValue == APP_NAMES_ATLAS.JOT,
       actions: {
         create: () => showAsideViewJot(ASIDE_VIEW_NAMES.NEW.JOT.ITEM),
         switch: showViewJot,
       },
-      content: 'Jot content',
+      content: <PartialNavbarJot />,
     },
     {
       value: APP_NAMES_ATLAS.STRIDE,
-      disabled: viewValue == APP_NAMES_ATLAS.STRIDE,
       actions: {
         create: () => showAsideViewStride(ASIDE_VIEW_NAMES.NEW.STRIDE.ITEM),
         switch: showViewStride,
@@ -63,7 +63,6 @@ export default function Navbar() {
     },
     {
       value: APP_NAMES_ATLAS.PRIME,
-      disabled: viewValue == APP_NAMES_ATLAS.PRIME,
       actions: {
         create: () => {},
         switch: showViewPrime,
@@ -72,7 +71,6 @@ export default function Navbar() {
     },
     {
       value: APP_NAMES_ATLAS.TALLY,
-      disabled: viewValue == APP_NAMES_ATLAS.TALLY,
       actions: {
         create: () => {},
         switch: showViewTally,
@@ -109,20 +107,19 @@ export default function Navbar() {
                 </ActionIcon>
               </Tooltip>
 
-              <Tooltip label={`${item.disabled ? 'Already on' : 'Switch to'} ${item.value}`}>
+              <Tooltip label={`Go to ${item.value}`}>
                 <ActionIcon
                   component="span"
                   size={30}
                   radius={0}
                   color="dark"
                   variant="subtle"
-                  disabled={item.disabled}
                   onClick={(e) => {
                     e.stopPropagation();
                     item.actions.switch();
                   }}
                 >
-                  <IconEye size={ICON_SIZE - 4} stroke={ICON_STROKE_WIDTH} />
+                  <IconHome size={ICON_SIZE - 4} stroke={ICON_STROKE_WIDTH} />
                 </ActionIcon>
               </Tooltip>
 
@@ -142,7 +139,10 @@ export default function Navbar() {
           </Group>
         </AccordionControl>
 
-        <AccordionPanel>{item.content}</AccordionPanel>
+        <AccordionPanel>
+          <Divider />
+          {item.content}
+        </AccordionPanel>
       </AccordionItem>
     );
   });

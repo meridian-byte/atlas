@@ -64,12 +64,22 @@ export const APP_NAMES_ATLAS = {
 };
 
 export const SUBVIEW_NAMES = {
+  PAVE: {
+    HOME: `home`,
+    DAY: `day`,
+    WEEK: `week`,
+    MONTH: `month`,
+  },
+  JOT: {
+    HOME: `home`,
+  },
   STRIDE: {
-    INBOX: 'inbox',
-    TODAY: 'today',
-    UPCOMING: 'upcoming',
-    OVERDUE: 'overdue',
-    COMPLETE: 'complete',
+    HOME: `home`,
+    INBOX: `inbox`,
+    TODAY: `today`,
+    UPCOMING: `upcoming`,
+    OVERDUE: `overdue`,
+    COMPLETE: `complete`,
   },
 };
 

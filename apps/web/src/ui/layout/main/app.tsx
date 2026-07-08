@@ -5,7 +5,9 @@ import { Box, Container } from '@mantine/core';
 import { useStoreView } from '@repo/store';
 import { APP_NAMES_ATLAS, ASIDE_VIEW_NAMES, SUBVIEW_NAMES } from '@repo/constants';
 import { useSubView } from '@web/hook/view';
-import PartialViewTaskList from '@web/ui/partial/view/stride/task-list';
+import PartialViewStrideTaskList from '@web/ui/partial/view/stride/task-list';
+import PartialViewJotNoteList from '@web/ui/partial/view/jot/note-list';
+import PartialViewPaveCalendarList from '@web/ui/partial/view/pave/calendar-list';
 
 export default function App() {
   const viewValue = useStoreView((s) => s.view?.view);
@@ -40,11 +42,46 @@ function LayoutMain({ children }: { children: React.ReactNode }) {
 }
 
 function ViewPave() {
-  return <LayoutMain>pave</LayoutMain>;
+  const { subViewValue, showSubViewPave } = useSubView();
+
+  switch (subViewValue) {
+    case SUBVIEW_NAMES.PAVE.DAY:
+      return <LayoutMain>day</LayoutMain>;
+
+    case SUBVIEW_NAMES.PAVE.WEEK:
+      return <LayoutMain>week</LayoutMain>;
+
+    case SUBVIEW_NAMES.PAVE.MONTH:
+      return <LayoutMain>month</LayoutMain>;
+
+    default:
+      if (subViewValue?.includes('calendar: ')) {
+        return (
+          <LayoutMain>
+            <PartialViewPaveCalendarList />
+          </LayoutMain>
+        );
+      } else {
+        return <LayoutMain>Pave Home</LayoutMain>;
+      }
+  }
 }
 
 function ViewJot() {
-  return <LayoutMain>jot</LayoutMain>;
+  const { subViewValue, showSubViewStride } = useSubView();
+
+  switch (subViewValue) {
+    default:
+      if (subViewValue?.includes('note: ')) {
+        return (
+          <LayoutMain>
+            <PartialViewJotNoteList />
+          </LayoutMain>
+        );
+      } else {
+        return <LayoutMain>Jot Home</LayoutMain>;
+      }
+  }
 }
 
 function ViewStride() {
@@ -70,7 +107,7 @@ function ViewStride() {
       if (subViewValue?.includes('list: ')) {
         return (
           <LayoutMain>
-            <PartialViewTaskList />
+            <PartialViewStrideTaskList />
           </LayoutMain>
         );
       } else {

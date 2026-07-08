@@ -10,70 +10,56 @@ import {
 } from '@repo/constants';
 import { capitalizeWords } from '@repo/utils';
 import {
+  IconCalendar,
   IconCalendarCancel,
   IconCalendarDown,
+  IconCalendarPlus,
   IconCalendarShare,
   IconCircleCheck,
   IconInbox,
-  IconListCheck,
+  IconLayoutDistributeHorizontal,
+  IconLayoutGrid,
+  IconLayoutList,
   IconPlus,
 } from '@tabler/icons-react';
 import { useSubView, useViewAside } from '@web/hook/view';
 import React from 'react';
 import LayoutPartialNavbar from '@web/ui/layout/partial/navbar';
 
-export default function Stride() {
-  const { showSubViewStride } = useSubView();
-  const { showAsideViewStride } = useViewAside();
+export default function Pave() {
+  const { showSubViewPave } = useSubView();
+  const { showAsideViewPave } = useViewAside();
 
   const navLinks = [
     {
-      icon: IconInbox,
-      label: capitalizeWords(SUBVIEW_NAMES.STRIDE.INBOX),
-      action: () => showSubViewStride(SUBVIEW_NAMES.STRIDE.INBOX),
+      icon: IconLayoutDistributeHorizontal,
+      label: capitalizeWords(SUBVIEW_NAMES.PAVE.DAY),
+      action: () => showSubViewPave(SUBVIEW_NAMES.PAVE.DAY),
     },
     {
-      icon: IconCalendarDown,
-      label: capitalizeWords(SUBVIEW_NAMES.STRIDE.TODAY),
-      action: () => showSubViewStride(SUBVIEW_NAMES.STRIDE.TODAY),
+      icon: IconLayoutList,
+      label: capitalizeWords(SUBVIEW_NAMES.PAVE.WEEK),
+      action: () => showSubViewPave(SUBVIEW_NAMES.PAVE.WEEK),
     },
     {
-      icon: IconCalendarShare,
-      label: capitalizeWords(SUBVIEW_NAMES.STRIDE.UPCOMING),
-      action: () => showSubViewStride(SUBVIEW_NAMES.STRIDE.UPCOMING),
-    },
-    {
-      icon: IconCalendarCancel,
-      label: capitalizeWords(SUBVIEW_NAMES.STRIDE.OVERDUE),
-      action: () => showSubViewStride(SUBVIEW_NAMES.STRIDE.OVERDUE),
-    },
-    {
-      icon: IconCircleCheck,
-      label: capitalizeWords(SUBVIEW_NAMES.STRIDE.COMPLETE),
-      action: () => showSubViewStride(SUBVIEW_NAMES.STRIDE.COMPLETE),
+      icon: IconLayoutGrid,
+      label: capitalizeWords(SUBVIEW_NAMES.PAVE.MONTH),
+      action: () => showSubViewPave(SUBVIEW_NAMES.PAVE.MONTH),
     },
   ];
 
-  const sampleTaskLists = [
+  const sampleCalendars = [
     {
-      label: 'Household',
-      action: () => showSubViewStride(`list: ${'Household'}`),
+      label: 'Holidays (US)',
+      action: () => showSubViewPave(`calendar: ${'Holidays (US)'}`),
     },
     {
-      label: 'Shopping',
-      action: () => showSubViewStride(`list: ${'Shopping'}`),
+      label: 'Holidays (UK)',
+      action: () => showSubViewPave(`calendar: ${'Holidays (UK)'}`),
     },
     {
-      label: 'Health & Fitness',
-      action: () => showSubViewStride(`list: ${'Health & Fitness'}`),
-    },
-    {
-      label: 'School',
-      action: () => showSubViewStride(`list: ${'School'}`),
-    },
-    {
-      label: 'Work',
-      action: () => showSubViewStride(`list: ${'Work'}`),
+      label: 'Birthdays',
+      action: () => showSubViewPave(`calendar: ${'Birthdays'}`),
     },
   ];
 
@@ -108,37 +94,37 @@ export default function Stride() {
         <div>
           <Group justify="space-between" pl={'xs'}>
             <Title order={2} fz={'sm'} fw={500} c={'dimmed'}>
-              Task Lists
+              Calendars
             </Title>
 
             <Group justify="end" gap={0}>
-              <Tooltip label={`Add task list`}>
+              <Tooltip label={`Add calendar`}>
                 <ActionIcon
                   size={30}
                   color="dark"
                   variant="subtle"
                   radius={0}
-                  onClick={() => showAsideViewStride(ASIDE_VIEW_NAMES.NEW.STRIDE.TASK_LIST)}
+                  onClick={() => showAsideViewPave(ASIDE_VIEW_NAMES.NEW.PAVE.CALENDAR)}
                 >
-                  <IconListCheck size={ICON_SIZE - 4} stroke={ICON_STROKE_WIDTH} />
+                  <IconCalendar size={ICON_SIZE - 4} stroke={ICON_STROKE_WIDTH} />
                 </ActionIcon>
               </Tooltip>
             </Group>
           </Group>
 
           <div>
-            {sampleTaskLists.map((nl, i) => (
-              <React.Fragment key={nl.label}>
+            {sampleCalendars.map((sc, i) => (
+              <React.Fragment key={sc.label}>
                 {<Divider />}
 
                 <NavLink
-                  label={nl.label}
+                  label={sc.label}
                   color="dark"
                   px={'xs'}
                   py={3}
                   fw={500}
                   styles={{ label: { fontSize: 'var(--mantine-font-size-xs)' } }}
-                  onClick={nl.action}
+                  onClick={sc.action}
                 />
               </React.Fragment>
             ))}

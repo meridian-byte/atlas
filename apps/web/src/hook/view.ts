@@ -9,7 +9,7 @@ export const useView = () => {
   const showViewPave = () => {
     if (!view) return;
 
-    if (viewValue != APP_NAMES_ATLAS.PAVE) {
+    if (viewValue != APP_NAMES_ATLAS.PAVE || view.subView != null) {
       setView({ ...view, subView: null, view: APP_NAMES_ATLAS.PAVE });
     }
   };
@@ -17,7 +17,7 @@ export const useView = () => {
   const showViewJot = () => {
     if (!view) return;
 
-    if (viewValue != APP_NAMES_ATLAS.JOT) {
+    if (viewValue != APP_NAMES_ATLAS.JOT || view.subView != null) {
       setView({ ...view, subView: null, view: APP_NAMES_ATLAS.JOT });
     }
   };
@@ -25,7 +25,7 @@ export const useView = () => {
   const showViewStride = () => {
     if (!view) return;
 
-    if (viewValue != APP_NAMES_ATLAS.STRIDE) {
+    if (viewValue != APP_NAMES_ATLAS.STRIDE || view.subView != null) {
       setView({ ...view, subView: null, view: APP_NAMES_ATLAS.STRIDE });
     }
   };
@@ -33,7 +33,7 @@ export const useView = () => {
   const showViewPrime = () => {
     if (!view) return;
 
-    if (viewValue != APP_NAMES_ATLAS.PRIME) {
+    if (viewValue != APP_NAMES_ATLAS.PRIME || view.subView != null) {
       setView({ ...view, subView: null, view: APP_NAMES_ATLAS.PRIME });
     }
   };
@@ -41,7 +41,7 @@ export const useView = () => {
   const showViewTally = () => {
     if (!view) return;
 
-    if (viewValue != APP_NAMES_ATLAS.TALLY) {
+    if (viewValue != APP_NAMES_ATLAS.TALLY || view.subView != null) {
       setView({ ...view, subView: null, view: APP_NAMES_ATLAS.TALLY });
     }
   };
@@ -62,9 +62,29 @@ export const useSubView = () => {
   const view = useStoreView((s) => s.view);
   const setView = useStoreView((s) => s.setView);
 
-  const showSubViewPave = () => {};
+  const showSubViewPave = (v: string) => {
+    if (!view) return;
 
-  const showSubViewJot = () => {};
+    if (subViewValue != v) {
+      setView({
+        ...view,
+        view: viewValue == APP_NAMES_ATLAS.PAVE ? view.view : APP_NAMES_ATLAS.PAVE,
+        subView: v,
+      });
+    }
+  };
+
+  const showSubViewJot = (v: string) => {
+    if (!view) return;
+
+    if (subViewValue != v) {
+      setView({
+        ...view,
+        view: viewValue == APP_NAMES_ATLAS.JOT ? view.view : APP_NAMES_ATLAS.JOT,
+        subView: v,
+      });
+    }
+  };
 
   const showSubViewStride = (v: string) => {
     if (!view) return;

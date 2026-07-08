@@ -14,72 +14,46 @@ import {
   IconCalendarDown,
   IconCalendarShare,
   IconCircleCheck,
+  IconFolder,
+  IconHome,
   IconInbox,
-  IconListCheck,
+  IconNote,
   IconPlus,
 } from '@tabler/icons-react';
 import { useSubView, useViewAside } from '@web/hook/view';
 import React from 'react';
 import LayoutPartialNavbar from '@web/ui/layout/partial/navbar';
 
-export default function Stride() {
-  const { showSubViewStride } = useSubView();
-  const { showAsideViewStride } = useViewAside();
+export default function Jot() {
+  const { showSubViewJot } = useSubView();
+  const { showAsideViewJot } = useViewAside();
 
-  const navLinks = [
-    {
-      icon: IconInbox,
-      label: capitalizeWords(SUBVIEW_NAMES.STRIDE.INBOX),
-      action: () => showSubViewStride(SUBVIEW_NAMES.STRIDE.INBOX),
-    },
-    {
-      icon: IconCalendarDown,
-      label: capitalizeWords(SUBVIEW_NAMES.STRIDE.TODAY),
-      action: () => showSubViewStride(SUBVIEW_NAMES.STRIDE.TODAY),
-    },
-    {
-      icon: IconCalendarShare,
-      label: capitalizeWords(SUBVIEW_NAMES.STRIDE.UPCOMING),
-      action: () => showSubViewStride(SUBVIEW_NAMES.STRIDE.UPCOMING),
-    },
-    {
-      icon: IconCalendarCancel,
-      label: capitalizeWords(SUBVIEW_NAMES.STRIDE.OVERDUE),
-      action: () => showSubViewStride(SUBVIEW_NAMES.STRIDE.OVERDUE),
-    },
-    {
-      icon: IconCircleCheck,
-      label: capitalizeWords(SUBVIEW_NAMES.STRIDE.COMPLETE),
-      action: () => showSubViewStride(SUBVIEW_NAMES.STRIDE.COMPLETE),
-    },
+  const navLinks: any[] = [
+    // {
+    //   icon: IconHome,
+    //   label: capitalizeWords(SUBVIEW_NAMES.JOT.HOME),
+    //   action: () => showSubViewJot(SUBVIEW_NAMES.JOT.HOME),
+    // },
   ];
 
-  const sampleTaskLists = [
+  const sampleNoteLists = [
     {
-      label: 'Household',
-      action: () => showSubViewStride(`list: ${'Household'}`),
+      label: 'note item 1',
+      action: () => showSubViewJot(`note: ${'note item 1'}`),
     },
     {
-      label: 'Shopping',
-      action: () => showSubViewStride(`list: ${'Shopping'}`),
+      label: 'brain dump',
+      action: () => showSubViewJot(`note: ${'brain dump'}`),
     },
     {
-      label: 'Health & Fitness',
-      action: () => showSubViewStride(`list: ${'Health & Fitness'}`),
-    },
-    {
-      label: 'School',
-      action: () => showSubViewStride(`list: ${'School'}`),
-    },
-    {
-      label: 'Work',
-      action: () => showSubViewStride(`list: ${'Work'}`),
+      label: 'Journal entry (19-07-26)',
+      action: () => showSubViewJot(`note: ${'Journal entry (19-07-26)'}`),
     },
   ];
 
   return (
     <LayoutPartialNavbar>
-      <Stack gap={'xs'}>
+      <Stack gap={0}>
         <Box>
           {navLinks.map((nl, i) => (
             <React.Fragment key={nl.label}>
@@ -108,26 +82,38 @@ export default function Stride() {
         <div>
           <Group justify="space-between" pl={'xs'}>
             <Title order={2} fz={'sm'} fw={500} c={'dimmed'}>
-              Task Lists
+              Notes
             </Title>
 
             <Group justify="end" gap={0}>
-              <Tooltip label={`Add task list`}>
+              <Tooltip label={`Add note`}>
                 <ActionIcon
                   size={30}
                   color="dark"
                   variant="subtle"
                   radius={0}
-                  onClick={() => showAsideViewStride(ASIDE_VIEW_NAMES.NEW.STRIDE.TASK_LIST)}
+                  onClick={() => showAsideViewJot(ASIDE_VIEW_NAMES.NEW.JOT.NOTE)}
                 >
-                  <IconListCheck size={ICON_SIZE - 4} stroke={ICON_STROKE_WIDTH} />
+                  <IconNote size={ICON_SIZE - 4} stroke={ICON_STROKE_WIDTH} />
+                </ActionIcon>
+              </Tooltip>
+
+              <Tooltip label={`Add note folder`}>
+                <ActionIcon
+                  size={30}
+                  color="dark"
+                  variant="subtle"
+                  radius={0}
+                  onClick={() => showAsideViewJot(ASIDE_VIEW_NAMES.NEW.JOT.FOLDER)}
+                >
+                  <IconFolder size={ICON_SIZE - 4} stroke={ICON_STROKE_WIDTH} />
                 </ActionIcon>
               </Tooltip>
             </Group>
           </Group>
 
           <div>
-            {sampleTaskLists.map((nl, i) => (
+            {sampleNoteLists.map((nl, i) => (
               <React.Fragment key={nl.label}>
                 {<Divider />}
 
