@@ -12,25 +12,54 @@ import PartialViewPaveCalendarList from '@web/ui/partial/view/pave/calendar-list
 export default function App() {
   const viewValue = useStoreView((s) => s.view?.view);
 
-  switch (viewValue) {
-    case APP_NAMES_ATLAS.PAVE:
-      return <ViewPave />;
+  if (viewValue === undefined) return <>loading</>;
+  if (!viewValue) return null;
 
-    case APP_NAMES_ATLAS.JOT:
-      return <ViewJot />;
+  const isDefaultView = ![
+    APP_NAMES_ATLAS.PAVE,
+    APP_NAMES_ATLAS.JOT,
+    APP_NAMES_ATLAS.STRIDE,
+    APP_NAMES_ATLAS.PRIME,
+    APP_NAMES_ATLAS.TALLY,
+  ].includes(viewValue);
 
-    case APP_NAMES_ATLAS.STRIDE:
-      return <ViewStride />;
+  return (
+    <>
+      <DisplayNoneWrapper visible={viewValue === APP_NAMES_ATLAS.PAVE}>
+        <ViewPave />
+      </DisplayNoneWrapper>
 
-    case APP_NAMES_ATLAS.PRIME:
-      return <ViewPrime />;
+      <DisplayNoneWrapper visible={viewValue === APP_NAMES_ATLAS.JOT}>
+        <ViewJot />
+      </DisplayNoneWrapper>
 
-    case APP_NAMES_ATLAS.TALLY:
-      return <ViewTally />;
+      <DisplayNoneWrapper visible={viewValue === APP_NAMES_ATLAS.STRIDE}>
+        <ViewStride />
+      </DisplayNoneWrapper>
 
-    default:
-      return <LayoutMain>App main</LayoutMain>;
-  }
+      <DisplayNoneWrapper visible={viewValue === APP_NAMES_ATLAS.PRIME}>
+        <ViewPrime />
+      </DisplayNoneWrapper>
+
+      <DisplayNoneWrapper visible={viewValue === APP_NAMES_ATLAS.TALLY}>
+        <ViewTally />
+      </DisplayNoneWrapper>
+
+      <DisplayNoneWrapper visible={isDefaultView}>
+        <LayoutMain>App main</LayoutMain>
+      </DisplayNoneWrapper>
+    </>
+  );
+}
+
+function DisplayNoneWrapper({
+  visible,
+  children,
+}: {
+  visible: boolean;
+  children: React.ReactNode;
+}) {
+  return <div style={{ display: visible ? 'block' : 'none' }}>{children}</div>;
 }
 
 function LayoutMain({ children }: { children: React.ReactNode }) {
@@ -42,84 +71,134 @@ function LayoutMain({ children }: { children: React.ReactNode }) {
 }
 
 function ViewPave() {
-  const { subViewValue, showSubViewPave } = useSubView();
+  const { subViewValue } = useSubView();
 
-  switch (subViewValue) {
-    case SUBVIEW_NAMES.PAVE.DAY:
-      return <LayoutMain>day</LayoutMain>;
+  if (subViewValue === undefined) return <>loading</>;
+  if (!subViewValue) return null;
 
-    case SUBVIEW_NAMES.PAVE.WEEK:
-      return <LayoutMain>week</LayoutMain>;
+  const isCalendarList = subViewValue?.includes('calendar: ');
+  const isDefaultPave =
+    !isCalendarList &&
+    ![SUBVIEW_NAMES.PAVE.DAY, SUBVIEW_NAMES.PAVE.WEEK, SUBVIEW_NAMES.PAVE.MONTH].includes(
+      subViewValue,
+    );
 
-    case SUBVIEW_NAMES.PAVE.MONTH:
-      return <LayoutMain>month</LayoutMain>;
+  return (
+    <>
+      <DisplayNoneWrapper visible={subViewValue === SUBVIEW_NAMES.PAVE.DAY}>
+        <LayoutMain>day</LayoutMain>
+      </DisplayNoneWrapper>
 
-    default:
-      if (subViewValue?.includes('calendar: ')) {
-        return (
-          <LayoutMain>
-            <PartialViewPaveCalendarList />
-          </LayoutMain>
-        );
-      } else {
-        return <LayoutMain>Pave Home</LayoutMain>;
-      }
-  }
+      <DisplayNoneWrapper visible={subViewValue === SUBVIEW_NAMES.PAVE.WEEK}>
+        <LayoutMain>week</LayoutMain>
+      </DisplayNoneWrapper>
+
+      <DisplayNoneWrapper visible={subViewValue === SUBVIEW_NAMES.PAVE.MONTH}>
+        <LayoutMain>month</LayoutMain>
+      </DisplayNoneWrapper>
+
+      <DisplayNoneWrapper visible={isCalendarList}>
+        <LayoutMain>
+          <PartialViewPaveCalendarList />
+        </LayoutMain>
+      </DisplayNoneWrapper>
+
+      <DisplayNoneWrapper visible={isDefaultPave}>
+        <LayoutMain>Pave Home</LayoutMain>
+      </DisplayNoneWrapper>
+    </>
+  );
 }
 
 function ViewJot() {
-  const { subViewValue, showSubViewStride } = useSubView();
+  const { subViewValue } = useSubView();
 
-  switch (subViewValue) {
-    default:
-      if (subViewValue?.includes('note: ')) {
-        return (
-          <LayoutMain>
-            <PartialViewJotNoteList />
-          </LayoutMain>
-        );
-      } else {
-        return <LayoutMain>Jot Home</LayoutMain>;
-      }
-  }
+  if (subViewValue === undefined) return <>loading</>;
+  if (!subViewValue) return null;
+
+  const isNoteList = subViewValue?.includes('note: ');
+
+  return (
+    <>
+      <DisplayNoneWrapper visible={isNoteList}>
+        <LayoutMain>
+          <PartialViewJotNoteList />
+        </LayoutMain>
+      </DisplayNoneWrapper>
+
+      <DisplayNoneWrapper visible={!isNoteList}>
+        <LayoutMain>Jot Home</LayoutMain>
+      </DisplayNoneWrapper>
+    </>
+  );
 }
 
 function ViewStride() {
-  const { subViewValue, showSubViewStride } = useSubView();
+  const { subViewValue } = useSubView();
 
-  switch (subViewValue) {
-    case SUBVIEW_NAMES.STRIDE.INBOX:
-      return <LayoutMain>inbox</LayoutMain>;
+  if (subViewValue === undefined) return <>loading</>;
+  if (!subViewValue) return null;
 
-    case SUBVIEW_NAMES.STRIDE.TODAY:
-      return <LayoutMain>today</LayoutMain>;
+  const isTaskList = subViewValue?.includes('list: ');
+  const isDefaultStride =
+    !isTaskList &&
+    ![
+      SUBVIEW_NAMES.STRIDE.INBOX,
+      SUBVIEW_NAMES.STRIDE.TODAY,
+      SUBVIEW_NAMES.STRIDE.UPCOMING,
+      SUBVIEW_NAMES.STRIDE.OVERDUE,
+      SUBVIEW_NAMES.STRIDE.COMPLETE,
+    ].includes(subViewValue);
 
-    case SUBVIEW_NAMES.STRIDE.UPCOMING:
-      return <LayoutMain>upcoming</LayoutMain>;
+  return (
+    <>
+      <DisplayNoneWrapper visible={subViewValue === SUBVIEW_NAMES.STRIDE.INBOX}>
+        <LayoutMain>inbox</LayoutMain>
+      </DisplayNoneWrapper>
 
-    case SUBVIEW_NAMES.STRIDE.OVERDUE:
-      return <LayoutMain>overdue</LayoutMain>;
+      <DisplayNoneWrapper visible={subViewValue === SUBVIEW_NAMES.STRIDE.TODAY}>
+        <LayoutMain>today</LayoutMain>
+      </DisplayNoneWrapper>
 
-    case SUBVIEW_NAMES.STRIDE.COMPLETE:
-      return <LayoutMain>complete</LayoutMain>;
+      <DisplayNoneWrapper visible={subViewValue === SUBVIEW_NAMES.STRIDE.UPCOMING}>
+        <LayoutMain>upcoming</LayoutMain>
+      </DisplayNoneWrapper>
 
-    default:
-      if (subViewValue?.includes('list: ')) {
-        return (
-          <LayoutMain>
-            <PartialViewStrideTaskList />
-          </LayoutMain>
-        );
-      } else {
-        return <LayoutMain>Stride Home</LayoutMain>;
-      }
-  }
+      <DisplayNoneWrapper visible={subViewValue === SUBVIEW_NAMES.STRIDE.OVERDUE}>
+        <LayoutMain>overdue</LayoutMain>
+      </DisplayNoneWrapper>
+
+      <DisplayNoneWrapper visible={subViewValue === SUBVIEW_NAMES.STRIDE.COMPLETE}>
+        <LayoutMain>complete</LayoutMain>
+      </DisplayNoneWrapper>
+
+      <DisplayNoneWrapper visible={isTaskList}>
+        <LayoutMain>
+          <PartialViewStrideTaskList />
+        </LayoutMain>
+      </DisplayNoneWrapper>
+
+      <DisplayNoneWrapper visible={isDefaultStride}>
+        <LayoutMain>Stride Home</LayoutMain>
+      </DisplayNoneWrapper>
+    </>
+  );
 }
 
 function ViewPrime() {
+  const { subViewValue } = useSubView();
+
+  if (subViewValue === undefined) return <>loading</>;
+  if (!subViewValue) return null;
+
   return <LayoutMain>prime</LayoutMain>;
 }
 
 function ViewTally() {
+  const { subViewValue } = useSubView();
+
+  if (subViewValue === undefined) return <>loading</>;
+  if (!subViewValue) return null;
+
   return <LayoutMain>tally</LayoutMain>;
 }
