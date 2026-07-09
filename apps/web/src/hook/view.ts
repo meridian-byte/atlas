@@ -113,6 +113,39 @@ export const useSubView = () => {
   };
 };
 
+export const useViewNavbar = () => {
+  const navbarViewValue = useStoreView((s) => s.view?.navbarView);
+  const setNavbarViewValue = useStoreView((s) => s.setNavbarViewValue);
+
+  let workingValue = navbarViewValue || [];
+
+  const showNavbarViewPave = (v: string) => {
+    if (!workingValue.includes(v)) {
+      setNavbarViewValue([...workingValue, v || APP_NAMES_ATLAS.PAVE]);
+    }
+  };
+
+  const showNavbarViewJot = (v: string) => {
+    if (!workingValue.includes(v)) {
+      setNavbarViewValue([...workingValue, v || APP_NAMES_ATLAS.JOT]);
+    }
+  };
+
+  const showNavbarViewStride = (v: string) => {
+    if (!workingValue.includes(v)) {
+      setNavbarViewValue([...workingValue, v || APP_NAMES_ATLAS.STRIDE]);
+    }
+  };
+
+  return {
+    navbarViewValue,
+    setNavbarViewValue,
+    showNavbarViewPave,
+    showNavbarViewJot,
+    showNavbarViewStride,
+  };
+};
+
 export const useViewAside = () => {
   const asideViewValue = useStoreView((s) => s.view?.asideView);
   const setAsideViewValue = useStoreView((s) => s.setAsideViewValue);

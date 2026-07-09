@@ -10,6 +10,7 @@ interface ViewState {
 
   setViewValue: (value: string | null) => void;
   setSubViewValue: (value: string | null) => void;
+  setNavbarViewValue: (value: string[] | null) => void;
   setAsideViewValue: (value: string | null) => void;
 }
 
@@ -28,6 +29,7 @@ export const useStoreView = create<ViewState>((set) => ({
     set((state) => ({
       view: {
         subView: state.view?.subView ?? null,
+        navbarView: state.view?.navbarView ?? null,
         asideView: state.view?.asideView ?? null,
         view: value,
       },
@@ -38,8 +40,20 @@ export const useStoreView = create<ViewState>((set) => ({
     set((state) => ({
       view: {
         view: state.view?.view ?? null,
+        navbarView: state.view?.navbarView ?? null,
         asideView: state.view?.asideView ?? null,
         subView: value,
+      },
+    }));
+  },
+
+  setNavbarViewValue: (value) => {
+    set((state) => ({
+      view: {
+        view: state.view?.view ?? null,
+        asideView: state.view?.asideView ?? null,
+        subView: state.view?.subView ?? null,
+        navbarView: value,
       },
     }));
   },
@@ -48,6 +62,7 @@ export const useStoreView = create<ViewState>((set) => ({
     set((state) => ({
       view: {
         view: state.view?.view ?? null,
+        navbarView: state.view?.navbarView ?? null,
         subView: state.view?.subView ?? null,
         asideView: value,
       },

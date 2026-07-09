@@ -23,18 +23,17 @@ import {
   IconPlus,
 } from '@tabler/icons-react';
 import { SHELL_VALUES } from '@web/constants';
-import { useView, useViewAside } from '@web/hook/view';
-import { useState } from 'react';
+import { useView, useViewAside, useViewNavbar } from '@web/hook/view';
+import { useEffect, useState } from 'react';
 import PartialNavbarPave from '../partial/navbar/pave';
 import PartialNavbarStride from '../partial/navbar/stride';
 import PartialNavbarJot from '../partial/navbar/jot';
 
 export default function Navbar() {
-  const [values, setValues] = useState<string[]>([]);
+  const { navbarViewValue, setNavbarViewValue } = useViewNavbar();
 
   const { showAsideViewPave, showAsideViewJot, showAsideViewStride } = useViewAside();
-  const { viewValue, showViewPave, showViewJot, showViewStride, showViewPrime, showViewTally } =
-    useView();
+  const { showViewPave, showViewJot, showViewStride, showViewPrime, showViewTally } = useView();
 
   const data = [
     {
@@ -81,7 +80,7 @@ export default function Navbar() {
 
   const items = data.map((item) => {
     const props = {
-      icon: values.includes(item.value) ? IconChevronDown : IconChevronRight,
+      icon: (navbarViewValue || []).includes(item.value) ? IconChevronDown : IconChevronRight,
     };
 
     return (
@@ -123,18 +122,21 @@ export default function Navbar() {
                 </ActionIcon>
               </Tooltip>
 
-              {/* <Tooltip label={`Open ${item.value} in new tab`}>
+              <Tooltip label={`Open ${item.value} in new tab`}>
                 <ActionIcon
                   component="span"
                   size={30}
                   radius={0}
                   color="dark"
                   variant="subtle"
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    // action goes here
+                  }}
                 >
                   <IconExternalLink size={ICON_SIZE - 4} stroke={ICON_STROKE_WIDTH} />
                 </ActionIcon>
-              </Tooltip> */}
+              </Tooltip>
             </Group>
           </Group>
         </AccordionControl>
@@ -150,18 +152,16 @@ export default function Navbar() {
   return (
     <Accordion
       order={3}
-      value={values}
-      onChange={setValues}
+      value={navbarViewValue || []}
+      onChange={(newValues) => setNavbarViewValue(newValues)}
       chevronIconSize={ICON_SIZE}
       chevron={null}
+      keepMounted
       multiple
       styles={{
         control: { height: 30, padding: 0, paddingLeft: '5px' },
         label: { fontSize: 'var(--mantine-font-size-xs)', fontWeight: '500' },
         content: { padding: 0 },
-        // panel: {
-        //   backgroundColor: 'light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-8))',
-        // },
       }}
     >
       {items}
