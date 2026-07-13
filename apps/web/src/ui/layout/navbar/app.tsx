@@ -54,10 +54,8 @@ export default function App() {
 }
 
 function NavbarHeader() {
-  const viewValue = useStoreView((s) => s.view?.view);
-  const setViewValue = useStoreView((s) => s.setViewValue);
-  const asideViewValue = useStoreView((s) => s.view?.asideView);
-  const setAsideViewValue = useStoreView((s) => s.setAsideViewValue);
+  const view = useStoreView((s) => s.view);
+  const setView = useStoreView((s) => s.setView);
 
   return (
     <Stack p={0} gap={0}>
@@ -94,8 +92,11 @@ function NavbarHeader() {
         pl={5}
         radius={0}
         onClick={() => {
-          if (!!viewValue) {
-            setViewValue(null);
+          if (view === undefined) return;
+          if (view === null) return;
+
+          if (!!view.view) {
+            setView({ ...view, view: null, subView: null });
           }
         }}
       >
@@ -112,8 +113,11 @@ function NavbarHeader() {
         pl={5}
         radius={0}
         onClick={() => {
-          if (asideViewValue != ASIDE_VIEW_NAMES.SEARCH) {
-            setAsideViewValue(ASIDE_VIEW_NAMES.SEARCH);
+          if (view === undefined) return;
+          if (view === null) return;
+
+          if (view.asideView != ASIDE_VIEW_NAMES.SEARCH) {
+            setView({ ...view, asideView: ASIDE_VIEW_NAMES.SEARCH });
           }
         }}
       >
@@ -132,8 +136,11 @@ function NavbarHeader() {
             pl={5}
             radius={0}
             onClick={() => {
-              if (asideViewValue != ASIDE_VIEW_NAMES.NEW.ITEM) {
-                setAsideViewValue(ASIDE_VIEW_NAMES.NEW.ITEM);
+              if (view === undefined) return;
+              if (view === null) return;
+
+              if (view.asideView != ASIDE_VIEW_NAMES.NEW.ITEM) {
+                setView({ ...view, asideView: ASIDE_VIEW_NAMES.NEW.ITEM });
               }
             }}
           >
@@ -141,11 +148,11 @@ function NavbarHeader() {
           </Button>
         </Box>
 
-        <MenuNew>
+        {/* <MenuNew>
           <ActionIcon size={30} variant="subtle" color={'dark'} radius={0}>
             <IconChevronDown size={ICON_SIZE - 4} stroke={ICON_STROKE_WIDTH} />
           </ActionIcon>
-        </MenuNew>
+        </MenuNew> */}
       </Group>
     </Stack>
   );
