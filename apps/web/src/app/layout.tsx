@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import ProviderInitialize from '@web/ui/provider/initialize';
 import './globals.css';
 
 // Import styles of packages that you've installed.
@@ -43,7 +44,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
 
       <body className="min-h-full flex flex-col">
-        <MantineProvider defaultColorScheme={'light'}>{children}</MantineProvider>
+        <MantineProvider defaultColorScheme={'light'}>
+          <ProviderInitialize>{children}</ProviderInitialize>
+        </MantineProvider>
       </body>
     </html>
   );
