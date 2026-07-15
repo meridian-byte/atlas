@@ -1,0 +1,20 @@
+{
+  "name": "@repo/handlers",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@repo/db": "workspace:*",
+    "@repo/types": "workspace:*",
+    "@repo/constants": "workspace:*"
+  },
+  "devDependencies": {
+    "@repo/config": "workspace:*",
+    "typescript": "^5.6.2"
+  }
+}

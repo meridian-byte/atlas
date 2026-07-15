@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * @template-source next-template
  * @template-sync auto
@@ -9,7 +11,7 @@ import { useRef, useCallback, useEffect } from 'react';
 
 export const useDebouncedCallback = <T extends (...args: any[]) => void>(
   callback: T,
-  delay: number
+  delay: number,
 ) => {
   const callbackRef = useRef(callback);
   const timeoutRef = useRef<number | undefined>(undefined);
@@ -27,7 +29,7 @@ export const useDebouncedCallback = <T extends (...args: any[]) => void>(
         callbackRef.current(...args);
       }, delay);
     },
-    [delay]
+    [delay],
   );
 
   const cancel = useCallback(() => {

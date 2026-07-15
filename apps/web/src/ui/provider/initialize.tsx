@@ -8,8 +8,8 @@
  */
 
 import React from 'react';
-import { useAppshellInitialize, useViewInitialize } from '@repo/sync';
-// import { User } from '@supabase/supabase-js';
+import { useAppshellInitialize, useSessionStore, useViewInitialize } from '@repo/sync';
+import { UserObject } from '@repo/types';
 import { AppShellValue } from '@repo/store';
 // import { WorkspaceType } from '@repo/types/models/enums';
 
@@ -18,17 +18,17 @@ export default function Initialize({
   children,
 }: {
   props?: {
-    // sessionUser: User | null;
+    sessionUser: UserObject | null;
     cookie?: AppShellValue;
   };
   children: React.ReactNode;
 }) {
   // initialize stores
 
-  // useSessionStore({
-  //   sessionUser: props?.sessionUser || null,
-  //   options: { clientOnly: false },
-  // });
+  useSessionStore({
+    sessionUser: props?.sessionUser || null,
+    options: { clientOnly: false },
+  });
 
   // useUserRoleStore();
 

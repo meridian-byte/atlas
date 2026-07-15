@@ -4,7 +4,7 @@ import React from 'react';
 import { Box, Container } from '@mantine/core';
 import { useStoreView } from '@repo/store';
 import { APP_NAMES_ATLAS, ASIDE_VIEW_NAMES, SUBVIEW_NAMES } from '@repo/constants';
-import { useSubView } from '@web/hook/view';
+import { useSubView } from '@web/hooks/view';
 import PartialViewStrideTaskList from '@web/ui/partial/view/stride/task-list';
 import PartialViewJotNoteList from '@web/ui/partial/view/jot/note-list';
 import PartialViewPaveCalendarList from '@web/ui/partial/view/pave/calendar-list';
