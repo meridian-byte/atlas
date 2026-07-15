@@ -3,3 +3,8 @@ export * from './string';
 export * from './cookie-client';
 export * from './cookie-server';
 export * from './storage';
+export * from './url';
+export * from './misc';
+export * from './validation';
+export * from './theme';
+export * from './generators';

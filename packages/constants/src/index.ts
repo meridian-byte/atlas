@@ -8,3 +8,4 @@ export * from './other';
 export * from './redirects';
 export * from './routes';
 export * from './sizes';
+export * from './paths';

@@ -3,6 +3,34 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
+      "env": [
+        "TURBO_TELEMETRY_DISABLED=1",
+
+        "NODE_ENV",
+
+        "DATABASE_URL",
+        "DIRECT_URL",
+
+        "NEXT_PUBLIC_HOST_CLIENT_ADMIN_DEV",
+        "NEXT_PUBLIC_HOST_CLIENT_ADMIN_PROD",
+        "NEXT_PUBLIC_HOST_CLIENT_WEB_DEV",
+        "NEXT_PUBLIC_HOST_CLIENT_WEB_PROD",
+
+        "NEXT_PUBLIC_EMAIL_DELIVERY",
+        "NEXT_PUBLIC_EMAIL_NOREPLY",
+        "NEXT_PUBLIC_EMAIL_INFO",
+        "NEXT_PUBLIC_EMAIL_DEV",
+
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY",
+
+        "NEXT_PUBLIC_REST_COUNTRIES_API_URL",
+
+        "NEXT_RESEND_AUDIENCE_ID_GENERAL",
+        "NEXT_RESEND_KEY_GENERAL",
+        "NEXT_RESEND_KEY_AUTH",
+        "NEXT_RESEND_EMAIL"
+      ],
       "outputs": ["dist/**"]
     },
     "dev": {

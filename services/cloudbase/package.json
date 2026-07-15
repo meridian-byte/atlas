@@ -1,0 +1,23 @@
+{
+  "name": "@repo/cloudbase",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.8.0",
+    "@repo/constants": "workspace:*",
+    "@repo/utils": "workspace:*",
+    "next": "16.0.10",
+    "@supabase/supabase-js": "^2.89.0"
+  },
+  "devDependencies": {
+    "@repo/config": "workspace:*",
+    "@types/node": "^20",
+    "typescript": "^5.6.2"
+  }
+}

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useSubView } from '@web/hook/view';
+import { useSubView } from '@web/hooks/view';
 
 export default function JotList() {
   const { subViewValue, showSubViewJot } = useSubView();

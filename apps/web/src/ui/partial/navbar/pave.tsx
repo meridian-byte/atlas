@@ -22,7 +22,7 @@ import {
   IconLayoutList,
   IconPlus,
 } from '@tabler/icons-react';
-import { useSubView, useViewAside } from '@web/hook/view';
+import { useSubView, useViewAside } from '@web/hooks/view';
 import React from 'react';
 import LayoutPartialNavbar from '@web/ui/layout/partial/navbar';
 

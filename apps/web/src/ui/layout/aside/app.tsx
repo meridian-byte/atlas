@@ -15,7 +15,7 @@ import {
   IconPlus,
   IconRepeat,
 } from '@tabler/icons-react';
-import { useViewAside } from '@web/hook/view';
+import { useViewAside } from '@web/hooks/view';
 
 export default function App() {
   const { asideViewValue, showAsideViewPave, showAsideViewJot, showAsideViewStride } =

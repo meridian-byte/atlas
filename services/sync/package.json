@@ -13,6 +13,7 @@
     "@repo/constants": "workspace:*",
     "@repo/store": "workspace:*",
     "@repo/utils": "workspace:*",
+    "@repo/types": "workspace:*",
     "react": "19.2.4"
   },
   "devDependencies": {

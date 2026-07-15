@@ -8,6 +8,14 @@
     "lint": "eslint . --max-warnings 0",
     "check-types": "tsc --noEmit"
   },
+  "dependencies": {
+    "@repo/cloudbase": "workspace:*",
+    "@repo/constants": "workspace:*",
+    "@repo/email": "workspace:*",
+    "@repo/handlers": "workspace:*",
+    "@repo/utils": "workspace:*",
+    "@repo/types": "workspace:*"
+  },
   "devDependencies": {
     "@repo/config": "workspace:*",
     "typescript": "^5.6.2"

@@ -9,7 +9,9 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "@repo/constants": "workspace:*",
     "@repo/types": "workspace:*",
+    "@repo/utils": "workspace:*",
     "zustand": "^5.0.8"
   },
   "devDependencies": {

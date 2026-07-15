@@ -23,7 +23,7 @@ import {
   IconPlus,
 } from '@tabler/icons-react';
 import { SHELL_VALUES } from '@web/constants';
-import { useView, useViewAside, useViewNavbar } from '@web/hook/view';
+import { useView, useViewAside, useViewNavbar } from '@web/hooks/view';
 import { useEffect, useState } from 'react';
 import PartialNavbarPave from '../partial/navbar/pave';
 import PartialNavbarStride from '../partial/navbar/stride';
