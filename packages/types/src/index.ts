@@ -1,9 +1,14 @@
 export * from './appshell';
-export * from './enums';
-export * from './view';
 export * from './auth';
+export * from './enums';
 export * from './form';
+export * from './fsa';
 export * from './indexed-db';
+export * from './view';
 
 export * from './models/enums';
+export * from './models/event';
+export * from './models/link';
+export * from './models/note';
 export * from './models/profile';
+export * from './models/workspace';

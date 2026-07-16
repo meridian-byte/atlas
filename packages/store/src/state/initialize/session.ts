@@ -1,7 +1,16 @@
+'use client';
+
+/**
+ * @template-source next-template
+ * @template-sync auto
+ * @description This file originates from the base template repository.
+ * Do not modify unless you intend to backport changes to the template.
+ */
+
 import { useEffect } from 'react';
 import { LOCAL_STORAGE_NAME } from '@repo/constants';
 import { getFromLocalStorage, saveToLocalStorage } from '@repo/utils';
-import { useStoreSession } from '@repo/store';
+import { useStoreSession } from '../session';
 import { generateUUID } from '@repo/utils';
 import { UserObject } from '@repo/types';
 

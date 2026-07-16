@@ -51,6 +51,7 @@ export const STORE_NAME = {
   ACCOUNT_GROUPS: 'accountGroups',
   BUDGETS: 'budgets',
   TRANSACTIONS: 'transactions',
+  EVENTS: 'events',
   FOODS: 'foods',
   MEALS: 'meals',
   SERVINGS: 'servings',

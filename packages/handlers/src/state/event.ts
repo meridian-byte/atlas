@@ -1,0 +1,77 @@
+import { useStoreEvent } from '@repo/store';
+import { useStoreSession } from '@repo/store';
+import { EventGet } from '@repo/types';
+import { SyncStatus } from '@repo/types';
+import { generateUUID } from '@repo/utils';
+import { useStoreActiveItems } from '@repo/store';
+
+export const useEventActions = () => {
+  const session = useStoreSession((s) => s.session);
+  const events = useStoreEvent((s) => s.events);
+  const addEvent = useStoreEvent((s) => s.addEvent);
+  const updateEvent = useStoreEvent((s) => s.updateEvent);
+  const deleteEvent = useStoreEvent((s) => s.deleteEvent);
+  const activeWorkspace = useStoreActiveItems((s) => s.activeItems?.workspace);
+
+  const eventCreate = (params?: Partial<EventGet>) => {
+    if (!session) return;
+    if (!activeWorkspace) return;
+
+    const id = generateUUID();
+    const now = new Date();
+
+    const newEvent: EventGet = {
+      id: params?.id || id,
+      title: params?.title || 'New Event',
+      description: params?.description || '',
+      startAt: new Date(params?.startAt || now).toISOString() as any,
+      endAt: new Date(params?.endAt || now).toISOString() as any,
+      allDay: params?.allDay || false,
+      location: params?.location || '',
+      workspaceId: params?.workspaceId || activeWorkspace.id,
+      syncStatus: SyncStatus.PENDING,
+      createdAt: new Date(params?.createdAt || now).toISOString() as any,
+      updatedAt: new Date(params?.updatedAt || now).toISOString() as any,
+    };
+
+    addEvent(newEvent);
+
+    return newEvent;
+  };
+
+  const eventUpdate = (params: EventGet) => {
+    if (!session) return;
+    if (!activeWorkspace) return;
+
+    const now = new Date();
+
+    const newEvent: EventGet = {
+      ...params,
+      syncStatus: SyncStatus.PENDING,
+      updatedAt: new Date(now).toISOString() as any,
+    };
+
+    updateEvent(newEvent);
+  };
+
+  const eventDelete = (params: { values: EventGet; options?: { noRedirect?: boolean } }) => {
+    if (!session) return;
+    if (!events) return;
+    if (!activeWorkspace) return;
+
+    const now = new Date();
+
+    deleteEvent({
+      ...params.values,
+      syncStatus: SyncStatus.DELETED,
+      createdAt: new Date(params.values.createdAt).toISOString() as any,
+      updatedAt: new Date(now).toISOString() as any,
+    });
+  };
+
+  return {
+    eventCreate,
+    eventUpdate,
+    eventDelete,
+  };
+};

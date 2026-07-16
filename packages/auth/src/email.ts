@@ -42,8 +42,8 @@ export const authEmail = async (params: {
   const { profile, existed } = await profileCreate({
     id: session.user?.id || '',
     email: session.user?.email || '',
-    first_name: nameFromEmail,
-    user_name: linkify(session.user?.email || ''),
+    firstName: nameFromEmail,
+    userName: linkify(session.user?.email || ''),
   });
 
   sharedUserHandle({ supabase, profile, existed });

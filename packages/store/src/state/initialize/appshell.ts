@@ -10,7 +10,8 @@
 import { useEffect } from 'react';
 import { getCookieClient, getFromSessionStorage, setCookieClient } from '@repo/utils';
 import { WEEK, COOKIE_NAME, SESSION_STORAGE_NAME } from '@repo/constants';
-import { AppShellValue, useStoreAppShell, useStoreView } from '@repo/store';
+import { AppShellValue, useStoreAppShell } from '../../state/appshell';
+import { useStoreView } from '../view';
 import { useMediaQuery } from '@mantine/hooks';
 
 export const useAppshellInitialize = (params?: { cookie?: AppShellValue }) => {

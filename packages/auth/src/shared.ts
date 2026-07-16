@@ -9,7 +9,7 @@ export const sharedUserHandle = async (props: {
 }) => {
   const { supabase, profile, existed } = props;
 
-  const name = `${profile?.first_name || ''} ${profile?.last_name || ''}`.trim();
+  const name = `${profile?.firstName || ''} ${profile?.lastName || ''}`.trim();
 
   // update user
   const {
@@ -20,7 +20,7 @@ export const sharedUserHandle = async (props: {
       name,
       full_name: name,
       avatar_url: profile?.avatar,
-      user_name: profile?.user_name,
+      userName: profile?.userName,
     },
   });
 
@@ -29,7 +29,7 @@ export const sharedUserHandle = async (props: {
   if (!existed && userData && userData.email) {
     await emailSendOnboarding({
       to: userData.email,
-      userName: profile?.user_name || userData.email,
+      userName: profile?.userName || userData.email,
       appName: COMPANY_NAME,
     });
 

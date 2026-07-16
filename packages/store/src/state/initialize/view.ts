@@ -8,7 +8,7 @@
  */
 
 import { useEffect } from 'react';
-import { useStoreView, ViewValue } from '@repo/store';
+import { useStoreView, ViewValue } from '../../state/view';
 import { getFromSessionStorage, saveToSessionStorage } from '@repo/utils';
 import { SESSION_STORAGE_NAME } from '@repo/constants';
 

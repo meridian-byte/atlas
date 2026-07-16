@@ -10,10 +10,17 @@ import {
   Divider,
   Group,
   ScrollArea,
+  Skeleton,
   Stack,
 } from '@mantine/core';
 import { SHELL_VALUES } from '@web/constants';
-import { ASIDE_VIEW_NAMES, ICON_SIZE, ICON_STROKE_WIDTH, ICON_WRAPPER_SIZE } from '@repo/constants';
+import {
+  ASIDE_VIEW_NAMES,
+  BASE_URL_CLIENT,
+  ICON_SIZE,
+  ICON_STROKE_WIDTH,
+  ICON_WRAPPER_SIZE,
+} from '@repo/constants';
 import {
   IconChevronDown,
   IconHome,
@@ -23,8 +30,10 @@ import {
   IconUser,
 } from '@tabler/icons-react';
 import AccordionNavbar from '@web/ui/accordion/navbar';
-import { useStoreView } from '@repo/store';
+import { config, useStoreSession, useStoreView } from '@repo/store';
 import MenuNew from '@web/ui/menu/new';
+import { SignIn, SignOut } from '@web/ui/wrapper/actions';
+import { AuthAction } from '@repo/types';
 
 export default function App() {
   return (
@@ -56,28 +65,49 @@ export default function App() {
 function NavbarHeader() {
   const view = useStoreView((s) => s.view);
   const setView = useStoreView((s) => s.setView);
+  const session = useStoreSession((s) => s.session);
+
+  const sharedSize = 30;
 
   return (
     <Stack p={0} gap={0}>
       <Group wrap="nowrap" gap={0}>
         <Box style={{ flex: 1 }}>
-          <Button
-            size="xs"
-            fullWidth
-            variant="subtle"
-            color="dark"
-            leftSection={<IconUser size={ICON_SIZE} stroke={ICON_STROKE_WIDTH} />}
-            justify="start"
-            pl={5}
-            radius={0}
-          >
-            Sign In
-          </Button>
+          {session === undefined ? (
+            <Skeleton h={sharedSize} radius={0} />
+          ) : (
+            <SignIn options={{ action: AuthAction.SIGN_IN }}>
+              <Button
+                size="xs"
+                fullWidth
+                variant="subtle"
+                color="dark"
+                leftSection={<IconUser size={ICON_SIZE} stroke={ICON_STROKE_WIDTH} />}
+                justify="start"
+                pl={5}
+                radius={0}
+              >
+                Sign In
+              </Button>
+            </SignIn>
+          )}
         </Box>
 
-        <ActionIcon size={30} variant="subtle" color="red" radius={0}>
-          <IconLogout size={ICON_SIZE - 4} stroke={ICON_STROKE_WIDTH} />
-        </ActionIcon>
+        {session === undefined ? (
+          <Skeleton h={sharedSize} w={sharedSize} radius={0} />
+        ) : !session ? null : (
+          <SignOut
+            props={{
+              baseUrl: BASE_URL_CLIENT.WEB,
+              dbConfig: config,
+              options: { clearDB: true },
+            }}
+          >
+            <ActionIcon size={sharedSize} variant="subtle" color="red" radius={0}>
+              <IconLogout size={ICON_SIZE - 4} stroke={ICON_STROKE_WIDTH} />
+            </ActionIcon>
+          </SignOut>
+        )}
       </Group>
 
       <Divider size={3} />

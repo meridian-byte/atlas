@@ -28,6 +28,7 @@ export default async function Default({ children }: { children: React.ReactNode 
             shadow="xs"
             bg={'light-dark(var(--mantine-color-pri-light), var(--mantine-color-dark-9))'}
             p={{ base: 'xl', xs: 40 }}
+            withBorder
           >
             <Stack gap={'xl'}>
               <Group justify="center">
