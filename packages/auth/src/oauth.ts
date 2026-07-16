@@ -24,9 +24,9 @@ export const authOauth = async (params: { searchParams: URLSearchParams }) => {
   // create profile if doesn't exist
   const { profile, existed } = await profileCreate({
     id: data.user?.id,
-    first_name: nameSegments.first,
-    last_name: nameSegments.last,
-    user_name: linkify(data.user.email || ''),
+    firstName: nameSegments.first,
+    lastName: nameSegments.last,
+    userName: linkify(data.user.email || ''),
     phone: data.user.phone || '',
     email: data.user.email || '',
     avatar: data.user.user_metadata.avatar_url || '',

@@ -1,0 +1,46 @@
+/**
+ * @template-source next-template
+ * @template-sync auto
+ * @description This file originates from the base template repository.
+ * Do not modify unless you intend to backport changes to the template.
+ */
+
+import { API_URL } from '@repo/constants';
+import { HEADERS } from '@repo/constants';
+
+const baseRequestUrl = `${API_URL}/links`;
+
+export const apiCall = async (
+  endpoint: string,
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
+  body?: any,
+  signal?: AbortSignal,
+) => {
+  const url = endpoint ? `${baseRequestUrl}/${endpoint}` : baseRequestUrl;
+  const hasBody = !!body;
+  const headers = hasBody ? HEADERS.WITH_BODY : HEADERS.WITHOUT_BODY;
+
+  try {
+    const response = await fetch(url, {
+      method,
+      headers,
+      body: hasBody ? JSON.stringify(body) : undefined,
+      signal,
+    });
+
+    if (!response.ok) {
+      throw new Error(`${response.status}: ${response.statusText}`);
+    }
+
+    // Try to parse as JSON if the response has content
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      return await response.json();
+    }
+
+    return response;
+  } catch (error) {
+    console.error(`---> handler error - (${method} ${endpoint}):`, error);
+    throw error;
+  }
+};

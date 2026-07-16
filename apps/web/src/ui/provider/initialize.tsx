@@ -8,10 +8,16 @@
  */
 
 import React from 'react';
-import { useAppshellInitialize, useSessionStore, useViewInitialize } from '@repo/sync';
+import {
+  useActiveItemStore,
+  useAppshellInitialize,
+  useLoadAppData,
+  useSessionStore,
+  useUserStatesStore,
+  useViewInitialize,
+} from '@repo/store';
 import { UserObject } from '@repo/types';
 import { AppShellValue } from '@repo/store';
-// import { WorkspaceType } from '@repo/types/models/enums';
 
 export default function Initialize({
   props,
@@ -36,17 +42,17 @@ export default function Initialize({
 
   useViewInitialize();
 
-  // useActiveItemStore({ workspaceType: WorkspaceType.NOTELINE });
+  useActiveItemStore();
 
-  // useLoadAppData({
-  //   clientOnly: false,
-  //   storesToLoad: {
-  //     workspaces: true,
-  //     notes: true,
-  //   },
-  // });
+  useLoadAppData({
+    clientOnly: false,
+    storesToLoad: {
+      workspaces: true,
+      notes: true,
+    },
+  });
 
-  // useUserStatesStore();
+  useUserStatesStore();
 
   return <div>{children}</div>;
 }

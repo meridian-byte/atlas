@@ -4,13 +4,6 @@ export enum Role {
   DEV = 'DEV',
 }
 
-export enum Status {
-  ACTIVE = 'ACTIVE',
-  INACTIVE = 'INACTIVE',
-  DRAFT = 'DRAFT',
-  PUBLISHED = 'PUBLISHED',
-}
-
 export enum SyncStatus {
   PENDING = 'PENDING',
   SYNCED_CLIENT = 'SYNCED_CLIENT',

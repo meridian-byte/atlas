@@ -10,7 +10,7 @@
 import { db } from '@repo/db';
 import { ProfileCreate } from '@repo/types';
 
-export const profileCreate = async (params: ProfileCreate) => {
+export const profileCreateDb = async (params: ProfileCreate) => {
   try {
     const transaction = await db.$transaction(async (db) => {
       const profile = await db.profile.findUnique({

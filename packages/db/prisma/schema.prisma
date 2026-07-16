@@ -17,9 +17,17 @@ datasource db {
 //
 
 enum Role {
-  OWNER
+  USER
   ADMIN
-  MEMBER
+  DEV
+}
+
+enum SyncStatus {
+  PENDING
+  SYNCED
+  SAVED
+  ERROR
+  DELETED
 }
 
 enum TaskStatus {
@@ -57,132 +65,45 @@ enum TransactionType {
 // CORE
 //
 
-model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  timezone  String?
+model Profile {
+  id         String  @id @default(cuid())
+  email      String
+  userName   String? @map("user_name")
+  firstName  String? @map("first_name")
+  lastName   String? @map("last_name")
+  avatar     String?
+  timezone   String?
+  customized Boolean @default(false)
+  role       Role    @default(USER)
+
+  workspaces Workspace[]
+
+  syncStatus SyncStatus @default(SYNCED) @map("sync_status")
+
   createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  memberships Membership[]
-  workspaces  Workspace[]
-
-  @@map("users")
+  @@unique([email])
+  @@map("profiles")
 }
 
 model Workspace {
-  id        String   @id @default(cuid())
-  name      String
-  ownerId   String   @map("owner_id")
-  createdAt DateTime @default(now()) @map("created_at")
+  id   String @id @default(cuid())
+  name String
 
-  owner        User          @relation(fields: [ownerId], references: [id])
-  memberships  Membership[]
-  tags         Tag[]
-  attachments  Attachment[]
-  tasks        Task[]
-  events       Event[]
-  notes        Note[]
-  metrics      Metric[]
-  records      Record[]
-  transactions Transaction[]
-  timeBlocks   TimeBlock[]
-  links        Link[]
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId String  @map("profile_id")
+
+  events Event[]
+  notes  Note[]
+  links  Link[]
+
+  syncStatus SyncStatus @default(SYNCED) @map("sync_status")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("workspaces")
-}
-
-model Membership {
-  id          String @id @default(cuid())
-  userId      String @map("user_id")
-  workspaceId String @map("workspace_id")
-  role        Role
-
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, workspaceId])
-  @@map("memberships")
-}
-
-//
-// TAGGING
-//
-
-model Tag {
-  id          String  @id @default(cuid())
-  workspaceId String  @map("workspace_id")
-  name        String
-  color       String?
-
-  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  taggings  Tagging[]
-
-  @@map("tags")
-}
-
-model Tagging {
-  id         String     @id @default(cuid())
-  tagId      String     @map("tag_id")
-  entityType EntityType @map("entity_type")
-  entityId   String     @map("entity_id")
-
-  tag Tag @relation(fields: [tagId], references: [id], onDelete: Cascade)
-
-  @@index([entityType, entityId])
-  @@map("taggings")
-}
-
-//
-// ATTACHMENTS
-//
-
-model Attachment {
-  id          String   @id @default(cuid())
-  workspaceId String   @map("workspace_id")
-  url         String
-  type        String?
-  size        Int?
-  createdAt   DateTime @default(now()) @map("created_at")
-
-  workspace Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  links     AttachmentLink[]
-
-  @@map("attachments")
-}
-
-model AttachmentLink {
-  id           String     @id @default(cuid())
-  attachmentId String     @map("attachment_id")
-  entityType   EntityType @map("entity_type")
-  entityId     String     @map("entity_id")
-
-  attachment Attachment @relation(fields: [attachmentId], references: [id], onDelete: Cascade)
-
-  @@index([entityType, entityId])
-  @@map("attachment_links")
-}
-
-//
-// TASKS
-//
-
-model Task {
-  id          String     @id @default(cuid())
-  workspaceId String     @map("workspace_id")
-  title       String
-  description String?
-  status      TaskStatus @default(TODO)
-  priority    Priority?
-  dueAt       DateTime?  @map("due_at")
-  scheduledAt DateTime?  @map("scheduled_at")
-  createdBy   String     @map("created_by")
-  createdAt   DateTime   @default(now()) @map("created_at")
-
-  workspace  Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  timeBlocks TimeBlock[]
-
-  @@map("tasks")
 }
 
 //
@@ -190,135 +111,63 @@ model Task {
 //
 
 model Event {
-  id          String    @id @default(cuid())
-  workspaceId String    @map("workspace_id")
+  id          String   @id @default(cuid())
   title       String
   description String?
-  startAt     DateTime  @map("start_at")
-  endAt       DateTime  @map("end_at")
-  allDay      Boolean   @default(false) @map("all_day")
+  startAt     DateTime @map("start_at")
+  endAt       DateTime @map("end_at")
+  allDay      Boolean  @default(false) @map("all_day")
   location    String?
-  createdBy   String    @map("created_by")
-  createdAt   DateTime  @default(now()) @map("created_at")
-  deletedAt   DateTime? @map("deleted_at")
 
-  workspace  Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  timeBlocks TimeBlock[]
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String    @map("workspace_id")
+
+  syncStatus SyncStatus @default(SYNCED) @map("sync_status")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("events")
 }
 
 //
-// TIME BLOCK
-//
-
-model TimeBlock {
-  id          String   @id @default(cuid())
-  workspaceId String   @map("workspace_id")
-  startAt     DateTime @map("start_at")
-  endAt       DateTime @map("end_at")
-
-  taskId  String? @map("task_id")
-  eventId String? @map("event_id")
-
-  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  task      Task?     @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  event     Event?    @relation(fields: [eventId], references: [id], onDelete: Cascade)
-
-  @@index([startAt, endAt])
-  @@map("time_blocks")
-}
-
-//
-// NOTES
+// Notes
 //
 
 model Note {
-  id          String    @id @default(cuid())
+  id      String  @id @default(uuid())
+  title   String
+  content String?
+
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   workspaceId String    @map("workspace_id")
-  title       String?
-  content     Json
-  parentId    String?   @map("parent_id")
-  createdBy   String    @map("created_by")
-  createdAt   DateTime  @default(now()) @map("created_at")
-  deletedAt   DateTime? @map("deleted_at")
 
-  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  linksFrom Link[] @relation("FromLinks") // for outgoing links
+  linksTo   Link[] @relation("ToLinks") // for incoming links (backlinks)
 
-  parent   Note?  @relation("NoteToNote", fields: [parentId], references: [id], onDelete: Cascade)
-  children Note[] @relation("NoteToNote")
+  syncStatus SyncStatus @default(SYNCED) @map("sync_status")
 
-  @@map("notes")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map(name: "notes")
 }
-
-//
-// METRICS
-//
-
-model Metric {
-  id          String     @id @default(cuid())
-  workspaceId String     @map("workspace_id")
-  name        String
-  type        MetricType
-  unit        String?
-
-  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  records   Record[]
-
-  @@map("metrics")
-}
-
-model Record {
-  id          String    @id @default(cuid())
-  workspaceId String    @map("workspace_id")
-  metricId    String    @map("metric_id")
-  value       Float
-  recordedAt  DateTime  @map("recorded_at")
-  deletedAt   DateTime? @map("deleted_at")
-  source      String?
-
-  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  metric    Metric    @relation(fields: [metricId], references: [id], onDelete: Cascade)
-
-  @@index([metricId, recordedAt])
-  @@map("records")
-}
-
-//
-// TRANSACTIONS
-//
-
-model Transaction {
-  id          String          @id @default(cuid())
-  workspaceId String          @map("workspace_id")
-  amount      Float
-  type        TransactionType
-  category    String?
-  occurredAt  DateTime        @map("occurred_at")
-  note        String?
-
-  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-
-  @@map("transactions")
-}
-
-//
-// LINKS
-//
 
 model Link {
-  id          String @id @default(cuid())
-  workspaceId String @map("workspace_id")
+  id String @id @default(uuid())
 
-  fromType EntityType @map("from_type")
-  fromId   String     @map("from_id")
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String    @map("workspace_id")
+  from        Note      @relation("FromLinks", fields: [fromId], references: [id])
+  fromId      String    @map("from_id")
+  to          Note      @relation("ToLinks", fields: [toId], references: [id])
+  toId        String    @map("to_id")
 
-  toType EntityType @map("to_type")
-  toId   String     @map("to_id")
+  syncStatus SyncStatus @default(SYNCED) @map("sync_status")
 
-  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  @@index([fromType, fromId])
-  @@index([toType, toId])
-  @@map("links")
+  @@unique([fromId, toId]) // to avoid duplicate links
+  @@map(name: "links")
 }
