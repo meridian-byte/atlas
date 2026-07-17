@@ -26,18 +26,18 @@ export const workspacesUpdate = async (workspaces: WorkspaceGet[], deletedIds?: 
   }
 };
 
-export const eventGet = (params: { eventId: string }) => {
-  return apiCall(params.eventId, 'GET');
+export const workspaceGet = (params: { workspaceId: string }) => {
+  return apiCall(params.workspaceId, 'GET');
 };
 
-export const eventCreate = (event: WorkspaceCreate) => {
-  return apiCall('create', 'POST', event);
+export const workspaceCreate = (workspace: WorkspaceCreate) => {
+  return apiCall('create', 'POST', workspace);
 };
 
-export const eventUpdate = (event: WorkspaceUpdate) => {
-  return apiCall(event.id as string, 'PUT', event);
+export const workspaceUpdate = (workspace: WorkspaceUpdate) => {
+  return apiCall(workspace.id as string, 'PUT', workspace);
 };
 
-export const eventDelete = (eventId: string) => {
-  return apiCall(eventId, 'DELETE');
+export const workspaceDelete = (workspaceId: string) => {
+  return apiCall(workspaceId, 'DELETE');
 };
