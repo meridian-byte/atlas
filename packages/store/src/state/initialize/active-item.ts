@@ -17,7 +17,7 @@ import {
 } from '@repo/utils';
 import { useStoreActiveItems } from '../active-items';
 import { useStoreWorkspace } from '../workspace';
-import { useWorkspaceActions } from '@repo/handlers';
+import { useWorkspaceActions } from '../actions/workspace';
 import { WorkspaceGet } from '@repo/types';
 
 export const useActiveItemStore = () => {
