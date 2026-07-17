@@ -57,11 +57,11 @@ export function SignOut({
         setClicked(true);
 
         if (props.options?.clearDB) {
-          // Delete local database
+          // Shut down local db connections delete local db
           await deleteDatabase(props.dbConfig.name);
         }
 
-        // Clear storage (optional)
+        // clear storage
         localStorage.clear();
         sessionStorage.clear();
 
@@ -82,6 +82,7 @@ export function SignOut({
         zIndex={1000}
         overlayProps={{ radius: 'sm', blur: 2 }}
         loaderProps={{ size: 'xs' }}
+        style={{ borderRadius: 0 }}
       />
       {children}
     </Box>
