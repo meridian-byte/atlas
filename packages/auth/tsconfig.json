@@ -2,8 +2,7 @@
   "extends": "@repo/config/tsconfig/base.json",
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "src",
-    "lib": ["DOM"]
+    "rootDir": "src"
   },
   "include": ["src"]
 }

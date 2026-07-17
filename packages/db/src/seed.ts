@@ -1,25 +1,11 @@
 import { db } from './client';
 
 async function main() {
-  const user = await db.user.create({
+  const user = await db.profile.create({
     data: {
       email: 'test@atlas.dev',
-      name: 'Test User',
-      memberships: {
-        create: {
-          role: 'OWNER',
-          workspace: {
-            create: {
-              name: 'Default Workspace',
-              owner: {
-                connect: {
-                  email: 'test@atlas.dev',
-                },
-              },
-            },
-          },
-        },
-      },
+      firstName: 'Test',
+      lastName: 'User',
     },
   });
 
