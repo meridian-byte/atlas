@@ -11,7 +11,7 @@ import { config } from './indexed-db/config';
 import { openDatabase } from './indexed-db/actions';
 import { Database, DatabaseError } from './indexed-db/transactions';
 
-import { STORE_NAME, API_URL } from '@repo/constants';
+import { STORE_NAME } from '@repo/constants';
 import { SyncParams, SyncStatus } from '@repo/types';
 import { eventsUpdate, workspacesUpdate, notesUpdate, linksUpdate } from '@repo/handlers';
 
@@ -114,6 +114,7 @@ export interface MergedSyncPayload {
 
 // Update the MergedSyncParams to handle multiple datasets
 export type MergedSyncParams = {
+  apiUrl: string;
   payload: MergedSyncPayload;
   onSuccess?: (key: keyof MergedSyncPayload, updatedItems: any[]) => void;
   onClearDeleted?: (key: keyof MergedSyncPayload) => void;
@@ -244,7 +245,10 @@ export const handleMergedSync = async (
   }
 };
 
-export const syncToServerDBMerged = async (payload: MergedSyncPayload) => {
+export const syncToServerDBMerged = async (
+  payload: MergedSyncPayload,
+  options: { apiUrl: string },
+) => {
   const now = new Date();
   const finalPayload: Record<string, any> = {};
   const activeStores: string[] = [];
@@ -262,7 +266,7 @@ export const syncToServerDBMerged = async (payload: MergedSyncPayload) => {
   try {
     if (activeStores.length === 0) return;
 
-    const response = await fetch(`${API_URL}/app-data?stores=${activeStores.join(',')}`, {
+    const response = await fetch(`${options.apiUrl}/app-data?stores=${activeStores.join(',')}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(finalPayload),
@@ -350,7 +354,7 @@ export const syncToServerAfterDelay = async (
     setSyncStatus(SyncStatus.PENDING);
 
     // 1. Send the merged payload
-    const result = await syncToServerDBMerged(payload);
+    const result = await syncToServerDBMerged(payload, { apiUrl: params.apiUrl });
 
     if (result?.error) {
       // handle errors (marking items with SyncStatus.ERROR)

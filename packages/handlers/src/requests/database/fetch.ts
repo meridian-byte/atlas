@@ -5,18 +5,17 @@
  * Do not modify unless you intend to backport changes to the template.
  */
 
-import { API_URL } from '@repo/constants';
+import { BASE_URL_CLIENT } from '@repo/constants';
 import { HEADERS } from '@repo/constants';
-
-const baseRequestUrl = `${API_URL}/links`;
 
 export const apiCall = async (
   endpoint: string,
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
+  baseRequestUrl: string,
   body?: any,
   signal?: AbortSignal,
 ) => {
-  const url = endpoint ? `${baseRequestUrl}/${endpoint}` : baseRequestUrl;
+  const url = `${baseRequestUrl}/${endpoint}`;
   const hasBody = !!body;
   const headers = hasBody ? HEADERS.WITH_BODY : HEADERS.WITHOUT_BODY;
 
