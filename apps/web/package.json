@@ -19,7 +19,6 @@
     "@repo/utils": "workspace:*",
     "@repo/handlers": "workspace:*",
     "@repo/store": "workspace:*",
-    "@repo/sync": "workspace:*",
     "@repo/cloudbase": "workspace:*",
     "@tabler/icons-react": "^3.44.0",
     "next": "16.2.10",

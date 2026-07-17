@@ -47,9 +47,6 @@ importers:
       '@repo/store':
         specifier: workspace:*
         version: link:../../packages/store
-      '@repo/sync':
-        specifier: workspace:*
-        version: link:../../services/sync
       '@repo/types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -198,9 +195,6 @@ importers:
       '@repo/db':
         specifier: workspace:*
         version: link:../db
-      '@repo/store':
-        specifier: workspace:*
-        version: link:../store
       '@repo/types':
         specifier: workspace:*
         version: link:../types
@@ -375,37 +369,6 @@ importers:
       '@repo/config':
         specifier: workspace:*
         version: link:../../packages/config
-      typescript:
-        specifier: ^5.6.2
-        version: 5.9.3
-
-  services/sync:
-    dependencies:
-      '@mantine/hooks':
-        specifier: ^9.4.1
-        version: 9.4.1(react@19.2.4)
-      '@repo/constants':
-        specifier: workspace:*
-        version: link:../../packages/constants
-      '@repo/store':
-        specifier: workspace:*
-        version: link:../../packages/store
-      '@repo/types':
-        specifier: workspace:*
-        version: link:../../packages/types
-      '@repo/utils':
-        specifier: workspace:*
-        version: link:../../packages/utils
-      react:
-        specifier: 19.2.4
-        version: 19.2.4
-    devDependencies:
-      '@repo/config':
-        specifier: workspace:*
-        version: link:../../packages/config
-      '@types/react':
-        specifier: ^19
-        version: 19.2.17
       typescript:
         specifier: ^5.6.2
         version: 5.9.3
