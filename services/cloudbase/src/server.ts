@@ -7,6 +7,8 @@
  * Do not modify unless you intend to backport changes to the template.
  */
 
+/// <reference types="node" />
+
 import { createServerClient } from '@supabase/ssr';
 import { cookies, headers } from 'next/headers';
 

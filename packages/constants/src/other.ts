@@ -5,6 +5,9 @@
  * Do not modify unless you intend to backport changes to the template.
  */
 
+/// <reference lib="dom" />
+/// <reference lib="dom.iterable" />
+
 import { ColorScheme } from '@repo/types';
 
 export const DEFAULT_COLOR_SCHEME: ColorScheme = ColorScheme.AUTO;
