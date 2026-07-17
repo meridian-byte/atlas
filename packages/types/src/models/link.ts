@@ -1,4 +1,4 @@
-import { Prisma, Link } from '@repo/db/src/generated/prisma/client.js';
+import { Prisma, Link } from '@repo/db';
 
 // Type for creating a item (without id and relations)
 export type LinkCreate = Prisma.LinkCreateInput;
