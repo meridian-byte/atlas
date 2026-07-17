@@ -1,8 +1,12 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
+    "generate": {
+      "cache": true,
+      "outputs": ["packages/db/src/generated/prisma/**"]
+    },
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "@repo/db#generate"],
       "env": [
         "TURBO_TELEMETRY_DISABLED=1",
 
@@ -41,7 +45,7 @@
       "dependsOn": ["^lint"]
     },
     "check-types": {
-      "dependsOn": ["^check-types"]
+      "dependsOn": ["^check-types", "@repo/db#generate"]
     }
   }
 }
