@@ -6,70 +6,26 @@
  */
 
 import { useCallback, useEffect } from 'react';
-import { STORE_NAME } from '@repo/constants/names';
-import { budgetsUpdate } from '@repo/handlers/requests/database/budgets';
-import { workspacesUpdate } from '@repo/handlers/requests/database/workspaces';
-import { accountsUpdate } from '@repo/handlers/requests/database/accounts';
-import { accountGroupsUpdate } from '@repo/handlers/requests/database/account-groups';
-import { transactionsUpdate } from '@repo/handlers/requests/database/transactions';
-import { categoriesUpdate } from '@repo/handlers/requests/database/categories';
-import { useStoreCategory } from '@repo/libraries/zustand/stores/category';
-import { useStoreBudget } from '@repo/libraries/zustand/stores/budget';
-import { useStoreAccount } from '@repo/libraries/zustand/stores/account';
-import { useStoreAccountGroup } from '@repo/libraries/zustand/stores/account-group';
-import { useStoreTransaction } from '@repo/libraries/zustand/stores/transaction';
-import { SyncParams } from '@repo/types/sync';
-import {
-  SessionValue,
-  useStoreSession,
-} from '@repo/libraries/zustand/stores/session';
-import { useStoreNote } from '@repo/libraries/zustand/stores/note';
-import { notesUpdate } from '@repo/handlers/requests/database/notes';
-import { useStoreLink } from '@repo/libraries/zustand/stores/link';
-import { linksUpdate } from '@repo/handlers/requests/database/links';
-import { useStorePost } from '@repo/libraries/zustand/stores/post';
-import { postsUpdate } from '@repo/handlers/requests/database/posts';
-import { useStoreFood } from '@repo/libraries/zustand/stores/food';
-import { foodsUpdate } from '@repo/handlers/requests/database/foods';
-import { useStoreMeal } from '@repo/libraries/zustand/stores/meal';
-import { mealsUpdate } from '@repo/handlers/requests/database/meals';
-import { useStoreServing } from '@repo/libraries/zustand/stores/serving';
-import { servingsUpdate } from '@repo/handlers/requests/database/servings';
-import { useStoreEat } from '@repo/libraries/zustand/stores/eat';
-import { eatsUpdate } from '@repo/handlers/requests/database/eats';
-import { useStoreMass } from '@repo/libraries/zustand/stores/mass';
-import { massesUpdate } from '@repo/handlers/requests/database/masses';
-import { chatsUpdate } from '@repo/handlers/requests/database/chats';
-import { useStoreChat } from '@repo/libraries/zustand/stores/chat';
-import { useStoreCustomization } from '@repo/libraries/zustand/stores/customization';
-import { customizationsUpdate } from '@repo/handlers/requests/database/customizations';
-import { useStoreChatMessage } from '@repo/libraries/zustand/stores/chat-message';
-import { chatMessagesUpdate } from '@repo/handlers/requests/database/chat-messages';
 import { useIdle, UserNetworkReturnValue } from '@mantine/hooks';
-import { useStoreTask } from '@repo/libraries/zustand/stores/task';
-import { tasksUpdate } from '@repo/handlers/requests/database/tasks';
-import { useStoreReminder } from '@repo/libraries/zustand/stores/reminder';
-import { remindersUpdate } from '@repo/handlers/requests/database/reminders';
-import { viewsUpdate } from '@repo/handlers/requests/database/views';
-import { useStoreView } from '@repo/libraries/zustand/stores/view';
-import { useStoreRecurringRule } from '@repo/libraries/zustand/stores/recurring-rule';
-import { recurringRulesUpdate } from '@repo/handlers/requests/database/recurring-rules';
-import { SyncStatusValue } from '@repo/libraries/zustand/stores/sync-status';
-import { SyncStatus } from '@repo/types/models/enums';
-import { openDatabase } from '@repo/libraries/indexed-db/actions';
-import { config } from '@repo/libraries/indexed-db/config';
-import { API_URL } from '@repo/constants/paths';
-import {
-  Database,
-  DatabaseError,
-} from '@repo/libraries/indexed-db/transactions';
-import { useStoreWorkspace } from '@repo/libraries/zustand/stores/workspace';
+import { config } from './indexed-db/config';
+import { openDatabase } from './indexed-db/actions';
+import { Database, DatabaseError } from './indexed-db/transactions';
+
+import { STORE_NAME, API_URL } from '@repo/constants';
+import { SyncParams, SyncStatus } from '@repo/types';
+import { eventsUpdate, workspacesUpdate, notesUpdate, linksUpdate } from '@repo/handlers';
+
+import { SessionValue, useStoreSession } from './state/session';
+import { useStoreNote } from './state/note';
+import { useStoreLink } from './state/link';
+import { SyncStatusValue } from './state/sync-status';
+import { useStoreWorkspace } from './state/workspace';
+import { useStoreEvent } from './state/event';
 
 const useSessionCheck = () => {
   const session = useStoreSession((s) => s.session);
   const noSession =
-    session === undefined ||
-    (!session && (!(session as SessionValue)?.email as any));
+    session === undefined || (!session && (!(session as SessionValue)?.email as any));
 
   return { noSession };
 };
@@ -85,15 +41,6 @@ type SyncStoreConfig<TItems = any, THookReturn = any> = {
 };
 
 export const SYNC_STORES: Record<string, SyncStoreConfig> = {
-  [STORE_NAME.CATEGORIES]: {
-    dataStore: STORE_NAME.CATEGORIES,
-    useStoreHook: useStoreCategory,
-    serverUpdate: categoriesUpdate,
-    getItems: (store) => store.categories,
-    getDeleted: (store) => store.deleted,
-    setItems: (store, items) => store.setCategories(items),
-    clearDeleted: (store) => store.clearDeletedCategories(),
-  },
   [STORE_NAME.WORKSPACES]: {
     dataStore: STORE_NAME.WORKSPACES,
     useStoreHook: useStoreWorkspace,
@@ -102,6 +49,15 @@ export const SYNC_STORES: Record<string, SyncStoreConfig> = {
     getDeleted: (store) => store.deleted,
     setItems: (store, items) => store.setWorkspaces(items),
     clearDeleted: (store) => store.clearDeletedWorkspaces(),
+  },
+  [STORE_NAME.EVENTS]: {
+    dataStore: STORE_NAME.EVENTS,
+    useStoreHook: useStoreEvent,
+    serverUpdate: eventsUpdate,
+    getItems: (store) => store.events,
+    getDeleted: (store) => store.deleted,
+    setItems: (store, items) => store.setEvents(items),
+    clearDeleted: (store) => store.clearDeletedEvents(),
   },
   [STORE_NAME.NOTES]: {
     dataStore: STORE_NAME.NOTES,
@@ -112,98 +68,48 @@ export const SYNC_STORES: Record<string, SyncStoreConfig> = {
     setItems: (store, items) => store.setNotes(items),
     clearDeleted: (store) => store.clearDeletedNotes(),
   },
-  [STORE_NAME.TASKS]: {
-    dataStore: STORE_NAME.TASKS,
-    useStoreHook: useStoreTask,
-    serverUpdate: tasksUpdate,
-    getItems: (store) => store.tasks,
+  [STORE_NAME.LINKS]: {
+    dataStore: STORE_NAME.LINKS,
+    useStoreHook: useStoreLink,
+    serverUpdate: linksUpdate,
+    getItems: (store) => store.links,
     getDeleted: (store) => store.deleted,
-    setItems: (store, items) => store.setTasks(items),
-    clearDeleted: (store) => store.clearDeletedTasks(),
-  },
-  [STORE_NAME.REMINDERS]: {
-    dataStore: STORE_NAME.REMINDERS,
-    useStoreHook: useStoreReminder,
-    serverUpdate: remindersUpdate,
-    getItems: (store) => store.reminders,
-    getDeleted: (store) => store.deleted,
-    setItems: (store, items) => store.setReminders(items),
-    clearDeleted: (store) => store.clearDeletedReminders(),
-  },
-  [STORE_NAME.RECURRING_RULES]: {
-    dataStore: STORE_NAME.RECURRING_RULES,
-    useStoreHook: useStoreRecurringRule,
-    serverUpdate: recurringRulesUpdate,
-    getItems: (store) => store.recurringRules,
-    getDeleted: (store) => store.deleted,
-    setItems: (store, items) => store.setRecurringRules(items),
-    clearDeleted: (store) => store.clearDeletedRecurringRules(),
-  },
-  [STORE_NAME.VIEWS]: {
-    dataStore: STORE_NAME.VIEWS,
-    useStoreHook: useStoreView,
-    serverUpdate: viewsUpdate,
-    getItems: (store) => store.views,
-    getDeleted: (store) => store.deleted,
-    setItems: (store, items) => store.setViews(items),
-    clearDeleted: (store) => store.clearDeletedViews(),
+    setItems: (store, items) => store.setLinks(items),
+    clearDeleted: (store) => store.clearDeletedLinks(),
   },
 } as const;
 
 type SyncStoreKey = keyof typeof SYNC_STORES;
 
 const SYNC_REGISTRY: Record<SyncStoreKey, any> = {
-  [STORE_NAME.CATEGORIES]: {
-    store: useStoreCategory,
-    updateState: (items: any) =>
-      useStoreCategory.getState().setCategories(items),
-    clearDeleted: () => useStoreCategory.getState().clearDeletedCategories(),
-  },
   [STORE_NAME.WORKSPACES]: {
     store: useStoreWorkspace,
-    updateState: (items: any) =>
-      useStoreWorkspace.getState().setWorkspaces(items),
+    updateState: (items: any) => useStoreWorkspace.getState().setWorkspaces(items),
     clearDeleted: () => useStoreWorkspace.getState().clearDeletedWorkspaces(),
+  },
+  [STORE_NAME.EVENTS]: {
+    store: useStoreEvent,
+    updateState: (items: any) => useStoreEvent.getState().setEvents(items),
+    clearDeleted: () => useStoreEvent.getState().clearDeletedEvents(),
   },
   [STORE_NAME.NOTES]: {
     store: useStoreNote,
     updateState: (items: any) => useStoreNote.getState().setNotes(items),
     clearDeleted: () => useStoreNote.getState().clearDeletedNotes(),
   },
-  [STORE_NAME.TASKS]: {
-    store: useStoreTask,
-    updateState: (items: any) => useStoreTask.getState().setTasks(items),
-    clearDeleted: () => useStoreTask.getState().clearDeletedTasks(),
-  },
-  [STORE_NAME.REMINDERS]: {
-    store: useStoreReminder,
-    updateState: (items: any) =>
-      useStoreReminder.getState().setReminders(items),
-    clearDeleted: () => useStoreReminder.getState().clearDeletedReminders(),
-  },
-  [STORE_NAME.RECURRING_RULES]: {
-    store: useStoreRecurringRule,
-    updateState: (items: any) =>
-      useStoreRecurringRule.getState().setRecurringRules(items),
-    clearDeleted: () =>
-      useStoreRecurringRule.getState().clearDeletedRecurringRules(),
-  },
-  [STORE_NAME.VIEWS]: {
-    store: useStoreView,
-    updateState: (items: any) => useStoreView.getState().setViews(items),
-    clearDeleted: () => useStoreView.getState().clearDeletedViews(),
+  [STORE_NAME.LINKS]: {
+    store: useStoreLink,
+    updateState: (items: any) => useStoreLink.getState().setLinks(items),
+    clearDeleted: () => useStoreLink.getState().clearDeletedLinks(),
   },
 };
 
 // Define a shape for the payload
 export interface MergedSyncPayload {
-  [STORE_NAME.CATEGORIES]?: { items: any[]; deleted: any[] };
   [STORE_NAME.WORKSPACES]?: { items: any[]; deleted: any[] };
+  [STORE_NAME.EVENTS]?: { items: any[]; deleted: any[] };
   [STORE_NAME.NOTES]?: { items: any[]; deleted: any[] };
-  [STORE_NAME.TASKS]?: { items: any[]; deleted: any[] };
-  [STORE_NAME.REMINDERS]?: { items: any[]; deleted: any[] };
-  [STORE_NAME.RECURRING_RULES]?: { items: any[]; deleted: any[] };
-  [STORE_NAME.VIEWS]?: { items: any[]; deleted: any[] };
+  [STORE_NAME.LINKS]?: { items: any[]; deleted: any[] };
 }
 
 // Update the MergedSyncParams to handle multiple datasets
@@ -224,22 +130,16 @@ export const useMergedSync = (params: {
   const { noSession } = useSessionCheck();
 
   // Call all hooks at the top level (Required by Hook Rules)
-  const categoryStore = useStoreCategory();
   const workspaceStore = useStoreWorkspace();
+  const eventStore = useStoreEvent();
   const noteStore = useStoreNote();
-  const taskStore = useStoreTask();
-  const reminderStore = useStoreReminder();
-  const recurringRuleStore = useStoreRecurringRule();
-  const viewStore = useStoreView();
+  const linkStore = useStoreLink();
 
   const stores = {
-    [STORE_NAME.CATEGORIES]: categoryStore,
     [STORE_NAME.WORKSPACES]: workspaceStore,
+    [STORE_NAME.EVENTS]: eventStore,
     [STORE_NAME.NOTES]: noteStore,
-    [STORE_NAME.VIEWS]: viewStore,
-    [STORE_NAME.TASKS]: taskStore,
-    [STORE_NAME.REMINDERS]: reminderStore,
-    [STORE_NAME.RECURRING_RULES]: recurringRuleStore,
+    [STORE_NAME.LINKS]: linkStore,
   };
 
   const sync = useCallback(async () => {
@@ -252,9 +152,7 @@ export const useMergedSync = (params: {
 
       // Safety Check: skip if config doesn't exist for this key
       if (!config) {
-        console.warn(
-          `Sync config for hook key "${key}" is missing in SYNC_STORES.`
-        );
+        console.warn(`Sync config for hook key "${key}" is missing in SYNC_STORES.`);
         return;
       }
 
@@ -265,11 +163,10 @@ export const useMergedSync = (params: {
       // ONLY add to payload if there is something that needs action
       const needsSync = items.some(
         (i) =>
-          i.sync_status === SyncStatus.PENDING ||
-          i.sync_status === SyncStatus.SAVED ||
-          i.sync_status === SyncStatus.ERROR ||
-          (i.sync_status === SyncStatus.SYNCED_CLIENT &&
-            isRecent(i.updated_at || i.created_at))
+          i.syncStatus === SyncStatus.PENDING ||
+          i.syncStatus === SyncStatus.SAVED ||
+          i.syncStatus === SyncStatus.ERROR ||
+          (i.syncStatus === SyncStatus.SYNCED_CLIENT && isRecent(i.updatedAt || i.createdAt)),
       );
 
       if (needsSync || deleted.length > 0) {
@@ -284,9 +181,10 @@ export const useMergedSync = (params: {
     }
   }, [
     storesToSync,
-    // categoryStore,
     // workspaceStore,
+    // eventStore,
     // noteStore,
+    // linkStore,
     handleSync,
     params.syncStatus,
   ]);
@@ -306,16 +204,10 @@ export const handleMergedSync = async (
     syncStatus: SyncStatusValue;
     debounceMergedSyncToServer: (...args: any) => void;
     clientOnly?: boolean;
-  }
+  },
 ) => {
-  const {
-    payload,
-    networkStatus,
-    session,
-    setSyncStatus,
-    debounceMergedSyncToServer,
-    clientOnly,
-  } = params;
+  const { payload, networkStatus, session, setSyncStatus, debounceMergedSyncToServer, clientOnly } =
+    params;
 
   try {
     const db = await openDatabase(config);
@@ -330,7 +222,7 @@ export const handleMergedSync = async (
         ...data,
         items: data?.items || [],
         deletedItems: data?.deleted || [],
-        dataStore: config.dataStore,
+        dataStore: config!.dataStore,
         stateUpdateFunction: registry.updateState,
         stateUpdateFunctionDeleted: registry.clearDeleted,
         online: networkStatus.online,
@@ -370,14 +262,11 @@ export const syncToServerDBMerged = async (payload: MergedSyncPayload) => {
   try {
     if (activeStores.length === 0) return;
 
-    const response = await fetch(
-      `${API_URL}/app-data?stores=${activeStores.join(',')}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(finalPayload),
-      }
-    );
+    const response = await fetch(`${API_URL}/app-data?stores=${activeStores.join(',')}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(finalPayload),
+    });
 
     if (!response.ok) throw new Error('Network response was not ok');
 
@@ -394,22 +283,18 @@ export const syncToServerDBMerged = async (payload: MergedSyncPayload) => {
 const prepareStorePayload = (
   key: SyncStoreKey,
   data: { items: any[]; deleted: any[] } | undefined,
-  now: Date
+  now: Date,
 ) => {
   if (!data) return null;
 
   // 1. Get items that need saving/updating
   const upserts = data.items
-    .filter(
-      (i) =>
-        i.sync_status !== SyncStatus.SYNCED &&
-        i.sync_status !== SyncStatus.DELETED
-    )
+    .filter((i) => i.syncStatus !== SyncStatus.SYNCED && i.syncStatus !== SyncStatus.DELETED)
     // ... rest of map
     .map((item) => ({
       ...item,
-      updated_at: now.toISOString(),
-      sync_status: SyncStatus.SYNCED,
+      updatedAt: now.toISOString(),
+      syncStatus: SyncStatus.SYNCED,
     }));
 
   // 2. Get the IDs of items marked for deletion
@@ -425,7 +310,7 @@ const prepareStorePayload = (
 export const handleServerResponse = async (
   responsePayload: Record<string, any>,
   networkStatus: UserNetworkReturnValue,
-  db: Database
+  db: Database,
 ) => {
   // 1. Iterate through the keys returned by the server
   for (const [key, items] of Object.entries(responsePayload)) {
@@ -457,7 +342,7 @@ export const syncToServerAfterDelay = async (
     networkStatus: UserNetworkReturnValue;
     syncStatus: SyncStatusValue;
     db: Database;
-  }
+  },
 ) => {
   const { setSyncStatus, networkStatus, payload } = params;
 
@@ -493,21 +378,19 @@ export const syncToClientDB = async (
     cleanup?: boolean;
     options?: { fromServer?: boolean };
     db: Database;
-  }
+  },
 ) => {
   if (params.options?.fromServer) {
     params.items = dedupeBy(params.items, (i) => i.id);
     params.deletedItems = dedupeBy(params.deletedItems || [], (i) => i.id);
   }
 
-  const syncedItems = params.items.filter(
-    (p) => p.sync_status == SyncStatus.SYNCED
-  );
+  const syncedItems = params.items.filter((p) => p.syncStatus == SyncStatus.SYNCED);
 
   const unsyncedItems = [
     ...params.items,
     ...(params.options?.fromServer ? [] : params.deletedItems || []),
-  ].filter((p) => p.sync_status != SyncStatus.SYNCED);
+  ].filter((p) => p.syncStatus != SyncStatus.SYNCED);
 
   try {
     // Update IndexedDB with unsynced items items
@@ -518,13 +401,11 @@ export const syncToClientDB = async (
       savedItems = unsyncedItems.map((item) => {
         return {
           ...item,
-          updated_at: params.sameDate
-            ? item.updated_at
-            : new Date().toISOString(),
-          sync_status:
-            item.sync_status == SyncStatus.DELETED
+          updatedAt: params.sameDate ? item.updatedAt : new Date().toISOString(),
+          syncStatus:
+            item.syncStatus == SyncStatus.DELETED
               ? SyncStatus.DELETED
-              : item.sync_status == SyncStatus.ERROR
+              : item.syncStatus == SyncStatus.ERROR
                 ? SyncStatus.ERROR
                 : params.online && !params.clientOnly
                   ? SyncStatus.SYNCED_CLIENT
@@ -536,9 +417,7 @@ export const syncToClientDB = async (
     if (!savedItems.length) return;
 
     if (params.cleanup) {
-      const deletedItems = savedItems.filter(
-        (i) => i.sync_status == SyncStatus.DELETED
-      );
+      const deletedItems = savedItems.filter((i) => i.syncStatus == SyncStatus.DELETED);
 
       if (deletedItems.length) {
         // remove items with sync status DELETE from client
@@ -547,7 +426,7 @@ export const syncToClientDB = async (
     }
 
     const savedItemsNotDeleted: any[] = savedItems.filter(
-      (i) => i.sync_status != SyncStatus.DELETED
+      (i) => i.syncStatus != SyncStatus.DELETED,
     );
 
     const clientDbItems = params.cleanup ? savedItemsNotDeleted : savedItems;
@@ -560,7 +439,7 @@ export const syncToClientDB = async (
 
     const stateItems = params.options?.fromServer
       ? syncedItems
-      : finalClientDbItems.filter((i) => i.sync_status != SyncStatus.DELETED);
+      : finalClientDbItems.filter((i) => i.syncStatus != SyncStatus.DELETED);
 
     if (params.deletedItems?.length) {
       params.stateUpdateFunctionDeleted();
