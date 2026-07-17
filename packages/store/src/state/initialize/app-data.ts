@@ -10,7 +10,6 @@
 import { useEffect } from 'react';
 import { STORE_NAME } from '@repo/constants';
 import { useStoreWorkspace } from '../workspace';
-import { API_URL } from '@repo/constants';
 import { SessionValue, useStoreSession } from '../session';
 import { useStoreNote } from '../note';
 import { useStoreEvent } from '../event';
@@ -160,6 +159,7 @@ export const LOAD_STORES: Record<string, LoadStoreConfig> = {
 type LoadStoreKey = keyof typeof LOAD_STORES;
 
 export const useLoadAppData = (options: {
+  apiUrl: string;
   storesToLoad: Partial<Record<LoadStoreKey, boolean>>;
   clientOnly?: boolean;
 }) => {
@@ -187,7 +187,9 @@ export const useLoadAppData = (options: {
         // 2. Fetch only the required data
         // Pass the requested stores as a query param so the server can optimize
         const storeQuery = activeStoreKeys.join(',');
-        const res = await fetch(`${API_URL}/app-data?userId=${session.id}&stores=${storeQuery}`);
+        const res = await fetch(
+          `${options.apiUrl}/app-data?userId=${session.id}&stores=${storeQuery}`,
+        );
         if (!res.ok) throw new Error('Failed to fetch app data');
 
         const fullPayload = await res.json();

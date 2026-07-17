@@ -8,36 +8,44 @@
 import { NoteCreate, NoteGet, NoteUpdate } from '@repo/types';
 import { apiCall } from './fetch';
 
-export const notesGet = (params?: { userId?: string }) => {
+const segment = 'notes';
+
+export const notesGet = (params: { apiUrl: string; userId?: string }) => {
   const query = params?.userId ? `?userId=${params.userId}` : '';
-  return apiCall(query, 'GET');
+  return apiCall(segment + query, 'GET', params.apiUrl);
 };
 
 let currentController: AbortController | null = null;
 
-export const notesUpdate = async (notes: NoteGet[], deletedIds?: string[]) => {
+export const notesUpdate = async (apiUrl: string, notes: NoteGet[], deletedIds?: string[]) => {
   if (currentController) currentController.abort();
   currentController = new AbortController();
 
   try {
-    return await apiCall('', 'PUT', { notes, deletedIds }, currentController.signal);
+    return await apiCall(
+      segment + '',
+      'PUT',
+      apiUrl,
+      { notes, deletedIds },
+      currentController.signal,
+    );
   } finally {
     currentController = null;
   }
 };
 
-export const noteGet = (params: { noteId: string }) => {
-  return apiCall(params.noteId, 'GET');
+export const noteGet = (params: { apiUrl: string; noteId: string }) => {
+  return apiCall(segment + `/${params.noteId}`, 'GET', params.apiUrl);
 };
 
-export const noteCreate = (note: NoteCreate) => {
-  return apiCall('create', 'POST', note);
+export const noteCreate = (apiUrl: string, note: NoteCreate) => {
+  return apiCall(segment + '/create', 'POST', apiUrl, note);
 };
 
-export const noteUpdate = (note: NoteUpdate) => {
-  return apiCall(note.id as string, 'PUT', note);
+export const noteUpdate = (apiUrl: string, note: NoteUpdate) => {
+  return apiCall(segment + `/${note.id}`, 'PUT', apiUrl, note);
 };
 
-export const noteDelete = (noteId: string) => {
-  return apiCall(noteId, 'DELETE');
+export const noteDelete = (apiUrl: string, noteId: string) => {
+  return apiCall(segment + `/${noteId}`, 'DELETE', apiUrl);
 };

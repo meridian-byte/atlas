@@ -18,7 +18,7 @@ import {
 } from '@repo/store';
 import { UserObject } from '@repo/types';
 import { AppShellValue } from '@repo/store';
-import { STORE_NAME } from '@repo/constants';
+import { BASE_URL_CLIENT, STORE_NAME } from '@repo/constants';
 
 export default function Initialize({
   props,
@@ -46,6 +46,7 @@ export default function Initialize({
   useActiveItemStore();
 
   useLoadAppData({
+    apiUrl: `${BASE_URL_CLIENT.WEB}/api`,
     clientOnly: false,
     storesToLoad: {
       [STORE_NAME.WORKSPACES]: true,
