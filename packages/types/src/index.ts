@@ -4,6 +4,7 @@ export * from './enums';
 export * from './form';
 export * from './fsa';
 export * from './indexed-db';
+export * from './sync';
 export * from './view';
 
 export * from './models/enums';

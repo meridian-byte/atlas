@@ -18,6 +18,7 @@ import {
 } from '@repo/store';
 import { UserObject } from '@repo/types';
 import { AppShellValue } from '@repo/store';
+import { STORE_NAME } from '@repo/constants';
 
 export default function Initialize({
   props,
@@ -47,8 +48,10 @@ export default function Initialize({
   useLoadAppData({
     clientOnly: false,
     storesToLoad: {
-      workspaces: true,
-      notes: true,
+      [STORE_NAME.WORKSPACES]: true,
+      [STORE_NAME.EVENTS]: true,
+      [STORE_NAME.NOTES]: true,
+      [STORE_NAME.LINKS]: true,
     },
   });
 
