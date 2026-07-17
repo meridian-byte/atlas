@@ -15,6 +15,7 @@
     "@mantine/notifications": "^9.4.1",
     "@repo/auth": "workspace:*",
     "@repo/constants": "workspace:*",
+    "@repo/db": "workspace:*",
     "@repo/types": "workspace:*",
     "@repo/utils": "workspace:*",
     "@repo/handlers": "workspace:*",

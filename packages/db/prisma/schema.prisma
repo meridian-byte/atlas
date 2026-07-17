@@ -77,6 +77,9 @@ model Profile {
   role       Role    @default(USER)
 
   workspaces Workspace[]
+  events     Event[]
+  notes      Note[]
+  links      Link[]
 
   syncStatus SyncStatus @default(SYNCED) @map("sync_status")
 
@@ -119,6 +122,8 @@ model Event {
   allDay      Boolean  @default(false) @map("all_day")
   location    String?
 
+  profile     Profile   @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId   String    @map("profile_id")
   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   workspaceId String    @map("workspace_id")
 
@@ -139,6 +144,8 @@ model Note {
   title   String
   content String?
 
+  profile     Profile   @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId   String    @map("profile_id")
   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   workspaceId String    @map("workspace_id")
 
@@ -156,12 +163,15 @@ model Note {
 model Link {
   id String @id @default(uuid())
 
+  from   Note   @relation("FromLinks", fields: [fromId], references: [id])
+  fromId String @map("from_id")
+  to     Note   @relation("ToLinks", fields: [toId], references: [id])
+  toId   String @map("to_id")
+
+  profile     Profile   @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId   String    @map("profile_id")
   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   workspaceId String    @map("workspace_id")
-  from        Note      @relation("FromLinks", fields: [fromId], references: [id])
-  fromId      String    @map("from_id")
-  to          Note      @relation("ToLinks", fields: [toId], references: [id])
-  toId        String    @map("to_id")
 
   syncStatus SyncStatus @default(SYNCED) @map("sync_status")
 
