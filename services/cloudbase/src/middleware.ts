@@ -11,6 +11,8 @@ import { validateRoute } from '@repo/utils';
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
+/// <reference types="node" />
+
 export const updateSession = async (
   request: NextRequest,
   response: NextResponse,

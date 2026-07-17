@@ -5,6 +5,8 @@
  * Do not modify unless you intend to backport changes to the template.
  */
 
+/// <reference types="node" />
+
 const isProduction = process.env.NODE_ENV === 'production';
 const useRemoteServer = process.env.NEXT_PUBLIC_USE_REMOTE_SERVER === 'true';
 

@@ -7,6 +7,8 @@
  * Do not modify unless you intend to backport changes to the template.
  */
 
+/// <reference types="node" />
+
 import { createBrowserClient } from '@supabase/ssr';
 
 export const createClient = () =>
