@@ -24,7 +24,7 @@ export const profileCreateDb = async (params: ProfileCreate) => {
               where: { id: params.id },
               data: {
                 ...params,
-                updated_at: new Date(),
+                updatedAt: new Date(),
               },
             });
 
