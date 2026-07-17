@@ -16,6 +16,7 @@ import {
 import { SHELL_VALUES } from '@web/constants';
 import {
   ASIDE_VIEW_NAMES,
+  AUTH_URLS,
   BASE_URL_CLIENT,
   ICON_SIZE,
   ICON_STROKE_WIDTH,
@@ -34,6 +35,7 @@ import { config, useStoreSession, useStoreView } from '@repo/store';
 import MenuNew from '@web/ui/menu/new';
 import { SignIn, SignOut } from '@web/ui/wrapper/actions';
 import { AuthAction } from '@repo/types';
+import Link from 'next/link';
 
 export default function App() {
   return (
@@ -75,7 +77,7 @@ function NavbarHeader() {
         <Box style={{ flex: 1 }}>
           {session === undefined ? (
             <Skeleton h={sharedSize} radius={0} />
-          ) : (
+          ) : !session?.email ? (
             <SignIn options={{ action: AuthAction.SIGN_IN }}>
               <Button
                 size="xs"
@@ -90,23 +92,30 @@ function NavbarHeader() {
                 Sign In
               </Button>
             </SignIn>
+          ) : (
+            <Button
+              size="xs"
+              fullWidth
+              variant="subtle"
+              color="dark"
+              leftSection={<IconUser size={ICON_SIZE} stroke={ICON_STROKE_WIDTH} />}
+              justify="start"
+              pl={5}
+              radius={0}
+            >
+              {session.user_metadata.name || session.email}
+            </Button>
           )}
         </Box>
 
         {session === undefined ? (
           <Skeleton h={sharedSize} w={sharedSize} radius={0} />
-        ) : !session ? null : (
-          <SignOut
-            props={{
-              baseUrl: BASE_URL_CLIENT.WEB,
-              dbConfig: config,
-              options: { clearDB: true },
-            }}
-          >
+        ) : !session?.email ? null : (
+          <Link href={AUTH_URLS.SIGN_OUT}>
             <ActionIcon size={sharedSize} variant="subtle" color="red" radius={0}>
               <IconLogout size={ICON_SIZE - 4} stroke={ICON_STROKE_WIDTH} />
             </ActionIcon>
-          </SignOut>
+          </Link>
         )}
       </Group>
 

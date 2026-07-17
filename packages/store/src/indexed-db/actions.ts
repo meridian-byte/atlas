@@ -8,27 +8,39 @@
 import { DBConfig } from '@repo/types';
 import { Database, DatabaseError } from './transactions';
 
+let cachedDbPromise: Promise<Database> | null = null;
+const activeConnections = new Set<IDBDatabase>();
+let isIntentionalDelete = false;
+
 /**
  * Open (or create) the database and apply schema updates if needed.
  */
 export const openDatabase = async (config: DBConfig): Promise<Database> => {
+  // If a connection is already being established or is open, return it
+  if (cachedDbPromise) {
+    return cachedDbPromise;
+  }
+
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(config.name, config.version);
 
     request.onerror = () => {
+      cachedDbPromise = null;
       console.error('❌ Failed to open database:', request.error);
-      reject(
-        new DatabaseError('Failed to open database', request.error ?? undefined)
-      );
+      reject(new DatabaseError('Failed to open database', request.error ?? undefined));
     };
 
     request.onsuccess = (event) => {
       const db = (event.target as IDBOpenDBRequest).result;
 
+      activeConnections.add(db);
+
       db.onversionchange = () => {
         console.warn('⚠️ Database version changed. Closing...');
 
         db.close();
+        activeConnections.delete(db);
+        cachedDbPromise = null;
 
         if (!isIntentionalDelete) {
           window.location.reload();
@@ -69,10 +81,25 @@ export const openDatabase = async (config: DBConfig): Promise<Database> => {
 };
 
 /**
+ * Cleanly closes the active connection
+ */
+export const closeDatabase = (): void => {
+  cachedDbPromise = null; // Reset the cache pointer
+
+  if (activeConnections.size > 0) {
+    activeConnections.forEach((db) => db.close());
+    activeConnections.clear();
+  }
+};
+
+/**
  * Delete a database completely.
  */
 export const deleteDatabase = async (dbName: string): Promise<void> => {
   isIntentionalDelete = true;
+
+  // Close any open connection first
+  closeDatabase();
 
   return new Promise((resolve, reject) => {
     const request = indexedDB.deleteDatabase(dbName);
@@ -90,10 +117,8 @@ export const deleteDatabase = async (dbName: string): Promise<void> => {
 
     request.onblocked = () => {
       console.warn(
-        `⚠️ Deletion of "${dbName}" is blocked. Close all open tabs using the database.`
+        `⚠️ Deletion of "${dbName}" is blocked. Close all open tabs using the database.`,
       );
     };
   });
 };
-
-let isIntentionalDelete = false;
