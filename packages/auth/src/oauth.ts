@@ -27,7 +27,6 @@ export const authOauth = async (params: { searchParams: URLSearchParams }) => {
     firstName: nameSegments.first,
     lastName: nameSegments.last,
     userName: linkify(data.user.email || ''),
-    phone: data.user.phone || '',
     email: data.user.email || '',
     avatar: data.user.user_metadata.avatar_url || '',
   });

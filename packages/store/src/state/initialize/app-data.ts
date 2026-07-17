@@ -28,7 +28,7 @@ const mergeItems = async (
 
   // 1. Identify items the server says are deleted
   const serverDeletedItems = serverItems
-    .filter((item) => item.sync_status === SyncStatus.DELETED)
+    .filter((item) => item.syncStatus === SyncStatus.DELETED)
     .map((item) => ({ id: item.id })); // Wrap in object to satisfy your helper's 'item[actualKeyPath]'
 
   const serverDeletedIds = serverDeletedItems.map((i) => i.id);
@@ -40,25 +40,25 @@ const mergeItems = async (
 
   // 3. Filter client items: remove what server deleted + what client marked deleted
   const activeClientItems = clientItems.filter(
-    (item) => !serverDeletedIds.includes(item.id) && item.sync_status !== SyncStatus.DELETED,
+    (item) => !serverDeletedIds.includes(item.id) && item.syncStatus !== SyncStatus.DELETED,
   );
 
   const mergedMap = new Map(activeClientItems.map((item) => [item.id, item]));
 
   // 4. Merge Server updates
   serverItems.forEach((serverItem) => {
-    if (serverItem.sync_status === SyncStatus.DELETED) return;
+    if (serverItem.syncStatus === SyncStatus.DELETED) return;
 
     const localItem = mergedMap.get(serverItem.id);
-    const serverTime = new Date(serverItem.updated_at).getTime();
-    const localTime = localItem ? new Date(localItem.updated_at).getTime() : 0;
+    const serverTime = new Date(serverItem.updatedAt).getTime();
+    const localTime = localItem ? new Date(localItem.updatedAt).getTime() : 0;
 
     // Update if local doesn't exist OR server is strictly newer
     if (!localItem || serverTime > localTime) {
       mergedMap.set(serverItem.id, {
         ...serverItem,
-        sync_status: SyncStatus.SYNCED,
-        updated_at: new Date(serverItem.updated_at).toISOString(),
+        syncStatus: SyncStatus.SYNCED,
+        updatedAt: new Date(serverItem.updatedAt).toISOString(),
       });
     }
   });
@@ -98,7 +98,7 @@ const loadInitialData = async (params: {
         source = bundle?.[dataStore.toLowerCase()] || clientItems;
       }
       // Filter out items the user deleted locally while offline
-      combinedItems = source.filter((i) => i.sync_status !== SyncStatus.DELETED);
+      combinedItems = source.filter((i) => i.syncStatus !== SyncStatus.DELETED);
     }
 
     // 3. Scenario B: Server-Sync Mode
@@ -106,10 +106,10 @@ const loadInitialData = async (params: {
       if (clientItems.length === 0 && serverItems.length > 0) {
         // First-time sync (Cold start)
         combinedItems = serverItems
-          .filter((item) => item.sync_status !== SyncStatus.DELETED)
+          .filter((item) => item.syncStatus !== SyncStatus.DELETED)
           .map((item) => ({
             ...item,
-            updated_at: new Date(item.updated_at).toISOString(),
+            updatedAt: new Date(item.updatedAt).toISOString(),
           }));
       } else {
         // Standard Reconcile (The logic that fixes your multi-device lag)
