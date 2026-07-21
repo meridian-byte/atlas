@@ -71,6 +71,7 @@ export const SUBVIEW_NAMES = {
     DAY: `day`,
     WEEK: `week`,
     MONTH: `month`,
+    YEAR: `year`,
   },
   JOT: {
     HOME: `home`,

@@ -17,6 +17,7 @@ import {
   IconCalendarShare,
   IconCircleCheck,
   IconInbox,
+  IconLayoutCards,
   IconLayoutDistributeHorizontal,
   IconLayoutGrid,
   IconLayoutList,
@@ -27,7 +28,7 @@ import React from 'react';
 import LayoutPartialNavbar from '@web/ui/layout/partial/navbar';
 
 export default function Pave() {
-  const { showSubViewPave } = useSubView();
+  const { subViewValue, showSubViewPave } = useSubView();
   const { showAsideViewPave } = useViewAside();
 
   const navLinks = [
@@ -45,6 +46,11 @@ export default function Pave() {
       icon: IconLayoutGrid,
       label: capitalizeWords(SUBVIEW_NAMES.PAVE.MONTH),
       action: () => showSubViewPave(SUBVIEW_NAMES.PAVE.MONTH),
+    },
+    {
+      icon: IconLayoutCards,
+      label: capitalizeWords(SUBVIEW_NAMES.PAVE.YEAR),
+      action: () => showSubViewPave(SUBVIEW_NAMES.PAVE.YEAR),
     },
   ];
 
@@ -67,28 +73,39 @@ export default function Pave() {
     <LayoutPartialNavbar>
       <Stack gap={'xs'}>
         <Box>
-          {navLinks.map((nl, i) => (
-            <React.Fragment key={nl.label}>
-              {i > 0 && <Divider />}
+          {navLinks.map((nl, i) => {
+            const active = nl.label.toLocaleLowerCase() == subViewValue;
 
-              <NavLink
-                label={nl.label}
-                color="dark"
-                px={'xs'}
-                py={3}
-                fw={500}
-                styles={{ label: { fontSize: 'var(--mantine-font-size-xs)' } }}
-                onClick={nl.action}
-                leftSection={
-                  <nl.icon
-                    size={ICON_SIZE - 4}
-                    stroke={ICON_STROKE_WIDTH}
-                    style={{ marginTop: 2 }}
-                  />
-                }
-              />
-            </React.Fragment>
-          ))}
+            return (
+              <React.Fragment key={nl.label}>
+                {i > 0 && <Divider />}
+
+                <NavLink
+                  label={nl.label}
+                  color="dark"
+                  px={'xs'}
+                  py={3}
+                  fw={500}
+                  styles={{
+                    label: {
+                      fontSize: 'var(--mantine-font-size-xs)',
+                      color: active ? 'var(--mantine-color-blue-6)' : undefined,
+                    },
+                  }}
+                  onClick={nl.action}
+                  leftSection={
+                    <div style={{ color: active ? 'var(--mantine-color-blue-6)' : undefined }}>
+                      <nl.icon
+                        size={ICON_SIZE - 4}
+                        stroke={ICON_STROKE_WIDTH}
+                        style={{ marginTop: 2 }}
+                      />
+                    </div>
+                  }
+                />
+              </React.Fragment>
+            );
+          })}
         </Box>
 
         <div>

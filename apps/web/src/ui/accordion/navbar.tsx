@@ -160,7 +160,7 @@ export default function Navbar() {
       multiple
       styles={{
         control: { height: 30, padding: 0, paddingLeft: '5px' },
-        label: { fontSize: 'var(--mantine-font-size-xs)', fontWeight: '500' },
+        label: { fontSize: 'var(--mantine-font-size-xs)', fontWeight: '500', padding: '0' },
         content: { padding: 0 },
       }}
     >
