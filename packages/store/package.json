@@ -14,10 +14,10 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "@mantine/hooks": "^9.4.1",
+    "@mantine/hooks": "^9.4.2",
     "@repo/constants": "workspace:*",
-    "@repo/types": "workspace:*",
     "@repo/handlers": "workspace:*",
+    "@repo/types": "workspace:*",
     "@repo/utils": "workspace:*",
     "next": "16.2.10",
     "react": "19.2.4",
