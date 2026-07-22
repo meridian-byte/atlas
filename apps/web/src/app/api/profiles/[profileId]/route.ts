@@ -5,8 +5,10 @@
  * Do not modify unless you intend to backport changes to the template.
  */
 
+import { DEFAULT_NAMES } from '@repo/constants';
 import { db } from '@repo/db';
-import { ProfileGet } from '@repo/types';
+import { ProfileGet, SyncStatus, WorkspaceGet } from '@repo/types';
+import { generateUUID } from '@repo/utils';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
@@ -42,14 +44,40 @@ export async function POST(
 
     const profile: ProfileGet = await request.json();
 
-    const updateProfile = await db.profile.upsert({
-      where: { id: profileId },
-      update: profile,
-      create: profile,
+    const transaction = await db.$transaction(async (db) => {
+      const profileRecord = await db.profile.upsert({
+        where: { id: profileId },
+        update: profile,
+        create: profile,
+      });
+
+      // const now = new Date();
+
+      // const workspaceObject: WorkspaceGet = {
+      //   id: generateUUID(),
+      //   name: DEFAULT_NAMES.WORKSPACE,
+      //   profileId: profileRecord.id,
+      //   syncStatus: SyncStatus.SYNCED,
+      //   createdAt: now,
+      //   updatedAt: now,
+      // };
+
+      // const workspaceRecord = await db.workspace.upsert({
+      //   where: { id: profileId, name: DEFAULT_NAMES.WORKSPACE },
+      //   update: workspaceObject,
+      //   create: workspaceObject,
+      // });
+
+      return {
+        profile: profileRecord,
+        existed: false,
+
+        // workspace: workspaceRecord,
+      };
     });
 
     return NextResponse.json(
-      { items: updateProfile },
+      { items: transaction },
       { status: 200, statusText: 'Profile Created' },
     );
   } catch (error) {

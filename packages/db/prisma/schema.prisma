@@ -80,6 +80,7 @@ model Profile {
   events     Event[]
   notes      Note[]
   links      Link[]
+  calendars  Calendar[]
 
   syncStatus SyncStatus @default(SYNCED) @map("sync_status")
 
@@ -97,9 +98,10 @@ model Workspace {
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
   profileId String  @map("profile_id")
 
-  events Event[]
-  notes  Note[]
-  links  Link[]
+  events    Event[]
+  notes     Note[]
+  links     Link[]
+  calendars Calendar[]
 
   syncStatus SyncStatus @default(SYNCED) @map("sync_status")
 
@@ -112,6 +114,26 @@ model Workspace {
 //
 // EVENTS
 //
+
+model Calendar {
+  id          String  @id @default(cuid())
+  title       String
+  description String?
+
+  profile     Profile   @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId   String    @map("profile_id")
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String    @map("workspace_id")
+
+  events Event[]
+
+  syncStatus SyncStatus @default(SYNCED) @map("sync_status")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("calendars")
+}
 
 model Event {
   id          String   @id @default(cuid())
@@ -126,6 +148,8 @@ model Event {
   profileId   String    @map("profile_id")
   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   workspaceId String    @map("workspace_id")
+  calendar    Calendar? @relation(fields: [calendarId], references: [id], onDelete: Cascade)
+  calendarId  String?   @map("calendar_id")
 
   syncStatus SyncStatus @default(SYNCED) @map("sync_status")
 

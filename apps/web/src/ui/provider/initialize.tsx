@@ -50,6 +50,7 @@ export default function Initialize({
     clientOnly: false,
     storesToLoad: {
       [STORE_NAME.WORKSPACES]: true,
+      [STORE_NAME.CALENDARS]: true,
       [STORE_NAME.EVENTS]: true,
       [STORE_NAME.NOTES]: true,
       [STORE_NAME.LINKS]: true,

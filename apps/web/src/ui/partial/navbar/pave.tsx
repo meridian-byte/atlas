@@ -1,11 +1,23 @@
 'use client';
 
-import { ActionIcon, Box, Divider, Group, NavLink, Stack, Title, Tooltip } from '@mantine/core';
+import {
+  ActionIcon,
+  Box,
+  Divider,
+  Group,
+  Loader,
+  NavLink,
+  Stack,
+  Text,
+  Title,
+  Tooltip,
+} from '@mantine/core';
 import {
   ASIDE_VIEW_NAMES,
   ICON_SIZE,
   ICON_STROKE_WIDTH,
   ICON_WRAPPER_SIZE,
+  SECTION_SPACING,
   SUBVIEW_NAMES,
 } from '@repo/constants';
 import { capitalizeWords } from '@repo/utils';
@@ -26,10 +38,12 @@ import {
 import { useSubView, useViewAside } from '@web/hooks/view';
 import React from 'react';
 import LayoutPartialNavbar from '@web/ui/layout/partial/navbar';
+import { useStoreCalendar } from '@repo/store';
 
 export default function Pave() {
   const { subViewValue, showSubViewPave } = useSubView();
   const { showAsideViewPave } = useViewAside();
+  const calendars = useStoreCalendar((s) => s.calendars);
 
   const navLinks = [
     {
@@ -51,21 +65,6 @@ export default function Pave() {
       icon: IconLayoutCards,
       label: capitalizeWords(SUBVIEW_NAMES.PAVE.YEAR),
       action: () => showSubViewPave(SUBVIEW_NAMES.PAVE.YEAR),
-    },
-  ];
-
-  const sampleCalendars = [
-    {
-      label: 'Holidays (US)',
-      action: () => showSubViewPave(`calendar: ${'Holidays (US)'}`),
-    },
-    {
-      label: 'Holidays (UK)',
-      action: () => showSubViewPave(`calendar: ${'Holidays (UK)'}`),
-    },
-    {
-      label: 'Birthdays',
-      action: () => showSubViewPave(`calendar: ${'Birthdays'}`),
     },
   ];
 
@@ -130,21 +129,31 @@ export default function Pave() {
           </Group>
 
           <div>
-            {sampleCalendars.map((sc, i) => (
-              <React.Fragment key={sc.label}>
-                {<Divider />}
+            {calendars === undefined ? (
+              <Stack align="center" py={'xl'} fz={'xs'}>
+                <Loader size={'xs'} />
+              </Stack>
+            ) : !calendars?.length ? (
+              <Stack align="center" py={'xl'} fz={'xs'}>
+                <Text inherit>No calendars</Text>
+              </Stack>
+            ) : (
+              calendars.map((sc, i) => (
+                <React.Fragment key={sc.title}>
+                  <Divider />
 
-                <NavLink
-                  label={sc.label}
-                  color="dark"
-                  px={'xs'}
-                  py={3}
-                  fw={500}
-                  styles={{ label: { fontSize: 'var(--mantine-font-size-xs)' } }}
-                  onClick={sc.action}
-                />
-              </React.Fragment>
-            ))}
+                  <NavLink
+                    label={sc.title}
+                    color="dark"
+                    px={'xs'}
+                    py={3}
+                    fw={500}
+                    styles={{ label: { fontSize: 'var(--mantine-font-size-xs)' } }}
+                    onClick={() => showSubViewPave(`calendar: ${sc.id}`)}
+                  />
+                </React.Fragment>
+              ))
+            )}
           </div>
         </div>
       </Stack>

@@ -12,7 +12,7 @@ import { linkify } from '@repo/utils';
 
 export const config: DBConfig = {
   name: linkify(COMPANY_NAME),
-  version: 1,
+  version: 2,
   stores: [
     // {
     //   name: STORE_NAME.SETTINGS,
@@ -38,6 +38,10 @@ export const config: DBConfig = {
     //   name: STORE_NAME.TRANSACTIONS,
     //   keyPath: 'id',
     // },
+    {
+      name: STORE_NAME.CALENDARS,
+      keyPath: 'id',
+    },
     {
       name: STORE_NAME.EVENTS,
       keyPath: 'id',
