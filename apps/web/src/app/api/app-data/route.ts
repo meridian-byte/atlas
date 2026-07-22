@@ -61,7 +61,10 @@ export async function GET(request: NextRequest) {
       .map((key) => queryMap[key]());
 
     // 3. Execute the transaction
-    const results = await db.$transaction(activeQueries);
+    const results = await db.$transaction(activeQueries, {
+      maxWait: 10000, // Wait up to 10s to acquire a connection (default: 2000ms - 5000ms)
+      timeout: 15000, // Allow the transaction to run for up to 15s (default: 5000ms)
+    });
 
     // 5. Format into a clean object: { tasks: [...], categories: [...] }
     // Map the results back to their keys
