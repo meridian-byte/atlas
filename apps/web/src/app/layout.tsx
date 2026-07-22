@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import ProviderInitialize from '@web/ui/provider/initialize';
+import ProviderSync from '@web/ui/provider/sync';
 import { APP_NAME, DEFAULT_COLOR_SCHEME } from '@repo/constants';
 import { createClientcloudbaseServer } from '@repo/cloudbase';
 import { getCookieServer } from '@repo/utils';
@@ -67,7 +68,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
       <body className="min-h-full flex flex-col">
         <MantineProvider defaultColorScheme={resolvedTheme}>
-          <ProviderInitialize props={{ sessionUser: session.user }}>{children}</ProviderInitialize>
+          <ProviderInitialize props={{ sessionUser: session.user }}>
+            <ProviderSync>{children}</ProviderSync>
+          </ProviderInitialize>
         </MantineProvider>
       </body>
     </html>
