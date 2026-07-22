@@ -5,6 +5,7 @@ export * from './state/initialize/session';
 export * from './state/initialize/user-state';
 export * from './state/initialize/view';
 
+export * from './state/actions/calendar';
 export * from './state/actions/event';
 export * from './state/actions/link';
 export * from './state/actions/note';

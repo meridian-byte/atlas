@@ -16,6 +16,7 @@ import {
   IconRepeat,
 } from '@tabler/icons-react';
 import { useViewAside } from '@web/hooks/view';
+import FormCalendar from '@web/ui/form/calendar';
 
 export default function App() {
   const { asideViewValue, showAsideViewPave, showAsideViewJot, showAsideViewStride } =
@@ -152,7 +153,9 @@ export default function App() {
       </LayoutAsideSection>
 
       <LayoutAsideSection viewKey={ASIDE_VIEW_NAMES.NEW.PAVE.CALENDAR}>
-        <div>add calendar</div>
+        <div>
+          <FormCalendar />
+        </div>
       </LayoutAsideSection>
 
       {/* 3. Jot Views */}
