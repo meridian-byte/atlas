@@ -33,6 +33,11 @@ export async function GET(request: NextRequest) {
           where: { profileId: userId },
           orderBy: { createdAt: 'desc' },
         }),
+      [STORE_NAME.CALENDARS]: () =>
+        db.calendar.findMany({
+          where: { profileId: userId },
+          orderBy: { createdAt: 'desc' },
+        }),
       [STORE_NAME.EVENTS]: () =>
         db.event.findMany({
           where: { profileId: userId },
@@ -80,6 +85,7 @@ export async function GET(request: NextRequest) {
 
 const PRISMA_MODEL_MAP: Record<string, any> = {
   [STORE_NAME.WORKSPACES]: db.workspace,
+  [STORE_NAME.CALENDARS]: db.calendar,
   [STORE_NAME.EVENTS]: db.event,
   [STORE_NAME.NOTES]: db.note,
   [STORE_NAME.LINKS]: db.link,
@@ -87,12 +93,10 @@ const PRISMA_MODEL_MAP: Record<string, any> = {
 
 const SYNC_PRIORITY: Record<string, number> = {
   [STORE_NAME.WORKSPACES]: 1,
-  [STORE_NAME.CATEGORIES]: 2,
-  [STORE_NAME.VIEWS]: 3,
+  [STORE_NAME.CALENDARS]: 2,
+  [STORE_NAME.EVENTS]: 3,
   [STORE_NAME.NOTES]: 4,
-  [STORE_NAME.TASKS]: 5,
-  [STORE_NAME.REMINDERS]: 6,
-  [STORE_NAME.RECURRING_RULES]: 7,
+  [STORE_NAME.LINKS]: 5,
 };
 
 export async function POST(request: NextRequest) {

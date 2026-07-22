@@ -51,6 +51,7 @@ export const STORE_NAME = {
   ACCOUNT_GROUPS: 'accountGroups',
   BUDGETS: 'budgets',
   TRANSACTIONS: 'transactions',
+  CALENDARS: 'calendars',
   EVENTS: 'events',
   FOODS: 'foods',
   MEALS: 'meals',
@@ -68,4 +69,8 @@ export const STORE_NAME = {
   VIEWS: 'views',
   NOTIFICATIONS: 'notifications',
   WORKSPACES: 'workspaces',
+};
+
+export const DEFAULT_NAMES = {
+  WORKSPACE: 'Default Workspace',
 };

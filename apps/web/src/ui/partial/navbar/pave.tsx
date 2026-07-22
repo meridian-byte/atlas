@@ -132,7 +132,7 @@ export default function Pave() {
           <div>
             {sampleCalendars.map((sc, i) => (
               <React.Fragment key={sc.label}>
-                {<Divider />}
+                <Divider />
 
                 <NavLink
                   label={sc.label}
