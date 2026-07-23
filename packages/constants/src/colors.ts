@@ -1,51 +1,80 @@
-export const colors = [
+const colors = [
   {
-    label: '🔴 Red',
-    value: '#fa5252',
+    label: 'Gray',
+    colorName: 'gray',
+    hex: '#868e96',
   },
+
+  {
+    label: 'Red',
+    colorName: 'red',
+    hex: '#fa5252',
+  },
+
   {
     label: 'Pink',
-    value: '#e64980',
+    colorName: 'pink',
+    hex: '#e64980',
   },
+
   {
     label: 'Grape',
-    value: '#be4bdb',
+    colorName: 'grape',
+    hex: '#be4bdb',
   },
+
   {
     label: 'Violet',
-    value: '#7950f2',
+    colorName: 'violet',
+    hex: '#7950f2',
   },
+
   {
-    label: '🔵 Indigo',
-    value: '#4c6ef5',
+    label: 'Indigo',
+    colorName: 'indigo',
+    hex: '#4c6ef5',
   },
+
   {
     label: 'Blue',
-    value: '#228be6',
+    colorName: 'blue',
+    hex: '#228be6',
   },
+
   {
     label: 'Cyan',
-    value: '#15aabf',
+    colorName: 'cyan',
+    hex: '#15aabf',
   },
+
   {
     label: 'Teal',
-    value: '#12b886',
+    colorName: 'teal',
+    hex: '#12b886',
   },
+
   {
-    label: '🟢 Green',
-    value: '#40c057',
+    label: 'Green',
+    colorName: 'green',
+    hex: '#40c057',
   },
+
   {
     label: 'Lime',
-    value: '#82c91e',
+    colorName: 'lime',
+    hex: '#82c91e',
   },
+
   {
-    label: '🟡 Yellow',
-    value: '#fab005',
+    label: 'Yellow',
+    colorName: 'yellow',
+    hex: '#fab005',
   },
+
   {
-    label: '🟠 Orange',
-    value: '#fd7e14',
+    label: 'Orange',
+    colorName: 'orange',
+    hex: '#fd7e14',
   },
 ];
 
@@ -55,6 +84,11 @@ export const getRandomColor = () => {
 };
 
 // Returns just the hex value e.g., '#e64980'
-export const getRandomColorValue = () => {
-  return getRandomColor().value;
+export const getRandomColorHex = () => {
+  return getRandomColor().hex;
+};
+
+// Returns just the color name e.g., 'pink'
+export const getRandomColorName = () => {
+  return getRandomColor().colorName;
 };

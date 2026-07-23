@@ -29,17 +29,15 @@ export const useFormEvent = (params?: {
       end: (params?.defaultValues?.end || new Date().toISOString()) as any,
       calendarId: params?.defaultValues?.calendarId || '',
       location: params?.defaultValues?.location || '',
-      allDay: params?.defaultValues?.allDay || false,
+      allDay: params?.defaultValues?.allDay ?? false,
     },
     {
       title: hasLength({ min: 2, max: 24 }, 'Between 2 and 24 characters required'),
       description: hasLength({ max: 255 }, 'Maximum of 255 characters required'),
-      start: hasLength({ min: 1 }, 'Start date required'),
-      end: hasLength({ min: 1 }, 'End date required'),
       location: hasLength({ max: 255 }, 'Maximum of 255 characters required'),
     },
     {
-      resetOnSuccess: true,
+      resetOnSuccess: params?.defaultValues?.updatedAt ? false : true,
       hideSuccessNotification: true,
       clientOnly: true,
 

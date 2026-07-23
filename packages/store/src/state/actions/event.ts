@@ -49,6 +49,8 @@ export const useEventActions = () => {
 
     const newEvent: EventGet = {
       ...params,
+      start: new Date(params.start).toISOString() as any,
+      end: new Date(params.end).toISOString() as any,
       syncStatus: SyncStatus.PENDING,
       updatedAt: new Date(now).toISOString() as any,
     };

@@ -7,7 +7,7 @@
  * Do not modify unless you intend to backport changes to the template.
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -15,6 +15,7 @@ import {
   Divider,
   Grid,
   GridCol,
+  Group,
   Select,
   Textarea,
   TextInput,
@@ -22,16 +23,55 @@ import {
 import { DateInput, DateTimePicker } from '@mantine/dates';
 import { useFormEvent } from '@web/hooks/form/event';
 import dayjs from 'dayjs';
-import { useStoreCalendar } from '@repo/store';
+import { useEventActions, useStoreCalendar, useStoreEvent } from '@repo/store';
+import { EventFormData } from '@repo/types';
+import { useAppshellChild } from '@web/hooks/appshell';
 
-export default function Event() {
+interface EventFormProps {
+  initialData?: EventFormData | null;
+  onClose: () => void;
+}
+
+export default function Event({ initialData, onClose }: EventFormProps) {
   const [checked, setChecked] = useState(true);
 
+  const { handleToggleChildAside } = useAppshellChild();
+
+  const events = useStoreEvent((s) => s.events);
+  const targetEvent = events?.find((e) => e.id === initialData?.id);
+
+  const calendars = useStoreCalendar((s) => s.calendars);
+  const { eventDelete } = useEventActions(); // Assuming you have a delete action in your store
+
   const { form, submitted, handleSubmit } = useFormEvent({
+    defaultValues: targetEvent,
     options: { closeWhenDone: checked },
   });
 
-  const calendars = useStoreCalendar((s) => s.calendars);
+  // Keep form values synced with clicked calendar slots or selected events
+  useEffect(() => {
+    if (initialData) {
+      form.setValues({
+        id: initialData.id,
+        title: initialData.title || '',
+        description: initialData.description || '',
+        location: initialData.location || '',
+        calendarId: initialData.calendarId || '',
+        allDay: initialData.allDay ?? false,
+        start: initialData.start || new Date(),
+        end: initialData.end || new Date(),
+      });
+    }
+  }, [initialData]);
+
+  const handleDelete = () => {
+    if (!initialData?.id) return;
+
+    if (targetEvent) {
+      eventDelete({ values: targetEvent });
+      onClose();
+    }
+  };
 
   const allDayProps = {
     component: form.values.allDay ? DateInput : DateTimePicker,
@@ -41,7 +81,6 @@ export default function Event() {
       placeholder: 'Start',
       ...form.getInputProps('start'),
       valueFormat: 'DD MMM YYYY hh:mm A',
-
       presets: [
         {
           value: dayjs().subtract(1, 'day').format('YYYY-MM-DD HH:mm:ss'),
@@ -55,11 +94,16 @@ export default function Event() {
   };
 
   return (
-    <Box component="form" onSubmit={form.onSubmit(() => handleSubmit())} noValidate p={'xs'}>
+    <Box
+      component="form"
+      onSubmit={form.onSubmit(() => {
+        handleSubmit();
+        onClose();
+      })}
+      noValidate
+      p={'xs'}
+    >
       <Grid gap={'xs'}>
-        {/* <div>{JSON.stringify(form.values.start)}</div> */}
-        {/* <div>{JSON.stringify(form.values.end)}</div> */}
-
         <GridCol span={{ base: 12 }}>
           <TextInput
             required
@@ -81,7 +125,12 @@ export default function Event() {
         </GridCol>
 
         <GridCol span={{ base: 12 }}>
-          <Checkbox label={'All day event'} {...form.getInputProps('allDay')} mt={'xs'} />
+          <Checkbox
+            label={'All day event'}
+            {...form.getInputProps('allDay')}
+            mt={'xs'}
+            defaultChecked={initialData?.allDay}
+          />
         </GridCol>
 
         <GridCol span={{ base: 12 }} display={!form.values.allDay ? 'none' : undefined}>
@@ -166,9 +215,32 @@ export default function Event() {
         </GridCol>
 
         <GridCol span={{ base: 12 }}>
-          <Button type="submit" loading={submitted}>
-            {submitted ? 'Adding' : 'Add'}
-          </Button>
+          <Group justify="space-between">
+            {initialData?.id && (
+              <Button color="red" variant="light" onClick={handleDelete}>
+                Delete
+              </Button>
+            )}
+
+            <Group gap="xs" style={{ marginLeft: 'auto' }}>
+              <Button
+                variant="default"
+                onClick={() => {
+                  if (onClose) {
+                    onClose();
+                  } else {
+                    handleToggleChildAside();
+                  }
+                }}
+              >
+                Cancel
+              </Button>
+
+              <Button type="submit" loading={submitted}>
+                {initialData?.id ? 'Update' : 'Add'}
+              </Button>
+            </Group>
+          </Group>
         </GridCol>
       </Grid>
     </Box>
