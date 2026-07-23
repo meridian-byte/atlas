@@ -9,10 +9,12 @@
 
 import {
   Anchor,
+  Checkbox,
   Container,
   createTheme,
   Divider,
   Drawer,
+  HoverCard,
   Loader,
   MantineThemeOverride,
   Menu,
@@ -25,9 +27,11 @@ import {
   ScrollAreaAutosize,
   Select,
   Tabs,
+  Textarea,
   TextInput,
   Tooltip,
 } from '@mantine/core';
+import { DateInput, DateTimePicker } from '@mantine/dates';
 // import cx from 'clsx';
 
 export type AppThemeProps = {
@@ -167,6 +171,61 @@ export const getAppTheme = (params?: AppThemeProps) => {
 
       TextInput: TextInput.extend({
         defaultProps: {
+          size: 'xs',
+          variant: 'filled',
+          styles: {
+            input: {
+              backgroundColor:
+                'light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-8))',
+              fontWeight: 500,
+            },
+          },
+        },
+      }),
+
+      Checkbox: Checkbox.extend({
+        defaultProps: {
+          size: 'xs',
+          variant: 'filled',
+          styles: {
+            input: {
+              borderColor: 'var(--mantine-color-default-border)',
+            },
+          },
+        },
+      }),
+
+      Textarea: Textarea.extend({
+        defaultProps: {
+          size: 'xs',
+          variant: 'filled',
+          styles: {
+            input: {
+              backgroundColor:
+                'light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-8))',
+              fontWeight: 500,
+            },
+          },
+        },
+      }),
+
+      DateInput: DateInput.extend({
+        defaultProps: {
+          size: 'xs',
+          variant: 'filled',
+          styles: {
+            input: {
+              backgroundColor:
+                'light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-8))',
+              fontWeight: 500,
+            },
+          },
+        },
+      }),
+
+      DateTimePicker: DateTimePicker.extend({
+        defaultProps: {
+          size: 'xs',
           variant: 'filled',
           styles: {
             input: {
@@ -180,6 +239,7 @@ export const getAppTheme = (params?: AppThemeProps) => {
 
       PasswordInput: PasswordInput.extend({
         defaultProps: {
+          size: 'xs',
           variant: 'filled',
           styles: {
             input: {
@@ -193,6 +253,7 @@ export const getAppTheme = (params?: AppThemeProps) => {
 
       Select: Select.extend({
         defaultProps: {
+          size: 'xs',
           variant: 'filled',
           styles: {
             input: {
@@ -203,6 +264,7 @@ export const getAppTheme = (params?: AppThemeProps) => {
               backgroundColor:
                 'light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-8))',
               borderColor: 'transparent',
+              padding: 'xs',
             },
           },
         },
@@ -237,6 +299,27 @@ export const getAppTheme = (params?: AppThemeProps) => {
           },
         },
         // classNames: classesMenu,
+      }),
+
+      HoverCard: HoverCard.extend({
+        defaultProps: {
+          transitionProps: {
+            enterDelay: 0,
+            duration: 100,
+            exitDuration: 100,
+            exitDelay: 0,
+          },
+          overlayProps: { backgroundOpacity: 0.5, blur: 4 },
+          shadow: 'xs',
+        },
+        styles: {
+          dropdown: {
+            overflow: 'hidden',
+            padding: 'xs',
+            backgroundColor: 'light-dark(var(--mantine-color-body), var(--mantine-color-dark-9))',
+            borderColor: 'transparent',
+          },
+        },
       }),
 
       Popover: Popover.extend({
@@ -276,7 +359,7 @@ export const getAppTheme = (params?: AppThemeProps) => {
         defaultProps: {
           centered: true,
           withCloseButton: false,
-          padding: 0,
+          padding: 'xs',
           transitionProps: {
             enterDelay: 0,
             duration: 100,
