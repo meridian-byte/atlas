@@ -112,7 +112,7 @@ function NavbarHeader() {
           <Skeleton h={sharedSize} w={sharedSize} radius={0} />
         ) : !session?.email ? null : (
           <Link href={AUTH_URLS.SIGN_OUT}>
-            <ActionIcon size={sharedSize} variant="subtle" color="red" radius={0}>
+            <ActionIcon size={sharedSize} variant="subtle" color="red.6" radius={0}>
               <IconLogout size={ICON_SIZE - 4} stroke={ICON_STROKE_WIDTH} />
             </ActionIcon>
           </Link>

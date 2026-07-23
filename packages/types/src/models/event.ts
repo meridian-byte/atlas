@@ -15,3 +15,12 @@ export type EventRelations = Prisma.EventGetPayload<{
     workspace: true;
   };
 }>;
+
+// 2. Form Types (Matches Prisma fields, but allows optional id for draft/new events)
+export type EventFormData = Omit<Partial<EventGet>, 'start' | 'end'> & {
+  id?: string;
+  title: string;
+  start: Date;
+  end: Date;
+  color?: string;
+};

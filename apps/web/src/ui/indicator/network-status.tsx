@@ -87,7 +87,7 @@ export default function NetworkStatus({
 }
 
 const getSycnStatusProps = (params: { syncStatus: SyncStatus; mobile: boolean }) => {
-  const spinner = <SpinnerApp props={{ size: ICON_WRAPPER_SIZE / 1.5 }} />;
+  const spinner = <SpinnerApp props={{ size: SHELL_VALUES.FOOTER.HEIGHT - 8 }} />;
 
   const iconProp = {
     icon: params.mobile ? IconDeviceMobileCheck : IconDeviceDesktopCheck,

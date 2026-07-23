@@ -119,6 +119,7 @@ model Calendar {
   id          String  @id @default(cuid())
   title       String
   description String?
+  color       String?
 
   profile     Profile   @relation(fields: [profileId], references: [id], onDelete: Cascade)
   profileId   String    @map("profile_id")
@@ -139,8 +140,8 @@ model Event {
   id          String   @id @default(cuid())
   title       String
   description String?
-  startAt     DateTime @map("start_at")
-  endAt       DateTime @map("end_at")
+  start       DateTime @map("start")
+  end         DateTime @map("end")
   allDay      Boolean  @default(false) @map("all_day")
   location    String?
 

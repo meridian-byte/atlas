@@ -138,7 +138,7 @@ export async function POST(request: NextRequest) {
           model.updateMany({
             where: { id: { in: deletedIds } },
             data: {
-              sync_status: SyncStatus.DELETED, // Ensure this matches your SyncStatus enum string
+              syncStatus: SyncStatus.DELETED, // Ensure this matches your SyncStatus enum string
               updatedAt: new Date(), // Critical: must be "now" to override other devices
             },
           }),
