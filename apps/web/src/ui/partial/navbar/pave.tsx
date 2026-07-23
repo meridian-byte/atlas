@@ -88,12 +88,12 @@ export default function Pave() {
                   styles={{
                     label: {
                       fontSize: 'var(--mantine-font-size-xs)',
-                      color: active ? 'var(--mantine-color-blue-6)' : undefined,
+                      color: active ? 'var(--mantine-color-pri-6)' : undefined,
                     },
                   }}
                   onClick={nl.action}
                   leftSection={
-                    <div style={{ color: active ? 'var(--mantine-color-blue-6)' : undefined }}>
+                    <div style={{ color: active ? 'var(--mantine-color-pri-6)' : undefined }}>
                       <nl.icon
                         size={ICON_SIZE - 4}
                         stroke={ICON_STROKE_WIDTH}

@@ -80,11 +80,11 @@ const loadInitialData = async (params: {
     const db = await openDatabase(config);
     let clientItems: any[] = (await db.get(dataStore)) || [];
 
-    // 1. Attach profile_id for offline-created items if session exists
+    // 1. Attach profileId for offline-created items if session exists
     if (session?.id) {
       clientItems = clientItems.map((i) => ({
         ...i,
-        profile_id: i.profile_id || session.id,
+        profileId: i.profileId || session.id,
       }));
     }
 
