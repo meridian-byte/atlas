@@ -9,9 +9,7 @@
 
 import { ConvertCSSVariablesInput, CSSVariablesResolver } from '@mantine/core';
 
-export const getAppResolver = (params?: {
-  cssVars?: ConvertCSSVariablesInput;
-}) => {
+export const getAppResolver = (params?: { cssVars?: ConvertCSSVariablesInput }) => {
   const appResolver: CSSVariablesResolver = (theme) => {
     const baseCssVars = {
       variables: {},

@@ -6,7 +6,10 @@ import { APP_NAME, DEFAULT_COLOR_SCHEME } from '@repo/constants';
 import { createClientcloudbaseServer } from '@repo/cloudbase';
 import { getCookieServer } from '@repo/utils';
 import { COOKIE_NAME } from '@repo/constants';
-import { ColorScheme } from '@repo/types';
+import ProviderMantine from '@web/ui/provider/mantine';
+import { MantineColorScheme, mantineHtmlProps } from '@mantine/core';
+import { getAppTheme } from '@web/theme';
+import { getAppResolver } from '@web/resolver';
 
 import './globals.css';
 
@@ -16,13 +19,6 @@ import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 // ‼️ import schedule styles after core and dates package styles
 import '@mantine/schedule/styles.css';
-
-import {
-  ColorSchemeScript,
-  MantineColorScheme,
-  MantineProvider,
-  mantineHtmlProps,
-} from '@mantine/core';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -67,11 +63,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
 
       <body className="min-h-full flex flex-col">
-        <MantineProvider defaultColorScheme={resolvedTheme}>
+        <ProviderMantine
+          options={{ withNotifications: true }}
+          colorScheme={resolvedTheme}
+          theme={getAppTheme}
+          cssVariablesResolver={getAppResolver}
+        >
           <ProviderInitialize props={{ sessionUser: session.user }}>
             <ProviderSync>{children}</ProviderSync>
           </ProviderInitialize>
-        </MantineProvider>
+        </ProviderMantine>
       </body>
     </html>
   );
