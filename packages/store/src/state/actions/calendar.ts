@@ -4,6 +4,7 @@ import { CalendarGet } from '@repo/types';
 import { SyncStatus } from '@repo/types';
 import { generateUUID } from '@repo/utils';
 import { useStoreActiveItems } from '../active-items';
+import { getRandomColorValue } from '@repo/constants';
 
 export const useCalendarActions = () => {
   const session = useStoreSession((s) => s.session);
@@ -23,7 +24,8 @@ export const useCalendarActions = () => {
     const newCalendar: CalendarGet = {
       id: params?.id || id,
       title: params?.title || 'New Calendar',
-      description: params?.description || '',
+      description: params?.description || null,
+      color: params?.color || getRandomColorValue(),
       profileId: params?.profileId || session.id,
       workspaceId: params?.workspaceId || activeWorkspace.id,
       syncStatus: SyncStatus.PENDING,

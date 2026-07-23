@@ -8,18 +8,19 @@
  */
 
 import React, { useState } from 'react';
-import { Box, Button, Checkbox, Grid, GridCol, Textarea, TextInput } from '@mantine/core';
+import { Box, Button, Checkbox, Divider, Grid, GridCol, Textarea, TextInput } from '@mantine/core';
 import { useFormCalendar } from '@web/hooks/form/calendar';
 
 export default function Calendar() {
   const [checked, setChecked] = useState(true);
+
   const { form, submitted, handleSubmit } = useFormCalendar({
     options: { closeWhenDone: checked },
   });
 
   return (
     <Box component="form" onSubmit={form.onSubmit(() => handleSubmit())} noValidate p={'xs'}>
-      <Grid>
+      <Grid gap={'xs'}>
         <GridCol span={{ base: 12 }}>
           <TextInput
             required
@@ -31,7 +32,6 @@ export default function Calendar() {
 
         <GridCol span={{ base: 12 }}>
           <Textarea
-            required
             label={'Description'}
             placeholder="Description"
             {...form.getInputProps('description')}
@@ -45,11 +45,16 @@ export default function Calendar() {
             label={'Close when done'}
             checked={checked}
             onChange={(event) => setChecked(event.currentTarget.checked)}
+            mt={'xs'}
           />
         </GridCol>
 
         <GridCol span={{ base: 12 }}>
-          <Button type="submit" loading={submitted} mt={'md'}>
+          <Divider my={'xs'} />
+        </GridCol>
+
+        <GridCol span={{ base: 12 }}>
+          <Button type="submit" loading={submitted}>
             {submitted ? 'Adding' : 'Add'}
           </Button>
         </GridCol>
