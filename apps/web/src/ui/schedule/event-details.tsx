@@ -14,7 +14,7 @@ export default function EventDetails({ event }: { event: ScheduleEventData & any
     <Stack gap={'xs'} fz={'xs'} c={'dimmed'}>
       {calendar && (
         <Group gap={4} justify="end">
-          <Badge size="sm" variant="light" color={calendar.color}>
+          <Badge size="sm" variant="light" color={calendar.color || undefined}>
             {calendar.title}
           </Badge>
         </Group>

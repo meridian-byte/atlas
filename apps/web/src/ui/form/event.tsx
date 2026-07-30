@@ -29,7 +29,7 @@ import { useAppshellChild } from '@web/hooks/appshell';
 
 interface EventFormProps {
   initialData?: EventFormData | null;
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 export default function Event({ initialData, onClose }: EventFormProps) {
@@ -69,7 +69,7 @@ export default function Event({ initialData, onClose }: EventFormProps) {
 
     if (targetEvent) {
       eventDelete({ values: targetEvent });
-      onClose();
+      if (onClose) onClose();
     }
   };
 
@@ -98,7 +98,7 @@ export default function Event({ initialData, onClose }: EventFormProps) {
       component="form"
       onSubmit={form.onSubmit(() => {
         handleSubmit();
-        onClose();
+        if (onClose) onClose();
       })}
       noValidate
       p={'xs'}

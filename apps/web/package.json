@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack --port 3001",
     "build": "next build",
     "start": "next start --port 3001",
-    "lint": "eslint"
+    "lint": "eslint . --max-warnings 0",
+    "check-types": "tsc --noEmit"
   },
   "dependencies": {
     "@mantine/core": "^9.4.2",

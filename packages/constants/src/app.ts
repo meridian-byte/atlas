@@ -5,8 +5,6 @@
  * Do not modify unless you intend to backport changes to the template.
  */
 
-/// <reference types="node" />
-
 export const COMPANY_NAME = 'MeridianByte';
 
 export const PHONES = {
