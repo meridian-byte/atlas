@@ -1,44 +1,58 @@
 'use client';
 
 import dayjs from 'dayjs';
-import { Badge, Group, Stack, Text } from '@mantine/core';
+import { Badge, Divider, Group, Stack, Text } from '@mantine/core';
 import { ScheduleEventData } from '@mantine/schedule';
+import { useStoreCalendar } from '@repo/store';
+import { IconClock, IconMapPin } from '@tabler/icons-react';
+import { ICON_SIZE, ICON_STROKE_WIDTH } from '@repo/constants';
 
 export default function EventDetails({ event }: { event: ScheduleEventData & any }) {
+  const calendar = useStoreCalendar((s) => s.calendars?.find((ci) => ci.id == event.calendarId));
+
   return (
-    <Stack gap="xs">
-      {event.location && (
+    <Stack gap={'xs'} fz={'xs'} c={'dimmed'}>
+      {calendar && (
         <Group gap={4} justify="end">
-          <Badge size="sm" variant="light">
-            {event.location}
+          <Badge size="sm" variant="light" color={calendar.color}>
+            {calendar.title}
           </Badge>
         </Group>
       )}
 
-      <Text fw={600} size="sm">
-        {event.title}
-      </Text>
-
-      <Text size="xs" c="dimmed">
-        {dayjs(event.start).format('MMM D, YYYY HH:mm')} – {dayjs(event.end).format('HH:mm')}
-      </Text>
+      <div>
+        <Text fw={500} size="sm" c={'var(--mantine-color-text)'}>
+          {event.title}
+        </Text>
+      </div>
 
       {event.description && (
-        <Text size="xs" c="dimmed">
-          {event.description}
-        </Text>
+        <div>
+          <Text inherit>{event.description}</Text>
+        </div>
       )}
 
-      {event.attendees && (
-        <div>
-          <Text size="xs" fw={500} mb={4}>
-            Attendees:
+      <Divider variant="dashed" />
+
+      <Group gap={4} c={'var(--mantine-color-text)'}>
+        <IconClock size={iconSize} stroke={ICON_STROKE_WIDTH} />
+
+        <Text inherit c={'dimmed'}>
+          {dayjs(event.start).format('MMM D, YYYY HH:mm')} – {dayjs(event.end).format('HH:mm')}
+        </Text>
+      </Group>
+
+      {event.location && (
+        <Group gap={4} c={'var(--mantine-color-text)'}>
+          <IconMapPin size={iconSize} stroke={ICON_STROKE_WIDTH} />
+
+          <Text inherit c={'dimmed'}>
+            {event.location}
           </Text>
-          <Text size="xs" c="dimmed">
-            {event.attendees.join(', ')}
-          </Text>
-        </div>
+        </Group>
       )}
     </Stack>
   );
 }
+
+const iconSize = ICON_SIZE - 6;
