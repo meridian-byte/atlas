@@ -35,7 +35,7 @@
         "NEXT_RESEND_KEY_AUTH",
         "NEXT_RESEND_EMAIL"
       ],
-      "outputs": ["dist/**"]
+      "outputs": ["dist/**", ".next/**"]
     },
     "dev": {
       "cache": false,
