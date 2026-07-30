@@ -3,8 +3,7 @@
   "tasks": {
     "generate": {
       "cache": true,
-      "env": ["DATABASE_URL", "DIRECT_URL"],
-      "outputs": ["packages/db/src/generated/prisma/**"]
+      "env": ["DATABASE_URL", "DIRECT_URL"]
     },
     "build": {
       "dependsOn": ["^build", "@repo/db#generate"],
