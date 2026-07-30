@@ -32,7 +32,7 @@ export const useFormEvent = (params?: {
       allDay: params?.defaultValues?.allDay ?? false,
     },
     {
-      title: hasLength({ min: 2, max: 24 }, 'Between 2 and 24 characters required'),
+      title: hasLength({ min: 2, max: 128 }, 'Between 2 and 128 characters required'),
       description: hasLength({ max: 255 }, 'Maximum of 255 characters required'),
       location: hasLength({ max: 255 }, 'Maximum of 255 characters required'),
     },
