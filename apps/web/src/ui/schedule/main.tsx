@@ -240,14 +240,12 @@ export default function Main() {
               );
             },
 
-            // Explicitly disable/strip top-level props that YearView doesn't support
-            withAgenda: undefined,
-            withEventsDragAndDrop: undefined,
-            onEventDrop: undefined,
-            withEventResize: undefined,
-            onEventResize: undefined,
-          } as any
-        }
+                  // Explicitly disable/strip top-level props that YearView doesn't support
+                  withAgenda: undefined,
+                  withEventResize: undefined,
+                  onEventResize: undefined,
+                } as any
+              }
 
         yearViewProps={
           {
