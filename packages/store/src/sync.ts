@@ -13,7 +13,13 @@ import { Database, DatabaseError } from './indexed-db/transactions';
 
 import { STORE_NAME } from '@repo/constants';
 import { SyncParams, SyncStatus } from '@repo/types';
-import { eventsUpdate, workspacesUpdate, notesUpdate, linksUpdate } from '@repo/handlers';
+import {
+  eventsUpdate,
+  workspacesUpdate,
+  notesUpdate,
+  linksUpdate,
+  calendarsUpdate,
+} from '@repo/handlers';
 
 import { SessionValue, useStoreSession } from './state/session';
 import { useStoreNote } from './state/note';
@@ -21,6 +27,7 @@ import { useStoreLink } from './state/link';
 import { SyncStatusValue } from './state/sync-status';
 import { useStoreWorkspace } from './state/workspace';
 import { useStoreEvent } from './state/event';
+import { useStoreCalendar } from './state/calendar';
 
 const useSessionCheck = () => {
   const session = useStoreSession((s) => s.session);
@@ -33,7 +40,7 @@ const useSessionCheck = () => {
 type SyncStoreConfig<TItems = any, THookReturn = any> = {
   dataStore: (typeof STORE_NAME)[keyof typeof STORE_NAME];
   useStoreHook: () => THookReturn;
-  serverUpdate: (items: TItems[], deleted: TItems[]) => Promise<any>;
+  serverUpdate: (apiurl: string, items: TItems[], deleted: TItems[]) => Promise<any>;
   getItems: (store: THookReturn) => TItems[];
   getDeleted: (store: THookReturn) => TItems[];
   setItems: (store: THookReturn, items: TItems[]) => void;
@@ -49,6 +56,15 @@ export const SYNC_STORES: Record<string, SyncStoreConfig> = {
     getDeleted: (store) => store.deleted,
     setItems: (store, items) => store.setWorkspaces(items),
     clearDeleted: (store) => store.clearDeletedWorkspaces(),
+  },
+  [STORE_NAME.CALENDARS]: {
+    dataStore: STORE_NAME.CALENDARS,
+    useStoreHook: useStoreCalendar,
+    serverUpdate: calendarsUpdate,
+    getItems: (store) => store.calendars,
+    getDeleted: (store) => store.deleted,
+    setItems: (store, items) => store.setCalendars(items),
+    clearDeleted: (store) => store.clearDeletedCalendars(),
   },
   [STORE_NAME.EVENTS]: {
     dataStore: STORE_NAME.EVENTS,
@@ -87,6 +103,11 @@ const SYNC_REGISTRY: Record<SyncStoreKey, any> = {
     updateState: (items: any) => useStoreWorkspace.getState().setWorkspaces(items),
     clearDeleted: () => useStoreWorkspace.getState().clearDeletedWorkspaces(),
   },
+  [STORE_NAME.CALENDARS]: {
+    store: useStoreCalendar,
+    updateState: (items: any) => useStoreCalendar.getState().setCalendars(items),
+    clearDeleted: () => useStoreCalendar.getState().clearDeletedCalendars(),
+  },
   [STORE_NAME.EVENTS]: {
     store: useStoreEvent,
     updateState: (items: any) => useStoreEvent.getState().setEvents(items),
@@ -107,6 +128,7 @@ const SYNC_REGISTRY: Record<SyncStoreKey, any> = {
 // Define a shape for the payload
 export interface MergedSyncPayload {
   [STORE_NAME.WORKSPACES]?: { items: any[]; deleted: any[] };
+  [STORE_NAME.CALENDARS]?: { items: any[]; deleted: any[] };
   [STORE_NAME.EVENTS]?: { items: any[]; deleted: any[] };
   [STORE_NAME.NOTES]?: { items: any[]; deleted: any[] };
   [STORE_NAME.LINKS]?: { items: any[]; deleted: any[] };
@@ -132,12 +154,14 @@ export const useMergedSync = (params: {
 
   // Call all hooks at the top level (Required by Hook Rules)
   const workspaceStore = useStoreWorkspace();
+  const calendarStore = useStoreCalendar();
   const eventStore = useStoreEvent();
   const noteStore = useStoreNote();
   const linkStore = useStoreLink();
 
   const stores = {
     [STORE_NAME.WORKSPACES]: workspaceStore,
+    [STORE_NAME.CALENDARS]: calendarStore,
     [STORE_NAME.EVENTS]: eventStore,
     [STORE_NAME.NOTES]: noteStore,
     [STORE_NAME.LINKS]: linkStore,
@@ -183,6 +207,7 @@ export const useMergedSync = (params: {
   }, [
     storesToSync,
     // workspaceStore,
+    // calendarStore,
     // eventStore,
     // noteStore,
     // linkStore,

@@ -8,6 +8,7 @@ import { useSubView } from '@web/hooks/view';
 import PartialViewStrideTaskList from '@web/ui/partial/view/stride/task-list';
 import PartialViewJotNoteList from '@web/ui/partial/view/jot/note-list';
 import PartialViewPaveCalendarList from '@web/ui/partial/view/pave/calendar-list';
+import ScheduleMain from '@web/ui/schedule/main';
 
 export default function App() {
   const viewValue = useStoreView((s) => s.view?.view);
@@ -53,11 +54,19 @@ function DisplayNoneWrapper({
   return <div style={{ display: visible ? 'block' : 'none' }}>{children}</div>;
 }
 
-function LayoutMain({ children }: { children: React.ReactNode }) {
+function LayoutMain({
+  children,
+  options,
+}: {
+  children: React.ReactNode;
+  options?: {
+    containerized?: boolean;
+  };
+}) {
   return (
-    <Container size={'md'} py={'xs'}>
-      <Box mih={'200vh'}>{children}</Box>
-    </Container>
+    <Box p={'xs'}>
+      {options?.containerized ? <Container size={'md'}>{children}</Container> : children}
+    </Box>
   );
 }
 
@@ -70,16 +79,17 @@ function ViewPave() {
 
   return (
     <>
-      <DisplayNoneWrapper visible={subViewValue === SUBVIEW_NAMES.PAVE.DAY}>
-        <LayoutMain>day</LayoutMain>
-      </DisplayNoneWrapper>
-
-      <DisplayNoneWrapper visible={subViewValue === SUBVIEW_NAMES.PAVE.WEEK}>
-        <LayoutMain>week</LayoutMain>
-      </DisplayNoneWrapper>
-
-      <DisplayNoneWrapper visible={subViewValue === SUBVIEW_NAMES.PAVE.MONTH}>
-        <LayoutMain>month</LayoutMain>
+      <DisplayNoneWrapper
+        visible={
+          subViewValue === SUBVIEW_NAMES.PAVE.DAY ||
+          subViewValue === SUBVIEW_NAMES.PAVE.WEEK ||
+          subViewValue === SUBVIEW_NAMES.PAVE.MONTH ||
+          subViewValue === SUBVIEW_NAMES.PAVE.YEAR
+        }
+      >
+        <LayoutMain>
+          <ScheduleMain />
+        </LayoutMain>
       </DisplayNoneWrapper>
 
       <DisplayNoneWrapper visible={!!isCalendarList}>

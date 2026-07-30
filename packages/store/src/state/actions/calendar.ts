@@ -1,29 +1,31 @@
-import { useStoreLink } from '../link';
+import { useStoreCalendar } from '../calendar';
 import { useStoreSession } from '../session';
-import { LinkGet } from '@repo/types';
+import { CalendarGet } from '@repo/types';
 import { SyncStatus } from '@repo/types';
 import { generateUUID } from '@repo/utils';
 import { useStoreActiveItems } from '../active-items';
+import { getRandomColorName } from '@repo/constants';
 
-export const useLinkActions = () => {
+export const useCalendarActions = () => {
   const session = useStoreSession((s) => s.session);
-  const links = useStoreLink((s) => s.links);
-  const addLink = useStoreLink((s) => s.addLink);
-  const updateLink = useStoreLink((s) => s.updateLink);
-  const deleteLink = useStoreLink((s) => s.deleteLink);
+  const calendars = useStoreCalendar((s) => s.calendars);
+  const addCalendar = useStoreCalendar((s) => s.addCalendar);
+  const updateCalendar = useStoreCalendar((s) => s.updateCalendar);
+  const deleteCalendar = useStoreCalendar((s) => s.deleteCalendar);
   const activeWorkspace = useStoreActiveItems((s) => s.activeItems?.workspace);
 
-  const linkCreate = (params?: Partial<LinkGet>) => {
+  const calendarCreate = (params?: Partial<CalendarGet>) => {
     if (!session) return;
     if (!activeWorkspace) return;
 
     const id = generateUUID();
     const now = new Date();
 
-    const newLink: LinkGet = {
+    const newCalendar: CalendarGet = {
       id: params?.id || id,
-      fromId: params?.fromId || '',
-      toId: params?.toId || '',
+      title: params?.title || 'New Calendar',
+      description: params?.description || null,
+      color: params?.color || getRandomColorName(),
       profileId: params?.profileId || session.id,
       workspaceId: params?.workspaceId || activeWorkspace.id,
       syncStatus: SyncStatus.PENDING,
@@ -31,34 +33,34 @@ export const useLinkActions = () => {
       updatedAt: new Date(params?.updatedAt || now).toISOString() as any,
     };
 
-    addLink(newLink);
+    addCalendar(newCalendar);
 
-    return newLink;
+    return newCalendar;
   };
 
-  const linkUpdate = (params: LinkGet) => {
+  const calendarUpdate = (params: CalendarGet) => {
     if (!session) return;
     if (!activeWorkspace) return;
 
     const now = new Date();
 
-    const newLink: LinkGet = {
+    const newCalendar: CalendarGet = {
       ...params,
       syncStatus: SyncStatus.PENDING,
       updatedAt: new Date(now).toISOString() as any,
     };
 
-    updateLink(newLink);
+    updateCalendar(newCalendar);
   };
 
-  const linkDelete = (params: { values: LinkGet; options?: { noRedirect?: boolean } }) => {
+  const calendarDelete = (params: { values: CalendarGet; options?: { noRedirect?: boolean } }) => {
     if (!session) return;
-    if (!links) return;
+    if (!calendars) return;
     if (!activeWorkspace) return;
 
     const now = new Date();
 
-    deleteLink({
+    deleteCalendar({
       ...params.values,
       syncStatus: SyncStatus.DELETED,
       createdAt: new Date(params.values.createdAt).toISOString() as any,
@@ -67,8 +69,8 @@ export const useLinkActions = () => {
   };
 
   return {
-    linkCreate,
-    linkUpdate,
-    linkDelete,
+    calendarCreate,
+    calendarUpdate,
+    calendarDelete,
   };
 };

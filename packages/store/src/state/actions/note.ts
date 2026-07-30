@@ -33,6 +33,7 @@ export const useNoteActions = () => {
       id: params?.id || id,
       title: params?.title || 'New Note',
       content: params?.content || '<p></p>',
+      profileId: params?.profileId || session.id,
       workspaceId: params?.workspaceId || activeWorkspace.id,
       syncStatus: SyncStatus.PENDING,
       createdAt: new Date(params?.createdAt || now).toISOString() as any,

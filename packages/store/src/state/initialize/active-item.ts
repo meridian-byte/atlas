@@ -8,7 +8,7 @@
  */
 
 import { useEffect, useRef } from 'react';
-import { LOCAL_STORAGE_NAME } from '@repo/constants';
+import { DEFAULT_NAMES, LOCAL_STORAGE_NAME } from '@repo/constants';
 import {
   getFromLocalStorage,
   getFromSessionStorage,
@@ -40,17 +40,17 @@ export const useActiveItemStore = () => {
         let workingId: string | null = null;
 
         // get active workspace id from session storage
-        const activeSessionId = getFromSessionStorage(LOCAL_STORAGE_NAME.ACTIVE_WORKSPACE);
+        const activeSessionWorkspaceId = getFromSessionStorage(LOCAL_STORAGE_NAME.ACTIVE_WORKSPACE);
 
-        if (!activeSessionId) {
+        if (!activeSessionWorkspaceId) {
           // get active workspace id from local storage
-          const activeLocalId = getFromLocalStorage(LOCAL_STORAGE_NAME.ACTIVE_WORKSPACE);
+          const activeLocalWorkspaceId = getFromLocalStorage(LOCAL_STORAGE_NAME.ACTIVE_WORKSPACE);
 
-          if (activeLocalId) {
-            workingId = activeLocalId;
+          if (activeLocalWorkspaceId) {
+            workingId = activeLocalWorkspaceId;
           }
         } else {
-          workingId = activeSessionId;
+          workingId = activeSessionWorkspaceId;
         }
 
         if (!workingId) {
@@ -59,17 +59,17 @@ export const useActiveItemStore = () => {
           if (!workspaces.length) {
             // create default workspace
             const newDefaultWorkspace = workspaceCreate({
-              name: 'Default Workspace',
+              name: DEFAULT_NAMES.WORKSPACE,
             });
 
             selectedWorkspace = newDefaultWorkspace || null;
           } else {
             // find default workspace
-            const oldestWorkspace = workspaces.reduce((oldest, current) => {
-              return new Date(current.createdAt) < new Date(oldest.createdAt) ? current : oldest;
+            const defaultWorkspace = workspaces.find((wi) => {
+              return wi.name == DEFAULT_NAMES.WORKSPACE;
             });
 
-            selectedWorkspace = oldestWorkspace;
+            selectedWorkspace = defaultWorkspace || null;
           }
 
           if (selectedWorkspace) {

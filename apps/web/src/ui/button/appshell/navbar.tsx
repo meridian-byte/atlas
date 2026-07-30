@@ -1,16 +1,9 @@
 'use client';
 
 import React from 'react';
-import {
-  IconArrowBarLeft,
-  IconArrowBarRight,
-  IconLayoutSidebarLeftCollapse,
-  IconLayoutSidebarLeftExpand,
-  IconLayoutSidebarRightCollapse,
-  IconLayoutSidebarRightExpand,
-} from '@tabler/icons-react';
-import { ActionIcon, Group, Tooltip } from '@mantine/core';
-import { ICON_SIZE, ICON_STROKE_WIDTH, ICON_WRAPPER_SIZE } from '@repo/constants';
+import { IconArrowBarLeft, IconArrowBarRight } from '@tabler/icons-react';
+import { ActionIcon } from '@mantine/core';
+import { ICON_STROKE_WIDTH } from '@repo/constants';
 import { useStoreAppShell } from '@repo/store';
 import { SHELL_VALUES } from '@web/constants';
 

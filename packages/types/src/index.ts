@@ -7,6 +7,7 @@ export * from './indexed-db';
 export * from './sync';
 export * from './view';
 
+export * from './models/calendar';
 export * from './models/enums';
 export * from './models/event';
 export * from './models/link';

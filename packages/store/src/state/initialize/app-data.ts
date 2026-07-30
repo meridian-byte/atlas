@@ -17,6 +17,7 @@ import { useStoreLink } from '../link';
 import { openDatabase } from '../../indexed-db/actions';
 import { config } from '../../indexed-db/config';
 import { FileSyncAdapter, SyncStatus } from '@repo/types';
+import { useStoreCalendar } from '../calendar';
 
 const mergeItems = async (
   dataStore: string,
@@ -79,11 +80,11 @@ const loadInitialData = async (params: {
     const db = await openDatabase(config);
     let clientItems: any[] = (await db.get(dataStore)) || [];
 
-    // 1. Attach profile_id for offline-created items if session exists
+    // 1. Attach profileId for offline-created items if session exists
     if (session?.id) {
       clientItems = clientItems.map((i) => ({
         ...i,
-        profile_id: i.profile_id || session.id,
+        profileId: i.profileId || session.id,
       }));
     }
 
@@ -139,6 +140,11 @@ export const LOAD_STORES: Record<string, LoadStoreConfig> = {
     useStoreHook: useStoreWorkspace,
     setState: (store, items) => store.setWorkspaces(items),
   },
+  calendars: {
+    dataStore: STORE_NAME.CALENDARS,
+    useStoreHook: useStoreCalendar,
+    setState: (store, items) => store.setCalendars(items),
+  },
   events: {
     dataStore: STORE_NAME.EVENTS,
     useStoreHook: useStoreEvent,
@@ -167,6 +173,7 @@ export const useLoadAppData = (options: {
 
   const stores = {
     workspaces: useStoreWorkspace(),
+    calendars: useStoreCalendar(),
     events: useStoreEvent(),
     notes: useStoreNote(),
     links: useStoreLink(),
@@ -187,10 +194,18 @@ export const useLoadAppData = (options: {
         // 2. Fetch only the required data
         // Pass the requested stores as a query param so the server can optimize
         const storeQuery = activeStoreKeys.join(',');
+
         const res = await fetch(
           `${options.apiUrl}/app-data?userId=${session.id}&stores=${storeQuery}`,
         );
-        if (!res.ok) throw new Error('Failed to fetch app data');
+
+        if (!res.ok) {
+          const errorText = await res.text().catch(() => 'No response body');
+
+          throw new Error(
+            `Failed to fetch app data (${res.status} ${res.statusText}): ${errorText}`,
+          );
+        }
 
         const fullPayload = await res.json();
 

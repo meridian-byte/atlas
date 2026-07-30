@@ -23,12 +23,14 @@ export const useEventActions = () => {
     const newEvent: EventGet = {
       id: params?.id || id,
       title: params?.title || 'New Event',
-      description: params?.description || '',
-      startAt: new Date(params?.startAt || now).toISOString() as any,
-      endAt: new Date(params?.endAt || now).toISOString() as any,
+      description: params?.description || null,
+      start: new Date(params?.start || now).toISOString() as any,
+      end: new Date(params?.end || now).toISOString() as any,
       allDay: params?.allDay || false,
-      location: params?.location || '',
+      location: params?.location || null,
+      profileId: params?.profileId || session.id,
       workspaceId: params?.workspaceId || activeWorkspace.id,
+      calendarId: params?.calendarId || null,
       syncStatus: SyncStatus.PENDING,
       createdAt: new Date(params?.createdAt || now).toISOString() as any,
       updatedAt: new Date(params?.updatedAt || now).toISOString() as any,
@@ -47,6 +49,8 @@ export const useEventActions = () => {
 
     const newEvent: EventGet = {
       ...params,
+      start: new Date(params.start).toISOString() as any,
+      end: new Date(params.end).toISOString() as any,
       syncStatus: SyncStatus.PENDING,
       updatedAt: new Date(now).toISOString() as any,
     };
