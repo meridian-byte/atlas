@@ -11,6 +11,8 @@ import FormAuth from '@web/ui/form/auth';
 import { AuthAction } from '@repo/types';
 import { BASE_URL_CLIENT } from '@repo/constants';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = { title: 'Sign In' };
 
 export default function SignIn() {

@@ -10,6 +10,8 @@ import { Metadata } from 'next';
 import { NotifySignOut as PartialNotifySignOut } from '@web/ui/partial/page/notify';
 import { BASE_URL_CLIENT } from '@repo/constants';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = { title: 'Sign Out' };
 
 export default function SignOut() {

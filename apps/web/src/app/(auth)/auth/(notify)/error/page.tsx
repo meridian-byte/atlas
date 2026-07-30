@@ -10,6 +10,8 @@ import { Metadata } from 'next';
 import { NotifyError as PartialNotifyError } from '@web/ui/partial/page/notify';
 import { BASE_URL_CLIENT } from '@repo/constants';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = { title: 'Authentication Error' };
 
 export default function Error() {
