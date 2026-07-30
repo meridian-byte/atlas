@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import dayjs from 'dayjs';
 import { ScheduleEventData } from '@mantine/schedule';
-import { EventFormData } from '@repo/types';
+import { EventFormData, EventGet } from '@repo/types';
 
 export const useEventCrud = () => {
   const [formOpened, setFormOpened] = useState(false);
@@ -74,6 +74,17 @@ export const useEventCrud = () => {
     setFormOpened(true);
   };
 
+  const handleCreateEvent = (params?: { calendarId?: string }) => {
+    setSelectedEventData({
+      title: '',
+      start: new Date(),
+      end: dayjs().add(1, 'hour').toDate(),
+      allDay: false,
+      calendarId: params?.calendarId,
+    });
+    setFormOpened(true);
+  };
+
   const closeForm = () => {
     setFormOpened(false);
   };
@@ -96,5 +107,6 @@ export const useEventCrud = () => {
       onEventClick: handleEventClick,
     },
     handleCreateMobileEvent,
+    handleCreateEvent,
   };
 };
