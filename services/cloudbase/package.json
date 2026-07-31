@@ -17,7 +17,7 @@
     "@supabase/ssr": "^0.8.0",
     "@repo/constants": "workspace:*",
     "@repo/utils": "workspace:*",
-    "next": "16.0.10",
+    "next": "16.2.10",
     "@supabase/supabase-js": "^2.89.0"
   },
   "devDependencies": {
