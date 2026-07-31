@@ -88,7 +88,7 @@ export default function Auth({
                   input: {
                     textAlign: 'center',
                     backgroundColor:
-                      'light-dark(var(--mantine-color-body), var(--mantine-color-dark-8))',
+                      'light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-8))',
                   },
                   error: { textAlign: 'center' },
                 }}
@@ -146,7 +146,7 @@ export default function Auth({
                         textAlign: 'center',
                         letterSpacing: 5,
                         backgroundColor:
-                          'light-dark(var(--mantine-color-body), var(--mantine-color-dark-7))',
+                          'light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-8))',
                       },
                       error: { textAlign: 'center' },
                     }}

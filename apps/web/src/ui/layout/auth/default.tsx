@@ -24,12 +24,7 @@ export default async function Default({ children }: { children: React.ReactNode 
     <>
       <Container size="xs">
         <Stack justify="center" mih={'100vh'} px={{ base: 0, sm: 40 }} py={SECTION_SPACING}>
-          <Card
-            shadow="xs"
-            bg={'light-dark(var(--mantine-color-pri-light), var(--mantine-color-dark-9))'}
-            p={{ base: 'xl', xs: 40 }}
-            withBorder
-          >
+          <Card bg={'light-dark(var(--mantine-color-body))'} p={{ base: 'xl', xs: 40 }} withBorder>
             <Stack gap={'xl'}>
               <Group justify="center">
                 <AnchorNextLink href={'/'}>
