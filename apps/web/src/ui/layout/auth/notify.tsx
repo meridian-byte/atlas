@@ -16,8 +16,8 @@ import { getThemeLogo } from '@repo/utils';
 
 export default async function Notify({ children }: { children: React.ReactNode }) {
   const logo = await getThemeLogo({
-    darkImage: images.brand.icon.meta.dark,
-    lightImage: images.brand.icon.meta.light,
+    darkImage: images.brand.icon.nextjs,
+    lightImage: images.brand.icon.nextjs,
   });
 
   return (
