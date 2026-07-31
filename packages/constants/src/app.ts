@@ -114,5 +114,5 @@ export const APP_DESC = {
   NOTELINE:
     'A simple tool for capturing and organizing ideas, tasks, and information. It lets users create, edit, search, and structure notes so they can quickly store and retrieve important content.',
   SATE: 'A tool to record daily food intake and nutritional data. It helps users monitor calories, macros, and eating habits to support weight management and health goals.',
-  WEB: 'A lightweight and optimized Next.js template for building fast, SEO-friendly websites.',
+  WEB: 'Discover Atlas, an open-source productivity suite unifying notes, tasks, time tracking, fitness, and finance into a single, cohesive ecosystem.',
 };
