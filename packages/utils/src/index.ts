@@ -8,3 +8,4 @@ export * from './misc';
 export * from './validation';
 export * from './theme';
 export * from './generators';
+export * from './middeware';
