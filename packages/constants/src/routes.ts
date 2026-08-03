@@ -5,20 +5,15 @@
  * Do not modify unless you intend to backport changes to the template.
  */
 
-export const authRoutes = [
-  '/auth/sign-in',
-  '/auth/error',
-  '/api/auth',
-  '/auth/signed-out',
-  // Add other auth routes
-];
-
-export const protectedRoutes = [
-  '/',
-  // Add other protected routes
-];
-
-export const ignoredRoutes = [
+export const ignoredRoutes = new Set([
   '/manifest.webmanifest',
+  '/auth/sign-out',
+  '/auth/signed-out',
   // Add other ignored routes
-];
+]);
+
+// Match anything starting with /auth/ or exactly /api/auth
+export const authRegex = /^(?:\/auth(?:\/.*)?|\/api\/auth)$/;
+
+// Match exact files
+export const ignoredRegex = /^\/manifest\.webmanifest$/;

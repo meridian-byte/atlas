@@ -5,9 +5,9 @@
  * Do not modify unless you intend to backport changes to the template.
  */
 
-import { PARAM_NAME } from '@repo/constants';
+import { authRegex, ignoredRegex, PARAM_NAME } from '@repo/constants';
 import { capitalizeWords } from './string';
-import { authRoutes, ignoredRoutes, protectedRoutes } from '@repo/constants';
+import { ignoredRoutes } from '@repo/constants';
 
 /**
  * Appends a redirect query parameter to a target URL
@@ -228,23 +228,19 @@ export const validateRoute = (params: { request: Request; user: any | null; path
     redirectToHome: false,
   };
 
+  const isAuthRoute = authRegex.test(pathname);
+  const isIgnoredRoute = ignoredRoutes.has(pathname);
+
   if (!user) {
-    const isProtectedRoute = protectedRoutes.some((r) => pathname.startsWith(r));
-
-    if (isProtectedRoute) {
-      const isIgnoredRoute = ignoredRoutes.some((r) => pathname.startsWith(r));
-
-      if (!isIgnoredRoute) {
-        const isAuthRoute = authRoutes.some((r) => pathname.startsWith(r));
-
-        if (!isAuthRoute) {
-          actions.redirectToAuth = true;
-        }
-      }
+    // Protected by default: block if not ignored and not an auth route
+    if (!isIgnoredRoute && !isAuthRoute) {
+      actions.redirectToAuth = true;
     }
   } else {
-    const isAuthRoute = authRoutes.some((r) => pathname.startsWith(r));
-    if (isAuthRoute) actions.redirectFromAuth = true;
+    // If logged in, redirect away from auth pages EXCEPT for explicit ignored routes
+    if (isAuthRoute && !isIgnoredRoute) {
+      actions.redirectFromAuth = true;
+    }
   }
 
   return actions;
