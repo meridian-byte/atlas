@@ -7,7 +7,7 @@ import { createClientcloudbaseServer } from '@repo/cloudbase';
 import { getCookieServer } from '@repo/utils';
 import { COOKIE_NAME } from '@repo/constants';
 import ProviderMantine from '@web/ui/provider/mantine';
-import { MantineColorScheme, mantineHtmlProps } from '@mantine/core';
+import { ColorSchemeScript, MantineColorScheme, mantineHtmlProps } from '@mantine/core';
 import { getAppTheme } from '@web/theme';
 import { getAppResolver } from '@web/resolver';
 
@@ -19,6 +19,7 @@ import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 // ‼️ import schedule styles after core and dates package styles
 import '@mantine/schedule/styles.css';
+import { ColorScheme } from '@repo/types';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -59,7 +60,34 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           viewport-fit="cover"
         />
 
-        {/* <ColorSchemeScript defaultColorScheme={resolvedTheme} /> */}
+        {/* General Web App Metadata */}
+        <meta name="application-name" content={APP_NAME.WEB} />
+        <meta name="theme-color" content={'#CBB399'} />
+        <meta
+          name="background-color"
+          content={resolvedTheme == ColorScheme.LIGHT ? '#ffffff' : '#000000'}
+        />
+
+        {/* Apple Web App Tags */}
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content={APP_NAME.WEB} />
+
+        {/* Misc. Mobile Enhancements */}
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="mobile-web-app-capable" content="yes" />
+
+        {/* Icons */}
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/images/brand/icon/web-app-manifest-192x192.png"
+        />
+
+        <link rel="manifest" href="/manifest.webmanifest" />
+
+        <ColorSchemeScript defaultColorScheme={resolvedTheme} />
       </head>
 
       <body className="min-h-full flex flex-col">
