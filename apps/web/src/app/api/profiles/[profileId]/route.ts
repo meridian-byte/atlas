@@ -5,10 +5,8 @@
  * Do not modify unless you intend to backport changes to the template.
  */
 
-import { DEFAULT_NAMES } from '@repo/constants';
 import { db } from '@repo/db';
-import { ProfileGet, SyncStatus, WorkspaceGet } from '@repo/types';
-import { extractUuidFromParam, generateUUID } from '@repo/utils';
+import { ProfileGet } from '@repo/types';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
@@ -42,11 +40,13 @@ export async function POST(
   try {
     const { profileId } = await params;
 
-    const exists = extractUuidFromParam(profileId);
-
     const profile: ProfileGet = await request.json();
 
     const transaction = await db.$transaction(async (db) => {
+      const profileExists = !!(await db.profile.findUnique({
+        where: { id: profileId },
+      }));
+
       const profileRecord = await db.profile.upsert({
         where: { id: profileId },
         update: profile,
@@ -55,7 +55,7 @@ export async function POST(
 
       return {
         profile: profileRecord,
-        existed: !!exists,
+        existed: profileExists,
       };
     });
 
