@@ -56,6 +56,9 @@ export function SignOut({
       onClick={async () => {
         setClicked(true);
 
+        // sign out
+        await signOut({ options: { baseUrl: props.baseUrl || window.location.origin } });
+
         if (props.options?.clearDB) {
           // Shut down local db connections delete local db
           await deleteDatabase(props.dbConfig.name);
@@ -71,8 +74,6 @@ export function SignOut({
             .replace(/^ +/, '')
             .replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');
         });
-
-        await signOut({ options: { baseUrl: props.baseUrl || window.location.origin } });
 
         window.location.href = props.options?.redirectUrl || '/auth/signed-out';
       }}
