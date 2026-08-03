@@ -72,7 +72,7 @@ export function SignOut({
             .replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');
         });
 
-        await signOut({ options: { baseUrl: props.baseUrl } });
+        await signOut({ options: { baseUrl: props.baseUrl || window.location.origin } });
 
         window.location.href = props.options?.redirectUrl || '/auth/signed-out';
       }}
