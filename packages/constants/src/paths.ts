@@ -13,36 +13,6 @@ export const HOSTNAME_CLIENT_WEB = isProduction
   ? process.env.NEXT_PUBLIC_HOST_CLIENT_WEB_PROD
   : process.env.NEXT_PUBLIC_HOST_CLIENT_WEB_DEV;
 
-// Select FRAKT client host
-export const HOSTNAME_CLIENT_FRAKT = isProduction
-  ? process.env.NEXT_PUBLIC_HOST_CLIENT_FRAKT_PROD
-  : process.env.NEXT_PUBLIC_HOST_CLIENT_FRAKT_DEV;
-
-// Select KAIRO client host
-export const HOSTNAME_CLIENT_KAIRO = isProduction
-  ? process.env.NEXT_PUBLIC_HOST_CLIENT_KAIRO_PROD
-  : process.env.NEXT_PUBLIC_HOST_CLIENT_KAIRO_DEV;
-
-// Select MAI client host
-export const HOSTNAME_CLIENT_MAI = isProduction
-  ? process.env.NEXT_PUBLIC_HOST_CLIENT_MAI_PROD
-  : process.env.NEXT_PUBLIC_HOST_CLIENT_MAI_DEV;
-
-// Select SATE client host
-export const HOSTNAME_CLIENT_SATE = isProduction
-  ? process.env.NEXT_PUBLIC_HOST_CLIENT_SATE_PROD
-  : process.env.NEXT_PUBLIC_HOST_CLIENT_SATE_DEV;
-
-// Select NOTELINE client host
-export const HOSTNAME_CLIENT_NOTELINE = isProduction
-  ? process.env.NEXT_PUBLIC_HOST_CLIENT_NOTELINE_PROD
-  : process.env.NEXT_PUBLIC_HOST_CLIENT_NOTELINE_DEV;
-
-// Select STRIDE client host
-export const HOSTNAME_CLIENT_STRIDE = isProduction
-  ? process.env.NEXT_PUBLIC_HOST_CLIENT_STRIDE_PROD
-  : process.env.NEXT_PUBLIC_HOST_CLIENT_STRIDE_DEV;
-
 export const getUrlPrefix = (host: string | undefined) => {
   if (!host) return 'http://';
   return host.includes('localhost') ? 'http://' : 'https://';
@@ -73,11 +43,5 @@ export const AUTH_URLS = {
 };
 
 export const BASE_URL_CLIENT = {
-  FRAKT: `${getUrlPrefix(HOSTNAME_CLIENT_FRAKT)}${HOSTNAME_CLIENT_FRAKT}`,
-  KAIRO: `${getUrlPrefix(HOSTNAME_CLIENT_KAIRO)}${HOSTNAME_CLIENT_KAIRO}`,
-  MAI: `${getUrlPrefix(HOSTNAME_CLIENT_MAI)}${HOSTNAME_CLIENT_MAI}`,
-  NOTELINE: `${getUrlPrefix(HOSTNAME_CLIENT_NOTELINE)}${HOSTNAME_CLIENT_NOTELINE}`,
-  SATE: `${getUrlPrefix(HOSTNAME_CLIENT_SATE)}${HOSTNAME_CLIENT_SATE}`,
-  STRIDE: `${getUrlPrefix(HOSTNAME_CLIENT_STRIDE)}${HOSTNAME_CLIENT_STRIDE}`,
   WEB: `${getUrlPrefix(HOSTNAME_CLIENT_WEB)}${HOSTNAME_CLIENT_WEB}`,
 };

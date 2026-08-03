@@ -107,12 +107,5 @@ export const ASIDE_VIEW_NAMES = {
 };
 
 export const APP_DESC = {
-  FRAKT:
-    'A tool to help users track income, expenses, and savings in one place. It categorizes transactions, shows spending patterns, and provides insights to improve financial decisions and stay within budget.',
-  KAIRO: 'Kairo',
-  MAI: 'A lightweight and optimized Next.js template for building fast, SEO-friendly websites.',
-  NOTELINE:
-    'A simple tool for capturing and organizing ideas, tasks, and information. It lets users create, edit, search, and structure notes so they can quickly store and retrieve important content.',
-  SATE: 'A tool to record daily food intake and nutritional data. It helps users monitor calories, macros, and eating habits to support weight management and health goals.',
   WEB: 'Discover Atlas, an open-source productivity suite unifying notes, tasks, time tracking, fitness, and finance into a single, cohesive ecosystem.',
 };
