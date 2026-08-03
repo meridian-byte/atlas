@@ -8,7 +8,7 @@
 import { DEFAULT_NAMES } from '@repo/constants';
 import { db } from '@repo/db';
 import { ProfileGet, SyncStatus, WorkspaceGet } from '@repo/types';
-import { generateUUID } from '@repo/utils';
+import { extractUuidFromParam, generateUUID } from '@repo/utils';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
@@ -42,6 +42,8 @@ export async function POST(
   try {
     const { profileId } = await params;
 
+    const exists = extractUuidFromParam(profileId);
+
     const profile: ProfileGet = await request.json();
 
     const transaction = await db.$transaction(async (db) => {
@@ -51,28 +53,9 @@ export async function POST(
         create: profile,
       });
 
-      // const now = new Date();
-
-      // const workspaceObject: WorkspaceGet = {
-      //   id: generateUUID(),
-      //   name: DEFAULT_NAMES.WORKSPACE,
-      //   profileId: profileRecord.id,
-      //   syncStatus: SyncStatus.SYNCED,
-      //   createdAt: now,
-      //   updatedAt: now,
-      // };
-
-      // const workspaceRecord = await db.workspace.upsert({
-      //   where: { id: profileId, name: DEFAULT_NAMES.WORKSPACE },
-      //   update: workspaceObject,
-      //   create: workspaceObject,
-      // });
-
       return {
         profile: profileRecord,
-        existed: false,
-
-        // workspace: workspaceRecord,
+        existed: exists,
       };
     });
 
