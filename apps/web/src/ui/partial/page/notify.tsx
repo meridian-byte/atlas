@@ -151,7 +151,7 @@ export function NotifySection({
                   props={{
                     baseUrl: baseUrl,
                     dbConfig: config,
-                    options: { redirecUrl: AUTH_URLS.SIGN_IN },
+                    options: { redirectUrl: AUTH_URLS.SIGN_IN },
                   }}
                 >
                   <Button>Try Again</Button>
