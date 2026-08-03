@@ -27,6 +27,8 @@ export const signIn = async (params: SignIn & { apiUrl: string }) => {
 
 export const signOut = async (params: SignOut) => {
   try {
+    console.log('params', params);
+
     const response = await fetch(`${params.options.baseUrl}/api/auth/sign-out`, {
       method: 'POST',
       body: JSON.stringify(params),
