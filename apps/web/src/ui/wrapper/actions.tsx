@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { setRedirectUrl } from '@repo/utils';
 import { Box, LoadingOverlay } from '@mantine/core';
 import { signOut } from '@repo/handlers';
-import { deleteDatabase } from '@repo/store';
+import { deleteDatabase, useStoreSession } from '@repo/store';
 import { AuthAction } from '@repo/types';
 import { DBConfig } from '@repo/types';
 import { AUTH_URLS } from '@repo/constants';
@@ -48,6 +48,7 @@ export function SignOut({
   children: React.ReactNode;
 }) {
   const [clicked, setClicked] = useState(false);
+  const { session } = useStoreSession();
 
   return (
     <Box
@@ -56,24 +57,26 @@ export function SignOut({
       onClick={async () => {
         setClicked(true);
 
-        // sign out
-        await signOut({ options: { baseUrl: props.baseUrl || window.location.origin } });
+        if (!!session) {
+          // sign out
+          await signOut({ options: { baseUrl: props.baseUrl || window.location.origin } });
 
-        if (props.options?.clearDB) {
-          // Shut down local db connections delete local db
-          await deleteDatabase(props.dbConfig.name);
+          if (props.options?.clearDB) {
+            // Shut down local db connections delete local db
+            await deleteDatabase(props.dbConfig.name);
+          }
+
+          // clear storage
+          localStorage.clear();
+          sessionStorage.clear();
+
+          // clear client cookies
+          document.cookie.split(';').forEach((c) => {
+            document.cookie = c
+              .replace(/^ +/, '')
+              .replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');
+          });
         }
-
-        // clear storage
-        localStorage.clear();
-        sessionStorage.clear();
-
-        // clear client cookies
-        document.cookie.split(';').forEach((c) => {
-          document.cookie = c
-            .replace(/^ +/, '')
-            .replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');
-        });
 
         window.location.href = props.options?.redirectUrl || '/auth/signed-out';
       }}

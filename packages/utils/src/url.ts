@@ -7,12 +7,7 @@
 
 import { PARAM_NAME } from '@repo/constants';
 import { capitalizeWords } from './string';
-import {
-  authRoutes,
-  ignoredRoutes,
-  protectedDeadEndRoutes,
-  protectedRoutes,
-} from '@repo/constants';
+import { authRoutes, ignoredRoutes, protectedRoutes } from '@repo/constants';
 
 /**
  * Appends a redirect query parameter to a target URL
@@ -234,10 +229,6 @@ export const validateRoute = (params: { request: Request; user: any | null; path
   };
 
   if (!user) {
-    const protectedDeadEnd = protectedDeadEndRoutes.some((r) => pathname.startsWith(r));
-
-    if (protectedDeadEnd) actions.redirectToHome = true;
-
     const isProtectedRoute = protectedRoutes.some((r) => pathname.startsWith(r));
 
     if (isProtectedRoute) {

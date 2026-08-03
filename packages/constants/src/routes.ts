@@ -22,8 +22,3 @@ export const ignoredRoutes = [
   '/manifest.webmanifest',
   // Add other ignored routes
 ];
-
-export const protectedDeadEndRoutes = [
-  '/auth/sign-out',
-  // Add other protected dead-end routes
-];
