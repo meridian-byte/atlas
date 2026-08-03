@@ -1,12 +1,14 @@
 import { COOKIE_NAME, DEFAULT_COLOR_SCHEME } from '@repo/constants';
 import { getCookieServer } from './cookie-server';
 import { ColorScheme } from '@repo/types';
+import { getOSTheme } from './misc';
 
 export const getThemeLogo = async (params: { lightImage: string; darkImage: string }) => {
-  // 1. Get the CALCULATED theme from middleware (not the 'auto' state)
-  const theme = (await getCookieServer(COOKIE_NAME.COLOR_SCHEME)) || DEFAULT_COLOR_SCHEME;
-  const resolvedTheme = (theme || DEFAULT_COLOR_SCHEME) as any;
+  const themeCookie = (await getCookieServer(COOKIE_NAME.COLOR_SCHEME)) || DEFAULT_COLOR_SCHEME;
 
-  if (resolvedTheme == ColorScheme.DARK) return params.darkImage;
-  if (resolvedTheme == ColorScheme.LIGHT) return params.lightImage;
+  // Resolve 'auto' using your OS theme helper
+  const resolvedTheme = getOSTheme(themeCookie as ColorScheme);
+
+  if (resolvedTheme === ColorScheme.DARK) return params.darkImage;
+  return params.lightImage; // Defaults to light if not dark
 };

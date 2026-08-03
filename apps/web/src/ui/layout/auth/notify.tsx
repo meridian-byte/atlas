@@ -16,18 +16,18 @@ import { getThemeLogo } from '@repo/utils';
 
 export default async function Notify({ children }: { children: React.ReactNode }) {
   const logo = await getThemeLogo({
-    darkImage: images.brand.icon.nextjs,
-    lightImage: images.brand.icon.nextjs,
+    darkImage: images.brand.icon.meta.light,
+    lightImage: images.brand.icon.meta.light,
   });
 
   return (
     <>
       <Grid gap={0} px={{ base: 'md', xs: 0 }}>
-        <GridCol span={5.5} visibleFrom="md" bg={'var(--mantine-color-pri-light)'}>
-          <Container size="xs" pos={'sticky'} top={0}>
-            <Center h={'100vh'} px={{ xs: 32 }}>
-              <AnchorNextLink href={'/'}>
-                {logo && (
+        {logo && (
+          <GridCol span={5.5} visibleFrom="md" bg={'var(--mantine-color-pri-light)'}>
+            <Container size="xs" pos={'sticky'} top={0}>
+              <Center h={'100vh'} px={{ xs: 32 }}>
+                <AnchorNextLink href={'/'}>
                   <ImageDefault
                     src={logo}
                     alt={COMPANY_NAME}
@@ -35,11 +35,11 @@ export default async function Notify({ children }: { children: React.ReactNode }
                     width={96}
                     fit="contain"
                   />
-                )}
-              </AnchorNextLink>
-            </Center>
-          </Container>
-        </GridCol>
+                </AnchorNextLink>
+              </Center>
+            </Container>
+          </GridCol>
+        )}
 
         <GridCol span={{ base: 12, md: 6.5 }}>
           <Container size="xs">

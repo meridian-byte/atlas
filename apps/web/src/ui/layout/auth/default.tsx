@@ -16,8 +16,8 @@ import { getThemeLogo } from '@repo/utils';
 
 export default async function Default({ children }: { children: React.ReactNode }) {
   const logo = await getThemeLogo({
-    darkImage: images.brand.icon.nextjs,
-    lightImage: images.brand.icon.nextjs,
+    darkImage: images.brand.icon.meta.light,
+    lightImage: images.brand.icon.meta.light,
   });
 
   return (
@@ -26,9 +26,9 @@ export default async function Default({ children }: { children: React.ReactNode 
         <Stack justify="center" mih={'100vh'} px={{ base: 0, sm: 40 }} py={SECTION_SPACING}>
           <Card bg={'light-dark(var(--mantine-color-body))'} p={{ base: 'xl', xs: 40 }} withBorder>
             <Stack gap={'xl'}>
-              <Group justify="center">
-                <AnchorNextLink href={'/'}>
-                  {logo && (
+              {logo && (
+                <Group justify="center">
+                  <AnchorNextLink href={'/'}>
                     <ImageDefault
                       src={logo}
                       alt={COMPANY_NAME}
@@ -36,9 +36,9 @@ export default async function Default({ children }: { children: React.ReactNode 
                       width={48}
                       fit="contain"
                     />
-                  )}
-                </AnchorNextLink>
-              </Group>
+                  </AnchorNextLink>
+                </Group>
+              )}
 
               {children}
             </Stack>
