@@ -84,11 +84,10 @@ export function SignOut({
       <LoadingOverlay
         visible={clicked}
         zIndex={1000}
-        overlayProps={{ radius: 'sm', blur: 2 }}
+        overlayProps={{ radius: 'md', blur: 2 }}
         loaderProps={{ size: 'xs' }}
-        style={{ borderRadius: 0 }}
       />
-      {children}
+      <Box p={2}>{children}</Box>
     </Box>
   );
 }
