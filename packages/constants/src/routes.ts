@@ -12,8 +12,8 @@ export const ignoredRoutes = new Set([
   // Add other ignored routes
 ]);
 
-// Match anything starting with /auth/ or exactly /api/auth
-export const authRegex = /^(?:\/auth(?:\/.*)?|\/api\/auth)$/;
+// Match anything starting with /auth/
+export const authRegex = /^\/auth(?:\/.*)?$/;
 
 // Match exact files
 export const ignoredRegex = /^\/manifest\.webmanifest$/;

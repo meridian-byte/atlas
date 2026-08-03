@@ -5,7 +5,7 @@
  * Do not modify unless you intend to backport changes to the template.
  */
 
-import { authRegex, ignoredRegex, PARAM_NAME } from '@repo/constants';
+import { authRegex, PARAM_NAME } from '@repo/constants';
 import { capitalizeWords } from './string';
 import { ignoredRoutes } from '@repo/constants';
 
@@ -227,6 +227,9 @@ export const validateRoute = (params: { request: Request; user: any | null; path
     redirectFromAuth: false,
     redirectToHome: false,
   };
+
+  // Skip middleware redirects for API routes (API routes handle their own 401s/JSON responses)
+  if (pathname.startsWith('/api/')) return actions;
 
   const isAuthRoute = authRegex.test(pathname);
   const isIgnoredRoute = ignoredRoutes.has(pathname);
