@@ -55,7 +55,7 @@ export async function POST(
 
       return {
         profile: profileRecord,
-        existed: exists,
+        existed: !!exists,
       };
     });
 
