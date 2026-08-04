@@ -39,14 +39,16 @@ export const authEmail = async (params: {
   const nameFromEmail = getEmailLocalPart(session.user?.email || '');
 
   // create profile if doesn't exist
-  const { profile, existed } = await profileCreate(`${BASE_URL_CLIENT.WEB}/api`, {
+  const { items } = await profileCreate(`${BASE_URL_CLIENT.WEB}/api`, {
     id: session.user?.id || '',
     email: session.user?.email || '',
     firstName: nameFromEmail,
     userName: linkify(session.user?.email || ''),
   });
 
-  sharedUserHandle({ supabase, profile, existed });
+  const { profile, existed } = items;
+
+  sharedUserHandle({ supabase, profile: profile, existed: existed });
 
   return `${baseUrl + `${redirectUrl || AUTH_URLS.REDIRECT}`}`;
 };
