@@ -1,8 +1,8 @@
-# Productivity Suite Monorepo
+# Atlas Monorepo
 
-A modular, full-stack productivity suite designed to unify everyday tools into a single, cohesive ecosystem.
+A modular, full-stack productivity system designed to unify everyday tools into a single, cohesive ecosystem.
 
-This repository contains multiple applications (and shared infrastructure) for managing notes, tasks, time, health, and finances — built to work independently and together.
+This repository contains a single integrated application surface (`atlas`) and a web entry layer (`web`), backed by shared infrastructure and domain packages.
 
 ---
 
@@ -10,40 +10,35 @@ This repository contains multiple applications (and shared infrastructure) for m
 
 Most productivity tools are fragmented. This project aims to:
 
-- Consolidate core personal workflows into one ecosystem
-- Enable seamless data flow between apps (e.g. tasks ↔ time tracking ↔ habits)
-- Provide a consistent UX and shared system design across all tools
-- Stay modular so each app remains independently usable
+- Consolidate core personal workflows into one system
+- Enable seamless data flow across domains (tasks, time, notes, health, finance)
+- Provide a consistent UX and shared system design
+- Maintain modular architecture without fragmenting the product experience
 
 ---
 
-## Apps
+## Applications
 
-Each app lives in `/apps` and can run independently.
+All user-facing functionality is consolidated into two apps:
 
-### 📝 Notes
+### 🌐 `/apps/web`
 
-- Rich text / markdown note-taking
-- Tagging and search
-- Knowledge base / second brain use cases
+- Entry point / marketing layer
+- Handles landing pages, onboarding, and public-facing content
+- Can evolve independently from the core product
 
-### ⏱ Time & Task Manager
+### 🧠 `/apps/atlas`
 
-- Task management (projects, priorities, deadlines)
-- Time tracking
-- Scheduling and planning
+- Core authenticated application
+- Houses all productivity domains:
 
-### 🥗 Diet & Fitness Tracker
+  - Notes
+  - Tasks & Time
+  - Calendar
+  - Fitness & Diet
+  - Finance
 
-- Meal tracking
-- Workout logging
-- Progress monitoring
-
-### 💰 Budget Manager
-
-- Income & expense tracking
-- Budget planning
-- Financial insights
+This replaces the previous multi-app structure with a unified product surface.
 
 ---
 
@@ -51,31 +46,27 @@ Each app lives in `/apps` and can run independently.
 
 ```
 /apps
-  /pave     # Calendar
-  /jot      # Notes
-  /stride   # Tasks & Time
-  /prime    # Fitness & Diet
-  /tally    # Finance
+  /web        # Public-facing site
+  /atlas      # Core product (all tools integrated)
 
 /packages
-  /ui           # Design system (components, tokens, theming)
-  /config       # Shared configs (eslint, tsconfig, etc.)
-  /db           # Database schema, migrations, seeds
-  /auth         # Authentication logic and guards
-  /api          # Shared API layer (contracts, handlers)
-  /utils        # Pure utility functions
-  /types        # Shared types and validation schemas
-  /store        # Shared state logic (optional)
+  /ui         # Design system (components, tokens, theming)
+  /config     # Shared configs (eslint, tsconfig, etc.)
+  /db         # Database schema, migrations, seeds
+  /auth       # Authentication logic and guards
+  /api        # Shared API layer (contracts, handlers)
+  /utils      # Pure utility functions
+  /types      # Shared types and validation schemas
+  /store      # Shared state logic (optional)
 
 /services
-  /sync         # Cross-app synchronization
-  /search       # Global search indexing
+  /sync
+  /search
   /notifications
 
 /tooling
   /scripts
   /ci
-
 ```
 
 ---
@@ -84,7 +75,7 @@ Each app lives in `/apps` and can run independently.
 
 ### 1. Thin Applications
 
-Applications are responsible for:
+Apps are responsible for:
 
 - Routing
 - UI composition
@@ -95,83 +86,75 @@ They do **not** contain core business logic.
 
 ### 2. Shared Core via Packages
 
-All reusable logic lives in `/packages`.
-
-This includes:
+All reusable logic lives in `/packages`, including:
 
 - Business rules
 - Data access
 - Validation
 - Shared state
 
-This ensures consistency and eliminates duplication across apps.
+This ensures consistency and eliminates duplication.
 
 ---
 
-### 3. Centralized Data Layer
+### 3. Unified Domain Model
 
-A single database schema is maintained in `/packages/db`.
+A single database schema in `/packages/db` models all domains:
 
-All domains (tasks, notes, events, etc.) are modeled in a way that allows relationships across apps.
+- Notes, tasks, events, health, finance
 
----
+This enables:
 
-### 4. First-Class Design System
-
-The `/packages/ui` package defines the visual and interaction layer across all apps.
-
-Consistency in UI is treated as a core system requirement, not an afterthought.
+- Cross-domain relationships
+- Rich insights
+- System-wide features
 
 ---
 
-### 5. Event-Driven Evolution (Future)
+### 4. Integrated Product Surface
 
-As the system grows, cross-app interactions will be handled via events.
+Instead of separate apps, Atlas is a single system with multiple domains.
+
+Benefits:
+
+- No context switching
+- Shared navigation and state
+- Easier cross-feature interactions
+
+---
+
+### 5. Design System as Infrastructure
+
+The `/packages/ui` package defines:
+
+- Components
+- Tokens
+- Theming
+
+Consistency is enforced across the entire system.
+
+---
+
+### 6. Event-Driven Evolution (Future)
+
+Cross-domain interactions will be handled via events.
 
 Example:
 
-- Completing a task may update calendar data or analytics.
+- Completing a task updates analytics or scheduling
 
-This avoids tight coupling between apps.
+This avoids tight coupling while enabling system-wide behavior.
 
 ---
 
 ## Routing Strategy
 
-Atlas is served under a single domain:
+Atlas is served under a unified structure:
 
 ```
-atlas.mbyte.app/pave
-atlas.mbyte.app/jot
-atlas.mbyte.app/stride
-...
+atlas.mbyte.app        → main app
+atlas.mbyte.app/*      → all features (notes, tasks, etc.)
 ```
-
-### Why this approach
-
-- Unified user experience
-- Simplified authentication/session handling
-- Easier cross-app navigation
-- Reduced infrastructure complexity
-
----
-
-## Future Flexibility
-
-The system is designed to support subdomains if needed:
-
-```
-pave.mbyte.app → proxied to /pave
-jot.mbyte.app  → proxied to /jot
-```
-
-This allows:
-
-- Independent scaling
-- External product exposure
-- Service isolation
-
-Without requiring structural changes to the codebase.
 
 ---
 
@@ -179,7 +162,9 @@ Without requiring structural changes to the codebase.
 
 Atlas is not a collection of tools.
 
-It is a unified system designed to help users understand and navigate their lives through interconnected data and workflows.
+It is a unified system for understanding and navigating life through connected data and workflows.
+
+---
 
 ## Tech Stack
 
@@ -195,11 +180,11 @@ It is a unified system designed to help users understand and navigate their live
 
 ## Core Principles
 
-- **Modularity** — apps should not tightly depend on each other
-- **Reusability** — shared logic lives in `/packages`
-- **Consistency** — unified design system and patterns
-- **Scalability** — built to handle growth in features and users
-- **Performance-first** — avoid unnecessary coupling and overhead
+- **Modularity** — logic is decoupled at the package level
+- **Reusability** — shared infrastructure across domains
+- **Consistency** — unified UX and system design
+- **Scalability** — built for feature and user growth
+- **Performance-first** — minimal duplication and overhead
 
 ---
 
@@ -220,14 +205,15 @@ pnpm dev
 ### 3. Run a specific app
 
 ```bash
-pnpm --filter <app-name> dev
+pnpm --filter web dev
+pnpm --filter atlas dev
 ```
 
 ---
 
 ## Environment Setup
 
-Create a `.env` file at the root (or per app if required):
+Create a `.env` file at the root:
 
 ```
 DATABASE_URL=
@@ -240,7 +226,7 @@ NEXT_PUBLIC_*
 ## Roadmap
 
 - [x] Shared authentication system
-- [x] Cross-app data linking
+- [x] Cross-domain data linking
 - [ ] Offline-first support (PWA)
 - [x] Mobile optimization
 - [ ] Analytics and insights layer
@@ -249,7 +235,7 @@ NEXT_PUBLIC_*
 
 ## Status
 
-Early-stage. Core architecture and individual apps are under active development.
+Early-stage. Core architecture and unified app are under active development.
 
 ---
 
