@@ -1,7 +1,7 @@
 import { createClientcloudbaseServer } from '@repo/cloudbase';
 import { profileCreate } from '@repo/handlers';
 import { segmentFullName, linkify } from '@repo/utils';
-import { AUTH_URLS, BASE_URL_CLIENT } from '@repo/constants';
+import { AUTH_URLS, BASE_URL } from '@repo/constants';
 import { sharedUserHandle } from './shared';
 
 export const authOauth = async (params: { searchParams: URLSearchParams }) => {
@@ -22,7 +22,7 @@ export const authOauth = async (params: { searchParams: URLSearchParams }) => {
   const nameSegments = segmentFullName(data.user.user_metadata.name || '');
 
   // create profile if doesn't exist
-  const { items } = await profileCreate(`${BASE_URL_CLIENT.WEB}/api`, {
+  const { items } = await profileCreate(`${BASE_URL.WEB}/api`, {
     id: data.user?.id,
     firstName: nameSegments.first,
     lastName: nameSegments.last,

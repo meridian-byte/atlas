@@ -1,4 +1,4 @@
-import { AUTH_URLS, BASE_URL_CLIENT } from '@repo/constants';
+import { AUTH_URLS, BASE_URL } from '@repo/constants';
 import { createClientcloudbaseServer } from '@repo/cloudbase';
 import { profileCreate } from '@repo/handlers';
 import { getEmailLocalPart, linkify } from '@repo/utils';
@@ -39,7 +39,7 @@ export const authEmail = async (params: {
   const nameFromEmail = getEmailLocalPart(session.user?.email || '');
 
   // create profile if doesn't exist
-  const { items } = await profileCreate(`${BASE_URL_CLIENT.WEB}/api`, {
+  const { items } = await profileCreate(`${BASE_URL.WEB}/api`, {
     id: session.user?.id || '',
     email: session.user?.email || '',
     firstName: nameFromEmail,

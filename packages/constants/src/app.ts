@@ -53,6 +53,7 @@ export const SOCIALS = {
 
 export const APP_NAME = {
   WEB: COMPANY_NAME,
+  ATLAS: `${COMPANY_NAME} Atlas`,
 };
 
 export const APP_NAMES_ATLAS = {
@@ -107,5 +108,6 @@ export const ASIDE_VIEW_NAMES = {
 };
 
 export const APP_DESC = {
-  WEB: 'Discover Atlas, an open-source productivity suite unifying notes, tasks, time tracking, fitness, and finance into a single, cohesive ecosystem.',
+  ATLAS:
+    'Discover Atlas, an open-source productivity suite unifying notes, tasks, time tracking, fitness, and finance into a single, cohesive ecosystem.',
 };

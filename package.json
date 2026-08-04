@@ -16,7 +16,13 @@
     "web:dev": "pnpm --filter web dev",
     "web:build": "pnpm --filter web build",
     "web:start": "pnpm --filter web start",
-    "web:lint": "pnpm --filter web lint"
+    "web:lint": "pnpm --filter web lint",
+    "web:check-types": "pnpm --filter web check-types",
+    "atlas:dev": "pnpm --filter atlas dev",
+    "atlas:build": "pnpm --filter atlas build",
+    "atlas:start": "pnpm --filter atlas start",
+    "atlas:lint": "pnpm --filter atlas lint",
+    "atlas:check-types": "pnpm --filter atlas check-types"
   },
   "devDependencies": {
     "turbo": "^2.1.3",
