@@ -19,7 +19,7 @@ import {
 } from '@repo/store';
 import { BASE_URL, STORE_NAME } from '@repo/constants';
 
-export default function Sync({ children }: { children: React.ReactNode }) {
+export function ProviderSync({ children }: { children: React.ReactNode }) {
   const networkStatus = useNetwork();
 
   const session = useStoreSession((s) => s.session);

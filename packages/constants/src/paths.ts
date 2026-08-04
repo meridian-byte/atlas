@@ -10,10 +10,10 @@ const useRemoteServer = process.env.NEXT_PUBLIC_USE_REMOTE_SERVER === 'true';
 
 // Select API host
 const HOSTNAME_API = isProduction
-  ? process.env.NEXT_PUBLIC_HOST_SERVER_PROD
+  ? process.env.NEXT_PUBLIC_HOST_API_PROD
   : useRemoteServer
-    ? process.env.NEXT_PUBLIC_HOST_SERVER_PROD
-    : process.env.NEXT_PUBLIC_HOST_SERVER_DEV;
+    ? process.env.NEXT_PUBLIC_HOST_API_PROD
+    : process.env.NEXT_PUBLIC_HOST_API_DEV;
 
 // Select WEB host
 export const HOSTNAME_WEB = isProduction

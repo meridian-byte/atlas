@@ -24,7 +24,7 @@ import { getOSTheme } from '@repo/utils';
 import { MantineColorSchemeManager } from '@mantine/core';
 import { ColorScheme } from '@repo/types';
 
-export default function Mantine({
+export function ProviderMantine({
   appName,
   colorScheme,
   options,

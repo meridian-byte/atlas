@@ -1,13 +1,38 @@
+'use server';
+
+import { NextResponse, type NextRequest } from 'next/server';
+import { COOKIE_NAME } from '@repo/constants';
 import { AUTH_URLS, BASE_URL } from '@repo/constants';
 import { createClientcloudbaseServer } from '@repo/cloudbase';
 import { profileCreate } from '@repo/handlers';
 import { getEmailLocalPart, linkify } from '@repo/utils';
-import { sharedUserHandle } from './shared';
+import { sharedUserHandle } from '@repo/auth';
 
-export const authEmail = async (params: {
-  searchParams: URLSearchParams;
-  baseUrl: string | null;
-}) => {
+export async function routeAuthCallbackEmail(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const baseUrl = searchParams.get('baseUrl');
+
+  try {
+    const redirect = await authEmail({ searchParams, baseUrl });
+
+    const response = NextResponse.redirect(redirect);
+
+    response.cookies.delete({
+      name: COOKIE_NAME.AUTH.EMAIL,
+      path: '/', // must match original path
+    });
+
+    return response;
+  } catch (error) {
+    console.error('---> route handler error (callback email):', error);
+
+    return NextResponse.redirect(
+      `${baseUrl + AUTH_URLS.ERROR}?error=${'Authentication Error'}&message=${encodeURIComponent((error as Error).message)}`,
+    );
+  }
+}
+
+const authEmail = async (params: { searchParams: URLSearchParams; baseUrl: string | null }) => {
   const { searchParams, baseUrl } = params;
 
   const redirectUrl = searchParams.get('redirectUrl');

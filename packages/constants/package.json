@@ -14,7 +14,10 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "@repo/types": "workspace:*"
+    "@mantine/core": "^9.4.2",
+    "@mantine/dates": "^9.4.2",
+    "@repo/types": "workspace:*",
+    "next": "16.2.10"
   },
   "devDependencies": {
     "@repo/config": "workspace:*",

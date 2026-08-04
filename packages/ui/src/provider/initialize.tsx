@@ -18,13 +18,14 @@ import {
 } from '@repo/store';
 import { UserObject } from '@repo/types';
 import { AppShellValue } from '@repo/store';
-import { BASE_URL, STORE_NAME } from '@repo/constants';
+import { STORE_NAME } from '@repo/constants';
 
-export default function Initialize({
+export function ProviderInitialize({
   props,
   children,
 }: {
-  props?: {
+  props: {
+    baseUrl: string;
     sessionUser: UserObject | null;
     cookie?: AppShellValue;
   };
@@ -46,7 +47,7 @@ export default function Initialize({
   useActiveItemStore();
 
   useLoadAppData({
-    apiUrl: `${BASE_URL.WEB}/api`,
+    apiUrl: props.baseUrl,
     clientOnly: false,
     storesToLoad: {
       [STORE_NAME.WORKSPACES]: true,

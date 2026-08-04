@@ -1,10 +1,31 @@
+'use server';
+
+import { NextResponse } from 'next/server';
 import { createClientcloudbaseServer } from '@repo/cloudbase';
 import { profileCreate } from '@repo/handlers';
 import { segmentFullName, linkify } from '@repo/utils';
 import { AUTH_URLS, BASE_URL } from '@repo/constants';
-import { sharedUserHandle } from './shared';
+import { sharedUserHandle } from '@repo/auth';
 
-export const authOauth = async (params: { searchParams: URLSearchParams }) => {
+export async function routeAuthCallbackOauth(request: Request) {
+  const host = request.headers.get('host');
+  const protocol = request.headers.get('x-forwarded-proto') || 'https';
+  const baseUrl = `${protocol}://${host}`;
+
+  try {
+    const { searchParams } = new URL(request.url);
+
+    const { next } = await authOauth({ searchParams });
+
+    return NextResponse.redirect(`${baseUrl}${next}`);
+  } catch (error) {
+    return NextResponse.redirect(
+      `${baseUrl + AUTH_URLS.ERROR}?message=${encodeURIComponent((error as Error).message)}`,
+    );
+  }
+}
+
+const authOauth = async (params: { searchParams: URLSearchParams }) => {
   const { searchParams } = params;
 
   const code = searchParams.get('code');

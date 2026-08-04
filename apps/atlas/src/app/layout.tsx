@@ -1,12 +1,10 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import ProviderInitialize from '@atlas/ui/provider/initialize';
-import ProviderSync from '@atlas/ui/provider/sync';
-import { APP_DESC, APP_NAME, DEFAULT_COLOR_SCHEME } from '@repo/constants';
+import { API_URL, APP_DESC, APP_NAME, BASE_URL, DEFAULT_COLOR_SCHEME } from '@repo/constants';
 import { createClientcloudbaseServer } from '@repo/cloudbase';
 import { getCookieServer } from '@repo/utils';
 import { COOKIE_NAME } from '@repo/constants';
-import ProviderMantine from '@atlas/ui/provider/mantine';
+import { ProviderMantine, ProviderInitialize, ProviderSync } from '@repo/ui';
 import { ColorSchemeScript, MantineColorScheme, mantineHtmlProps } from '@mantine/core';
 import { getAppTheme } from '@atlas/theme';
 import { getAppResolver } from '@atlas/resolver';
@@ -97,7 +95,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           theme={getAppTheme}
           cssVariablesResolver={getAppResolver}
         >
-          <ProviderInitialize props={{ sessionUser: session.user }}>
+          <ProviderInitialize props={{ baseUrl: API_URL, sessionUser: session.user }}>
             <ProviderSync>{children}</ProviderSync>
           </ProviderInitialize>
         </ProviderMantine>
