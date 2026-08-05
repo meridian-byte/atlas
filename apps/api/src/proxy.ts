@@ -17,6 +17,9 @@ export async function proxy(request: NextRequest) {
 
   response = getColorScheme(request, response);
 
+  // Disable SEO/indexing globally for all responses passing through middleware
+  response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+
   return response;
 }
 

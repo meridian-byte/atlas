@@ -32,6 +32,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: APP_NAME.ATLAS,
   description: APP_DESC.ATLAS,
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
