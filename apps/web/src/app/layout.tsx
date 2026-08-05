@@ -4,7 +4,7 @@ import { APP_DESC, APP_NAME } from '@repo/constants';
 import { ProviderMantine } from '@repo/ui';
 import { ColorSchemeScript, MantineColorScheme, mantineHtmlProps } from '@mantine/core';
 import { getAppTheme } from '@repo/constants';
-import { getAppResolver } from '@api/resolver';
+import { getAppResolver } from '@web/resolver';
 import { ColorScheme } from '@repo/types';
 
 import './globals.css';
