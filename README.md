@@ -1,63 +1,42 @@
-# Atlas Monorepo
+# MeridianByte Monorepo
 
-A modular, full-stack productivity system designed to unify everyday tools into a single, cohesive ecosystem.
+A modular technology ecosystem powering connected digital solutions through shared infrastructure, reusable systems, and unified product experiences.
 
-This repository contains a single integrated application surface (`atlas`) and a web entry layer (`web`), backed by shared infrastructure and domain packages.
+This repository contains the core MeridianByte platform and its products, including **Atlas**, a unified productivity system designed to bring everyday workflows into one connected ecosystem.
 
 ---
 
 ## Vision
 
-Most productivity tools are fragmented. This project aims to:
+MeridianByte exists to build software systems that reduce fragmentation and help people interact with technology more naturally.
 
-- Consolidate core personal workflows into one system
-- Enable seamless data flow across domains (tasks, time, notes, health, finance)
-- Provide a consistent UX and shared system design
-- Maintain modular architecture without fragmenting the product experience
+Our goal is to:
 
----
-
-## Applications
-
-All user-facing functionality is consolidated into two apps:
-
-### 🌐 `/apps/web`
-
-- Entry point / marketing layer
-- Handles landing pages, onboarding, and public-facing content
-- Can evolve independently from the core product
-
-### 🧠 `/apps/atlas`
-
-- Core authenticated application
-- Houses all productivity domains:
-
-  - Notes
-  - Tasks & Time
-  - Calendar
-  - Fitness & Diet
-  - Finance
-
-This replaces the previous multi-app structure with a unified product surface.
+- Build connected digital products instead of isolated tools
+- Create reusable foundations shared across solutions
+- Enable seamless data flow between domains and services
+- Maintain consistent user experiences across the ecosystem
+- Scale products without duplicating infrastructure
 
 ---
 
-## Monorepo Structure
+## Repository Structure
 
 ```
 /apps
-  /web        # Public-facing site
-  /atlas      # Core product (all tools integrated)
+  /web        # MeridianByte public website and marketing layer
+  /atlas      # Atlas productivity platform
+  /api        # Shared backend/API application layer
 
 /packages
-  /ui         # Design system (components, tokens, theming)
-  /config     # Shared configs (eslint, tsconfig, etc.)
-  /db         # Database schema, migrations, seeds
-  /auth       # Authentication logic and guards
-  /api        # Shared API layer (contracts, handlers)
-  /utils      # Pure utility functions
-  /types      # Shared types and validation schemas
-  /store      # Shared state logic (optional)
+  /ui        # Shared design system, components, tokens, theming
+  /config    # Shared configurations (eslint, tsconfig, tooling)
+  /db        # Database schemas, migrations, seeds
+  /auth      # Authentication systems and guards
+  /api       # Shared API contracts and handlers
+  /utils     # Shared utility functions
+  /types     # Shared types and validation schemas
+  /store     # Shared state management logic
 
 /services
   /sync
@@ -71,108 +50,84 @@ This replaces the previous multi-app structure with a unified product surface.
 
 ---
 
-## Architectural Principles
+## Architecture Principles
 
-### 1. Thin Applications
+### 1. Product-Based Architecture
 
-Apps are responsible for:
+MeridianByte is structured around independent solutions that share common foundations.
 
-- Routing
-- UI composition
+Each product:
 
-They do **not** contain core business logic.
+- Has its own user experience
+- Can evolve independently
+- Uses shared infrastructure where appropriate
+- Remains part of the wider MeridianByte ecosystem
 
 ---
 
-### 2. Shared Core via Packages
+### 2. Shared Infrastructure
 
-All reusable logic lives in `/packages`, including:
+Reusable capabilities live in shared packages.
 
-- Business rules
-- Data access
+These include:
+
+- Authentication
+- Database access
+- API patterns
+- UI components
 - Validation
-- Shared state
+- Configuration
+- Common utilities
 
-This ensures consistency and eliminates duplication.
-
----
-
-### 3. Unified Domain Model
-
-A single database schema in `/packages/db` models all domains:
-
-- Notes, tasks, events, health, finance
-
-This enables:
-
-- Cross-domain relationships
-- Rich insights
-- System-wide features
+This reduces duplication and keeps products consistent.
 
 ---
 
-### 4. Integrated Product Surface
+### 3. Unified Design Language
 
-Instead of separate apps, Atlas is a single system with multiple domains.
+The MeridianByte design system provides:
 
-Benefits:
+- Shared components
+- Design tokens
+- Themes
+- Interaction patterns
 
-- No context switching
-- Shared navigation and state
-- Easier cross-feature interactions
-
----
-
-### 5. Design System as Infrastructure
-
-The `/packages/ui` package defines:
-
-- Components
-- Tokens
-- Theming
-
-Consistency is enforced across the entire system.
+Every product benefits from a consistent experience while maintaining its own identity.
 
 ---
 
-### 6. Event-Driven Evolution (Future)
+### 4. Scalable Domain Architecture
 
-Cross-domain interactions will be handled via events.
-
-Example:
-
-- Completing a task updates analytics or scheduling
-
-This avoids tight coupling while enabling system-wide behavior.
+Products are built around modular domains that can grow independently while still communicating through shared systems and future event-driven infrastructure.
 
 ---
 
-## Routing Strategy
+## Products
 
-Atlas is served under a unified structure:
+### 🧠 Atlas
 
-```
-atlas.mbyte.app        → main app
-atlas.mbyte.app/*      → all features (notes, tasks, etc.)
-```
+Atlas is MeridianByte's unified productivity platform.
 
----
+It combines:
 
-## Philosophy
+- Notes
+- Tasks
+- Time management
+- Calendar
+- Fitness and diet tracking
+- Finance management
 
-Atlas is not a collection of tools.
-
-It is a unified system for understanding and navigating life through connected data and workflows.
+Atlas represents the vision of connected personal workflows inside one system.
 
 ---
 
 ## Tech Stack
 
 - Frontend: React / Next.js
-- Backend: Node.js / API routes / services
+- Backend: Node.js / API services
 - Database: PostgreSQL
 - ORM: Prisma
-- State: Zustand / Redux (where needed)
+- State Management: Zustand / Redux where needed
 - Styling: Tailwind / Mantine
 - Tooling: pnpm, Turborepo
 
@@ -180,29 +135,29 @@ It is a unified system for understanding and navigating life through connected d
 
 ## Core Principles
 
-- **Modularity** — logic is decoupled at the package level
-- **Reusability** — shared infrastructure across domains
-- **Consistency** — unified UX and system design
-- **Scalability** — built for feature and user growth
-- **Performance-first** — minimal duplication and overhead
+- **Modularity** — systems are separated by responsibility
+- **Reusability** — infrastructure is shared across products
+- **Consistency** — products follow unified design principles
+- **Scalability** — architecture supports future growth
+- **Performance-first** — minimize unnecessary duplication and overhead
 
 ---
 
 ## Getting Started
 
-### 1. Install dependencies
+### Install dependencies
 
 ```bash
 pnpm install
 ```
 
-### 2. Run all apps (dev)
+### Run all applications
 
 ```bash
 pnpm dev
 ```
 
-### 3. Run a specific app
+### Run a specific application
 
 ```bash
 pnpm --filter web dev
@@ -213,7 +168,7 @@ pnpm --filter atlas dev
 
 ## Environment Setup
 
-Create a `.env` file at the root:
+Create a `.env` file at the repository root:
 
 ```
 DATABASE_URL=
@@ -226,16 +181,17 @@ NEXT_PUBLIC_*
 ## Roadmap
 
 - [x] Shared authentication system
-- [x] Cross-domain data linking
-- [ ] Offline-first support (PWA)
-- [x] Mobile optimization
-- [ ] Analytics and insights layer
+- [x] Unified monorepo architecture
+- [x] Shared design system
+- [ ] Event-driven communication layer
+- [ ] Offline-first capabilities
+- [ ] Analytics and insights platform
 
 ---
 
 ## Status
 
-Early-stage. Core architecture and unified app are under active development.
+Early-stage. MeridianByte's core architecture and product ecosystem are under active development.
 
 ---
 
