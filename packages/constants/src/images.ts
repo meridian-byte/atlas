@@ -7,6 +7,10 @@ export const images = {
         light: `${imageUrl}/brand/icon/meta-light.png`,
         dark: `${imageUrl}/brand/icon/meta-dark.png`,
       },
+      bg: {
+        light: `${imageUrl}/brand/icon/bg-light.png`,
+        dark: `${imageUrl}/brand/icon/bg-dark.png`,
+      },
     },
   },
 
@@ -16,6 +20,10 @@ export const images = {
         meta: {
           light: `${imageUrl}/brand/icon/meta-light.png`,
           dark: `${imageUrl}/brand/icon/meta-dark.png`,
+        },
+        bg: {
+          light: `${imageUrl}/brand/icon/bg-light.png`,
+          dark: `${imageUrl}/brand/icon/bg-dark.png`,
         },
       },
     },
