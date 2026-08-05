@@ -1,0 +1,25 @@
+'use client';
+
+/**
+ * @template-source next-template
+ * @template-sync auto
+ * @description This file originates from the base template repository.
+ * Do not modify unless you intend to backport changes to the template.
+ */
+
+import React from 'react';
+import { PartialError500, ProviderMantine } from '@repo/ui';
+import { getAppTheme } from '@repo/constants';
+import { getAppResolver } from '@web/resolver';
+
+export default function GlobalError({ reset }: { reset: () => void }) {
+  return (
+    <html>
+      <body>
+        <ProviderMantine theme={getAppTheme} cssVariablesResolver={getAppResolver}>
+          <PartialError500 reset={reset} />
+        </ProviderMantine>
+      </body>
+    </html>
+  );
+}
