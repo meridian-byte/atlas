@@ -6,7 +6,7 @@ import { getCookieServer } from '@repo/utils';
 import { COOKIE_NAME } from '@repo/constants';
 import { ProviderMantine, ProviderInitialize, ProviderSync } from '@repo/ui';
 import { ColorSchemeScript, MantineColorScheme, mantineHtmlProps } from '@mantine/core';
-import { getAppTheme } from '@atlas/theme';
+import { getAppTheme } from '@repo/constants';
 import { getAppResolver } from '@atlas/resolver';
 
 import './globals.css';
