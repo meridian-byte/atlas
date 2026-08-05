@@ -8,28 +8,22 @@
 const isProduction = process.env.NODE_ENV === 'production';
 const useRemoteServer = process.env.NEXT_PUBLIC_USE_REMOTE_SERVER === 'true';
 
-// Select WEB client host
-export const HOSTNAME_CLIENT_WEB = isProduction
-  ? process.env.NEXT_PUBLIC_HOST_CLIENT_WEB_PROD
-  : process.env.NEXT_PUBLIC_HOST_CLIENT_WEB_DEV;
+// Select API host
+const HOSTNAME_API = isProduction
+  ? process.env.NEXT_PUBLIC_HOST_API_PROD
+  : useRemoteServer
+    ? process.env.NEXT_PUBLIC_HOST_API_PROD
+    : process.env.NEXT_PUBLIC_HOST_API_DEV;
 
-export const getUrlPrefix = (host: string | undefined) => {
-  if (!host) return 'http://';
-  return host.includes('localhost') ? 'http://' : 'https://';
-};
+// Select WEB host
+export const HOSTNAME_WEB = isProduction
+  ? process.env.NEXT_PUBLIC_HOST_WEB_PROD
+  : process.env.NEXT_PUBLIC_HOST_WEB_DEV;
 
-export const HOSTED_BASE_URL = {
-  CLIENT_WEB: process.env.NEXT_PUBLIC_HOST_CLIENT_WEB_PROD || '',
-  SERVER: process.env.NEXT_PUBLIC_HOST_SERVER_PROD || '',
-};
-
-export const PRODUCTION_BASE_URL_CLIENT_WEB = {
-  DEFAULT: `https://meridianbyte.com`,
-};
-
-export const GEO_DATA_URL = {
-  COUNTRIES: `${process.env.NEXT_PUBLIC_REST_COUNTRIES_API_URL}`,
-};
+// Select ATLAS host
+export const HOSTNAME_ATLAS = isProduction
+  ? process.env.NEXT_PUBLIC_HOST_ATLAS_PROD
+  : process.env.NEXT_PUBLIC_HOST_ATLAS_DEV;
 
 export const AUTH_URLS = {
   SIGN_IN: `/auth/sign-in`,
@@ -37,11 +31,21 @@ export const AUTH_URLS = {
   CHECK_EMAIL: `/auth/check-email`,
   ERROR: `/auth/error`,
   SIGN_OUT: `/auth/sign-out`,
+  SIGNED_OUT: `/auth/signed-out`,
   REDIRECT: {
     DEFAULT: '/',
   },
 };
 
-export const BASE_URL_CLIENT = {
-  WEB: `${getUrlPrefix(HOSTNAME_CLIENT_WEB)}${HOSTNAME_CLIENT_WEB}`,
+export const getUrlPrefix = (host: string | undefined) => {
+  if (!host) return 'http://';
+  return host.includes('localhost') ? 'http://' : 'https://';
 };
+
+export const BASE_URL = {
+  API: `${getUrlPrefix(HOSTNAME_API)}${HOSTNAME_API}`,
+  WEB: `${getUrlPrefix(HOSTNAME_WEB)}${HOSTNAME_WEB}`,
+  ATLAS: `${getUrlPrefix(HOSTNAME_ATLAS)}${HOSTNAME_ATLAS}`,
+};
+
+export const API_URL = `${BASE_URL.API}/api`;

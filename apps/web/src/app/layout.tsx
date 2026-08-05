@@ -1,15 +1,11 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import ProviderInitialize from '@web/ui/provider/initialize';
-import ProviderSync from '@web/ui/provider/sync';
-import { APP_DESC, APP_NAME, DEFAULT_COLOR_SCHEME } from '@repo/constants';
-import { createClientcloudbaseServer } from '@repo/cloudbase';
-import { getCookieServer } from '@repo/utils';
-import { COOKIE_NAME } from '@repo/constants';
-import ProviderMantine from '@web/ui/provider/mantine';
+import { APP_DESC, APP_NAME } from '@repo/constants';
+import { ProviderMantine } from '@repo/ui';
 import { ColorSchemeScript, MantineColorScheme, mantineHtmlProps } from '@mantine/core';
-import { getAppTheme } from '@web/theme';
-import { getAppResolver } from '@web/resolver';
+import { getAppTheme } from '@repo/constants';
+import { getAppResolver } from '@api/resolver';
+import { ColorScheme } from '@repo/types';
 
 import './globals.css';
 
@@ -19,7 +15,6 @@ import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 // ‼️ import schedule styles after core and dates package styles
 import '@mantine/schedule/styles.css';
-import { ColorScheme } from '@repo/types';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -37,12 +32,7 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const supabase = await createClientcloudbaseServer();
-  const { data: session } = await supabase.auth.getUser();
-
-  // 1. Get the CALCULATED theme from middleware (not the 'auto' state)
-  const theme = (await getCookieServer(COOKIE_NAME.COLOR_SCHEME)) || DEFAULT_COLOR_SCHEME;
-  const resolvedTheme = (theme || DEFAULT_COLOR_SCHEME) as MantineColorScheme;
+  const resolvedTheme = ColorScheme.LIGHT as MantineColorScheme;
 
   return (
     <html
@@ -60,33 +50,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           viewport-fit="cover"
         />
 
-        {/* General Web App Metadata */}
-        <meta name="application-name" content={APP_NAME.WEB} />
-        <meta name="theme-color" content={'#CBB399'} />
-        <meta
-          name="background-color"
-          content={resolvedTheme == ColorScheme.LIGHT ? '#ffffff' : '#000000'}
-        />
-
-        {/* Apple Web App Tags */}
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content={APP_NAME.WEB} />
-
-        {/* Misc. Mobile Enhancements */}
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="mobile-web-app-capable" content="yes" />
-
-        {/* Icons */}
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/images/brand/icon/web-app-manifest-192x192.png"
-        />
-
-        <link rel="manifest" href="/manifest.webmanifest" />
-
         <ColorSchemeScript defaultColorScheme={resolvedTheme} />
       </head>
 
@@ -97,9 +60,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           theme={getAppTheme}
           cssVariablesResolver={getAppResolver}
         >
-          <ProviderInitialize props={{ sessionUser: session.user }}>
-            <ProviderSync>{children}</ProviderSync>
-          </ProviderInitialize>
+          {children}
         </ProviderMantine>
       </body>
     </html>

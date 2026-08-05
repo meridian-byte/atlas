@@ -9,6 +9,12 @@ export const CROSS_ORIGINS = [
   'localhost',
   '127.0.0.1',
 
-  'meridianbyte-atlas-web.vercel.app',
+  'meridianbyte-api.vercel.app',
+  'api.meridianbyte.com',
+
+  'meridianbyte-web.vercel.app',
   'meridianbyte.com',
+
+  'meridianbyte-atlas.vercel.app',
+  'atlas.meridianbyte.com',
 ];

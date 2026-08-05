@@ -1,5 +1,3 @@
-import { icons } from './icons';
-
 const imageUrl = `/images`;
 
 export const images = {
@@ -9,8 +7,17 @@ export const images = {
         light: `${imageUrl}/brand/icon/meta-light.png`,
         dark: `${imageUrl}/brand/icon/meta-dark.png`,
       },
+    },
+  },
 
-      nextjs: icons.nextjs,
+  atlas: {
+    brand: {
+      icon: {
+        meta: {
+          light: `${imageUrl}/brand/icon/meta-light.png`,
+          dark: `${imageUrl}/brand/icon/meta-dark.png`,
+        },
+      },
     },
   },
 };

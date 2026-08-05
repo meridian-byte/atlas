@@ -5,10 +5,12 @@
  * Do not modify unless you intend to backport changes to the template.
  */
 
+import { AUTH_URLS } from './paths';
+
 export const ignoredRoutes = new Set([
   '/manifest.webmanifest',
-  '/auth/sign-out',
-  '/auth/signed-out',
+  AUTH_URLS.SIGN_OUT,
+  AUTH_URLS.SIGNED_OUT,
   // Add other ignored routes
 ]);
 
