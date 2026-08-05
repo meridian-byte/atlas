@@ -1,7 +1,13 @@
 'use client';
 
 import { Text, Title, Badge, Stack, ThemeIcon, Anchor, Card, Box, Center } from '@mantine/core';
-import { HOSTNAME_WEB, ICON_SIZE, ICON_STROKE_WIDTH, ICON_WRAPPER_SIZE } from '@repo/constants';
+import {
+  HOSTNAME_WEB,
+  ICON_SIZE,
+  ICON_STROKE_WIDTH,
+  ICON_WRAPPER_SIZE,
+  SECTION_SPACING,
+} from '@repo/constants';
 import { LayoutSection } from '@repo/ui';
 import { IconServerBolt } from '@tabler/icons-react';
 
@@ -17,7 +23,12 @@ export default function Home() {
   return (
     <LayoutSection id="home">
       <Center ta={'center'} mih={'100vh'}>
-        <Card bg={'var(--mantine-color-body)'} padding={0}>
+        <Card
+          bg={'var(--mantine-color-dark-9)'}
+          padding={0}
+          px={SECTION_SPACING * 2}
+          py={SECTION_SPACING}
+        >
           <div>
             <Title order={1} mb="xs" fz={{ base: '1.5rem', sm: 'var(--mantine-h1-font-size)' }}>
               API.{mainSiteLink}

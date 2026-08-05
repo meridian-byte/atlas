@@ -16,8 +16,8 @@ import { getThemeLogo } from '@repo/utils';
 
 export default async function Default({ children }: { children: React.ReactNode }) {
   const logo = await getThemeLogo({
-    darkImage: images.atlas.brand.icon.meta.light,
-    lightImage: images.atlas.brand.icon.meta.light,
+    darkImage: images.atlas.brand.icon.bg.light,
+    lightImage: images.atlas.brand.icon.bg.light,
   });
 
   return (

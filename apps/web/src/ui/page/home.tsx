@@ -1,5 +1,7 @@
 'use client';
 
+import { Group } from '@mantine/core';
+import { images } from '@repo/constants';
 import React, { useState, useEffect } from 'react';
 
 interface CountdownState {
@@ -70,7 +72,10 @@ export const MeridianByteComingSoon: React.FC<MeridianByteComingSoonProps> = ({
         <div style={styles.bg} />
         <div style={styles.overlay} />
         <main style={styles.main}>
-          {/* <img src="https://kevon.net/images/brand/icon/dark.png" alt="Kevon Logo" style={styles.logo} /> */}
+          <Group justify="center">
+            <img src={images.brand.icon.bg.light} alt="Kevon Logo" style={styles.logo} />
+          </Group>
+
           <h1 style={styles.h1}>Under Construction</h1>
           <p style={styles.desc}>Something new is on the way. Stay tuned for the reveal.</p>
 
