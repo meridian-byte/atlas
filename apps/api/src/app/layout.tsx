@@ -1,12 +1,11 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import { APP_DESC, APP_NAME, DEFAULT_COLOR_SCHEME } from '@repo/constants';
-import { getCookieServer } from '@repo/utils';
-import { COOKIE_NAME } from '@repo/constants';
+import { APP_DESC, APP_NAME } from '@repo/constants';
 import { ProviderMantine } from '@repo/ui';
 import { ColorSchemeScript, MantineColorScheme, mantineHtmlProps } from '@mantine/core';
 import { getAppTheme } from '@repo/constants';
 import { getAppResolver } from '@api/resolver';
+import { ColorScheme } from '@repo/types';
 
 import './globals.css';
 
@@ -28,14 +27,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: APP_NAME.ATLAS,
-  description: APP_DESC.ATLAS,
+  title: APP_NAME.API,
+  description: APP_DESC.API,
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  // 1. Get the CALCULATED theme from middleware (not the 'auto' state)
-  const theme = (await getCookieServer(COOKIE_NAME.COLOR_SCHEME)) || DEFAULT_COLOR_SCHEME;
-  const resolvedTheme = (theme || DEFAULT_COLOR_SCHEME) as MantineColorScheme;
+  const resolvedTheme = ColorScheme.DARK as MantineColorScheme;
 
   return (
     <html

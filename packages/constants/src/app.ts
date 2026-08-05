@@ -52,6 +52,7 @@ export const SOCIALS = {
 };
 
 export const APP_NAME = {
+  API: `${COMPANY_NAME} Server`,
   WEB: COMPANY_NAME,
   ATLAS: `${COMPANY_NAME} Atlas`,
 };
@@ -108,6 +109,8 @@ export const ASIDE_VIEW_NAMES = {
 };
 
 export const APP_DESC = {
+  API: 'Server description',
+  WEB: 'Web description',
   ATLAS:
     'Discover Atlas, an open-source productivity suite unifying notes, tasks, time tracking, fitness, and finance into a single, cohesive ecosystem.',
 };

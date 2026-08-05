@@ -212,6 +212,103 @@ importers:
         specifier: ^5
         version: 5.9.3
 
+  apps/web:
+    dependencies:
+      '@mantine/core':
+        specifier: ^9.4.2
+        version: 9.5.0(@mantine/hooks@9.5.0(react@19.2.4))(@types/react@19.2.17)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@mantine/dates':
+        specifier: ^9.4.2
+        version: 9.5.0(@mantine/core@9.5.0(@mantine/hooks@9.5.0(react@19.2.4))(@types/react@19.2.17)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@mantine/hooks@9.5.0(react@19.2.4))(dayjs@1.11.21)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@mantine/form':
+        specifier: ^9.4.2
+        version: 9.5.0(react@19.2.4)
+      '@mantine/hooks':
+        specifier: ^9.4.2
+        version: 9.5.0(react@19.2.4)
+      '@mantine/notifications':
+        specifier: ^9.4.2
+        version: 9.5.0(@mantine/core@9.5.0(@mantine/hooks@9.5.0(react@19.2.4))(@types/react@19.2.17)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@mantine/hooks@9.5.0(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@mantine/schedule':
+        specifier: ^9.4.2
+        version: 9.5.0(@mantine/core@9.5.0(@mantine/hooks@9.5.0(react@19.2.4))(@types/react@19.2.17)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@mantine/dates@9.5.0(@mantine/core@9.5.0(@mantine/hooks@9.5.0(react@19.2.4))(@types/react@19.2.17)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@mantine/hooks@9.5.0(react@19.2.4))(dayjs@1.11.21)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@mantine/hooks@9.5.0(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@repo/auth':
+        specifier: workspace:*
+        version: link:../../packages/auth
+      '@repo/cloudbase':
+        specifier: workspace:*
+        version: link:../../services/cloudbase
+      '@repo/constants':
+        specifier: workspace:*
+        version: link:../../packages/constants
+      '@repo/db':
+        specifier: workspace:*
+        version: link:../../packages/db
+      '@repo/handlers':
+        specifier: workspace:*
+        version: link:../../packages/handlers
+      '@repo/store':
+        specifier: workspace:*
+        version: link:../../packages/store
+      '@repo/types':
+        specifier: workspace:*
+        version: link:../../packages/types
+      '@repo/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      '@repo/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
+      '@tabler/icons-react':
+        specifier: ^3.44.0
+        version: 3.46.0(react@19.2.4)
+      dayjs:
+        specifier: ^1.11.21
+        version: 1.11.21
+      next:
+        specifier: 16.2.10
+        version: 16.2.10(@babel/core@7.29.7)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      react:
+        specifier: 19.2.4
+        version: 19.2.4
+      react-dom:
+        specifier: 19.2.4
+        version: 19.2.4(react@19.2.4)
+    devDependencies:
+      '@repo/config':
+        specifier: workspace:*
+        version: link:../../packages/config
+      '@tailwindcss/postcss':
+        specifier: ^4
+        version: 4.3.3
+      '@types/node':
+        specifier: ^20
+        version: 20.19.43
+      '@types/react':
+        specifier: ^19
+        version: 19.2.17
+      '@types/react-dom':
+        specifier: ^19
+        version: 19.2.3(@types/react@19.2.17)
+      eslint:
+        specifier: ^9
+        version: 9.39.5(jiti@2.7.0)
+      eslint-config-next:
+        specifier: 16.2.10
+        version: 16.2.10(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3)
+      postcss-preset-mantine:
+        specifier: ^1.18.0
+        version: 1.18.0(postcss@8.5.25)
+      postcss-simple-vars:
+        specifier: ^7.0.1
+        version: 7.0.1(postcss@8.5.25)
+      tailwindcss:
+        specifier: ^4
+        version: 4.3.3
+      typescript:
+        specifier: ^5
+        version: 5.9.3
+
   packages/api:
     devDependencies:
       '@repo/config':
