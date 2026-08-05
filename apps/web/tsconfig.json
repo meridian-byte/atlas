@@ -2,7 +2,7 @@
   "extends": "@repo/config/tsconfig/next.base.json",
   "compilerOptions": {
     "paths": {
-      "@api/*": ["./src/*"]
+      "@web/*": ["./src/*"]
     }
   },
   "include": [
