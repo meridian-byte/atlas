@@ -17,7 +17,7 @@ export const metadata: Metadata = { title: 'Sign Out' };
 export default function SignOut() {
   return (
     <div>
-      <PartialNotifySignOut props={{ baseUrl: BASE_URL.WEB }} />
+      <PartialNotifySignOut props={{ baseUrl: BASE_URL.ATLAS }} />
     </div>
   );
 }

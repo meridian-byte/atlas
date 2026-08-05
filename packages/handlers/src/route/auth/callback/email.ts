@@ -1,7 +1,7 @@
 'use server';
 
 import { NextResponse, type NextRequest } from 'next/server';
-import { COOKIE_NAME } from '@repo/constants';
+import { API_URL, COOKIE_NAME } from '@repo/constants';
 import { AUTH_URLS, BASE_URL } from '@repo/constants';
 import { createClientcloudbaseServer } from '@repo/cloudbase';
 import { profileCreate } from '@repo/handlers';
@@ -64,7 +64,7 @@ const authEmail = async (params: { searchParams: URLSearchParams; baseUrl: strin
   const nameFromEmail = getEmailLocalPart(session.user?.email || '');
 
   // create profile if doesn't exist
-  const { items } = await profileCreate(`${BASE_URL.WEB}/api`, {
+  const { items } = await profileCreate(API_URL, {
     id: session.user?.id || '',
     email: session.user?.email || '',
     firstName: nameFromEmail,

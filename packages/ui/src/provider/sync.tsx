@@ -17,7 +17,7 @@ import {
   syncToServerAfterDelay,
   useMergedSync,
 } from '@repo/store';
-import { BASE_URL, STORE_NAME } from '@repo/constants';
+import { API_URL, BASE_URL, STORE_NAME } from '@repo/constants';
 
 export function ProviderSync({ children }: { children: React.ReactNode }) {
   const networkStatus = useNetwork();
@@ -51,7 +51,7 @@ export function ProviderSync({ children }: { children: React.ReactNode }) {
     ],
     // The payload (i) passed here is now the MergedSyncPayload { notes, categories }
     handleSync: (payload: MergedSyncPayload) =>
-      handleMergedSync({ payload, ...restProps, apiUrl: `${BASE_URL.WEB}/api` }),
+      handleMergedSync({ payload, ...restProps, apiUrl: API_URL }),
   });
 
   return <div>{children}</div>;

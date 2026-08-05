@@ -24,7 +24,7 @@ export default function SignIn() {
           title: 'Welcome Back!',
           desc: 'Sign in to access your personalized experience.',
         }}
-        baseUrl={BASE_URL.WEB}
+        baseUrl={BASE_URL.ATLAS}
       />
     </div>
   );

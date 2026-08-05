@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 import { createClientcloudbaseServer } from '@repo/cloudbase';
 import { profileCreate } from '@repo/handlers';
 import { segmentFullName, linkify } from '@repo/utils';
-import { AUTH_URLS, BASE_URL } from '@repo/constants';
+import { API_URL, AUTH_URLS, BASE_URL } from '@repo/constants';
 import { sharedUserHandle } from '@repo/auth';
 
 export async function routeAuthCallbackOauth(request: Request) {
@@ -43,7 +43,7 @@ const authOauth = async (params: { searchParams: URLSearchParams }) => {
   const nameSegments = segmentFullName(data.user.user_metadata.name || '');
 
   // create profile if doesn't exist
-  const { items } = await profileCreate(`${BASE_URL.WEB}/api`, {
+  const { items } = await profileCreate(API_URL, {
     id: data.user?.id,
     firstName: nameSegments.first,
     lastName: nameSegments.last,
